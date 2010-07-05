@@ -51,25 +51,45 @@ steal.plugins('jquery/controller/subscribe','jquery/event/hashchange','jquery/la
 			if(pair.length != 2) continue;
 			var key = decodeURIComponent(pair[0]), value = decodeURIComponent(pair[1]);
 			var key_components = $.String.rsplit(key,/\[[^\]]*\]/);
-			
+
 			if( key_components.length > 1 ) {
 				var last = key_components.length - 1;
 				var nested_key = key_components[0].toString();
-				if(! data[nested_key] ) data[nested_key] = {};
+
+				if(! data[nested_key] ) {
+				    if (key_components[1].match(/\[\d?\]/))
+					data[nested_key] = []; // array
+				    else
+					data[nested_key] = {}; // object
+				}
+
 				var nested_hash = data[nested_key];
 				
 				for(var k = 1; k < last; k++){
 					nested_key = key_components[k].substring(1, key_components[k].length - 1);
-					if( ! nested_hash[nested_key] ) nested_hash[nested_key] ={};
+				     
+					if( ! nested_hash[nested_key] ) {
+					    if (key_components.length > k && key_components[k+1].match(/\[\d?\]/))
+						nested_hash[nested_key] = []; // array
+					    else
+						nested_hash[nested_key] = {}; // object
+					}
+
 					nested_hash = nested_hash[nested_key];
 				}
-				nested_hash[ key_components[last].substring(1, key_components[last].length - 1) ] = value;
+
+				var key = key_components[last].substring(1, key_components[last].length - 1);
+				if (key.length == 0)
+				    nested_hash.push(value);  // array
+				else
+				    nested_hash[key] = value; // object
+
 			} else {
-		        if (key in data) {
-		        	if (typeof data[key] == 'string' ) data[key] = [data[key]];
-		         	data[key].push(value);
-		        }
-		        else data[key] = value;
+			if (key in data) {
+				if (typeof data[key] == 'string' ) data[key] = [data[key]];
+				data[key].push(value);
+			}
+			else data[key] = value;
 			}
 			
 		}
@@ -89,14 +109,14 @@ steal.plugins('jquery/controller/subscribe','jquery/event/hashchange','jquery/la
 	      var hasSlash = (folders.indexOf('/') != -1);
 	
 	      if(!hasSlash) {
-	         if(folders != 'index')
-	            folders += '/index';
+		 if(folders != 'index')
+		    folders += '/index';
 	      }
 		  
 	      OpenAjax.hub.publish("history."+folders.replace("/","."), data);
 	   });
 	   setTimeout(function(){
-	   	$(window).trigger('hashchange')
+		$(window).trigger('hashchange')
 	   },1) //immediately after ready
 	   
 	});
@@ -128,7 +148,7 @@ $.extend($.Controller.prototype, {
     * Adds history point to browser history.
     * @plugin 'dom/history'
     * @param {Object} options an object that will turned into a url like #controller/action&param1=value1
-    * @param {Object} data extra data saved in history  -- NO LONGER SUPPORTED
+    * @param {Object} data extra data saved in history	-- NO LONGER SUPPORTED
     */
    history_add : function(options, data) {
 	   var point = this._get_history_point(options);
