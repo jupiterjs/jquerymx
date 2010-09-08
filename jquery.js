@@ -15,8 +15,6 @@
  */
 (function( window, undefined ) {
 
-(function() {
-
 // Define a local copy of jQuery
 var jQuery = function( selector, context ) {
 		// The jQuery object is actually just the init constructor 'enhanced'
@@ -834,7 +832,7 @@ function doScrollCheck() {
 // Expose jQuery to the global object
 window.jQuery = window.$ = jQuery;
 
-})();
+
 (function() {
 
 	jQuery.support = {};
@@ -5097,10 +5095,6 @@ jQuery.extend({
 
 			// Handle JSONP-style loading
 			window[ jsonp ] = window[ jsonp ] || function( tmp ) {
-				data = tmp;
-				jQuery.ajax.handleSuccess( s, xhr, status, data );
-				jQuery.ajax.handleComplete( s, xhr, status, data );
-				// Garbage collect
 				window[ jsonp ] = undefined;
 
 				try {
@@ -5110,6 +5104,12 @@ jQuery.extend({
 				if ( head ) {
 					head.removeChild( script );
 				}
+				
+				data = tmp;
+				jQuery.ajax.handleSuccess( s, xhr, status, data );
+				jQuery.ajax.handleComplete( s, xhr, status, data );
+				// Garbage collect
+				
 			};
 		}
 
@@ -6294,7 +6294,7 @@ jQuery.each( ["Left", "Top"], function( i, name ) {
 });
 
 function getWindow( elem ) {
-	return ("scrollTo" in elem && elem.document) ?
+	return ("scrollTo" in elem && elem.document && elem.navigator) ?
 		elem :
 		elem.nodeType === 9 ?
 			elem.defaultView || elem.parentWindow :
@@ -6333,7 +6333,7 @@ jQuery.each([ "Height", "Width" ], function( i, name ) {
 			});
 		}
 
-		return ("scrollTo" in elem && elem.document) ? // does it walk and quack like a window?
+		return ("scrollTo" in elem && elem.document && elem.navigator) ? // does it walk and quack like a window?
 			// Everyone else use document.documentElement or document.body depending on Quirks vs Standards mode
 			elem.document.compatMode === "CSS1Compat" && elem.document.documentElement[ "client" + name ] ||
 			elem.document.body[ "client" + name ] :
