@@ -943,7 +943,8 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		 * Returns if the instance is a new object
 		 */
 		isNew: function() {
-			return (this[this.Class.id] === undefined); //if null or undefined
+			var id = this[this.Class.id];
+			return (id === undefined || id === null); //if null or undefined
 		},
 		/**
 		 * Saves the instance if there are no errors.  
