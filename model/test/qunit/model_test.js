@@ -22,6 +22,31 @@ module("jquery/model", {
 				return "Mr. "+this.name;
 			}
 		})
+		
+		$.Model.extend("Animal",{
+		wrapWith: function( attrs ) {
+			if(attrs.animal_type == 'dog') return Dog;
+			if(attrs.animal_type == 'cat') return Cat;
+			return this;
+		} 
+	},{
+		animal: function() {
+			return 'animal';
+		}
+	});
+	
+		Animal.extend("Dog",{},{
+			animal: function() {
+				return 'dog';
+			}
+		});
+		Animal.extend("Cat",{},{
+			animal: function() {
+				return 'cat';
+			}
+		});
+		
+		
 	}
 })
 
@@ -140,4 +165,13 @@ test("isNew", function(){
 	ok(p2.isNew(), "null id is new");
 	var p3 = new Person({id: 0})
 	ok(!p3.isNew(), "0 is not new");
+})
+
+test("wrapWith", function(){
+	var dog = Animal.wrap({animal_type: 'dog', name: 'Rex'});
+	var cat = Animal.wrap({animal_type: 'cat', name: 'Garfield'});
+	var mouse = Animal.wrap({animal_type: 'mouse', name: 'Jerry'});
+	equals(dog.animal(), 'dog', 'call correct animal method from dog subclass');
+	equals(cat.animal(), 'cat', 'call correct animal method from cat subclass');
+	equals(mouse.animal(), 'animal', 'call correct animal method from base Animal class');
 })

@@ -405,6 +405,18 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		 */
 		defaults: {},
 		/**
+		 * WrapWith is used to decide wrap class for object. 
+		 * It is a convience method to avoid unnecessary overwriting 
+		 * Wrap method. It enables simpler implementation of system
+		 * similar to Rails STI (single table inheritance).
+		 * 
+		 * @param {Object} attributes
+		 * @return {Class} a class that will wrap the object
+		 */
+		wrapWith: function( attributes ) {
+			return this;
+		},
+		/**
 		 * Wrap is used to create a new instance from data returned from the server.
 		 * It is very similar to doing <code> new Model(attributes) </code> 
 		 * except that wrap will check if the data passed has an
@@ -424,9 +436,11 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 			if (!attributes ) {
 				return null;
 			}
-			return new this(
 			// checks for properties in an object (like rails 2.0 gives);
-			attributes[this.singularName] || attributes.data || attributes.attributes || attributes);
+			var attrs = attributes[this.singularName] || attributes.data || attributes.attributes || attributes;
+			// grab the wrapper class and wrap the attributes
+			var wrapper = this.wrapWith(attrs);
+			return new wrapper(attrs);
 		},
 		/**
 		 * Takes raw data from the server, and returns an array of model instances.
