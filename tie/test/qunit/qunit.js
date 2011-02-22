@@ -1,6 +1,6 @@
 steal
   .plugins("funcunit/qunit", "jquery/tie",'jquery/model')
-  .then("tie_test").then(function(){
+  .then(function(){
   	
 	
 	module("jquery/tie",{
@@ -35,6 +35,27 @@ steal
 		person2.attr("age",6);
 		
 		equals(inp2.val(), "6", "nothing set");
+		
+		
+	});
+	
+	test("sets age of standard element on tie", function(){
+		
+		var person1 = new Person({age: 5});
+		var inp = $("<div/>").appendTo( $("#qunit-test-area") );
+		
+		inp.tie(person1, 'age');
+		
+		equals(inp.text(), "5", "sets age");
+		
+		var person2 = new Person();
+		var inp2 = $("<div/>").appendTo( $("#qunit-test-area") );
+		inp2.tie(person2, 'age');
+		equals(inp2.val(), "", "nothing set");
+		
+		person2.attr("age",6);
+		
+		equals(inp2.html(), "6", "nothing set");
 		
 		
 	});
@@ -93,15 +114,47 @@ steal
 	});
 	
 	test("input error recovery", function(){
+	
 		var person1 = new Person({age: 5});
 		var inp = $("<input/>").appendTo( $("#qunit-test-area") );
+
+		var error_called = false;
 		
-		inp.tie(person1, 'age');
+		inp.tie(person1, 'age',function() {}, function() { error_called = true; });
 		
 		inp.val(100).trigger('change');
 		
 		equals(inp.val(), "5", "input value stays the same");
 		equals(person1.attr('age'), "5", "persons age stays the same");
-	})
+		equals(error_called,true, "error function called");
+		
+	});
+	
+	test("input success calls callback", function() {
+		var person1 = new Person({age: 5});
+		var inp = $("<input/>").appendTo( $("#qunit-test-area") );
+		
+		var success_called = false;
+		
+		inp.tie(person1, 'age',function() {success_called=true});
+		
+		equals(success_called, true, "success called for init");
+		
+		success_called = false;
+		
+		person1.attr('age',4);
+		
+		equals(success_called, true, "success called for model change");
+		
+		success_called = false;
+		
+		inp.val(3).trigger('change');
+		
+		equals(success_called, true, "success called for input change");
+		
+		
+		
+		
+	});
 		
  });

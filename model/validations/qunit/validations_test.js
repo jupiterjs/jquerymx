@@ -8,6 +8,7 @@ module("jquery/model/validations",{
 })
 
 test("models can validate, events, callbacks", 11,function(){
+	
 	Person.validate("age", {message : "it's a date type"},function(val){
 					return ! ( this.date instanceof Date )
 				})
@@ -61,6 +62,23 @@ test("validatesFormatOf", function(){
 });
 
 test("validatesInclusionOf", function(){
+
+	Person.validateInclusionOf("thing",["value1","value2","value3"]);
+	
+	ok(!new Person({thing: "value2"}).errors(),"no errors");
+	
+	var errors = new Person({thing: "foobar"}).errors();
+	
+	ok(errors, "there are errors")
+	equals(errors.thing.length,1,"one error on thing");
+	
+	equals(errors.thing[0],"is not a valid option (perhaps out of range)","basic message");
+	
+	Person.validateInclusionOf("otherThing",["value1","value2","value3"],{message: "not in array"})
+	
+	var errors2 = new Person({thing: "1-2", otherThing: "a"}).errors();
+	
+	equals(errors2.otherThing[0],"not in array", "can supply a custom message")
 	
 	
 })
@@ -98,9 +116,34 @@ test("validatesPresenceOf", function(){
 	errors = task.errors();;
 	
 	ok(!errors, "no errors "+typeof errors);
+	
 })
 
 test("validatesRangeOf", function(){
+  
+  jQuery.Model.extend("ValidatesRangeOfMock1",{},{});
+		
+	ValidatesRangeOfMock1.validateRangeOf("thing",2,3);
+	
+	ok(!new ValidatesRangeOfMock1({thing: 2.5}).errors(),"no errors");
+	
+	var errors = new ValidatesRangeOfMock1({thing: 4}).errors();
+	
+	ok(errors, "there are errors")
+	
+	equals(errors.thing.length,1,"one error on thing");
+	
+	equals(errors.thing[0],"is out of range [2,3]","basic message");
+	
+  jQuery.Model.extend("ValidatesRangeOfMock2",{},{});
+	
+	ValidatesRangeOfMock2.validateRangeOf("otherThing",-100,-10,{message: "not in range"})
+	
+	ok(!new ValidatesRangeOfMock2({otherThing: -50}).errors(),"no errors, with custom message");
+	
+	var errors2 = new ValidatesRangeOfMock2({thing: 2.5, otherThing: 3}).errors();
+	
+	equals(errors2.otherThing[0],"not in range", "can supply a custom message")
 	
 })
 
