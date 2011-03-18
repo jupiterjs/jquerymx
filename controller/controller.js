@@ -602,7 +602,7 @@ steal.plugins('jquery/class', 'jquery/lang', 'jquery/event/destroyed').then(func
 			 *     
 			 *  
 			 */
-			this.options = $.extend($.extend(true, {}, cls.defaults), options);
+			this.options = $.extend(true, {}, cls.defaults, options);
 
 			//go through the cached list of actions and use the processor to bind
 			for ( funcName in cls.actions ) {
