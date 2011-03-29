@@ -190,6 +190,9 @@ test("Inherits base attributes & defaults", function(){
 			override_default: 'parent'
 		}
 	}, {
+		access_parent: function(name) {
+			equals(this.parent, 'parent', name + ' instance can access Parent attr');
+		}
 	});	
 
 	Test.Parent.extend("Test.Derived", {
@@ -206,10 +209,12 @@ test("Inherits base attributes & defaults", function(){
 
 	var parent = new Test.Parent();
 	equals(parent.parent, 'parent', 'Parent attr is initialized from default');
+	parent.access_parent('Parent');
 
 	var derived = new Test.Derived();
 	equals(derived.derived, 'derived', 'Derived explicitly defined attr is initialized from default')
 	ok(derived.parent !== undefined, 'Derived inherits Parent attr')
 	equals(derived.parent, 'parent', 'Derived inherited attr is initialized from inherited default');
 	equals(derived.override_default, 'derived', 'Derived inherited attr is initialized from overrided default');
+	derived.access_parent('Derived');
 })
