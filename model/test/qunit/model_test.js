@@ -177,3 +177,39 @@ test("Empty uses fixtures", function(){
 		equals(things.length, 10,"got 10 things")
 	})
 })
+
+test("Inherits base attributes & defaults", function(){
+	$.Model.extend("Test.Parent", {
+		attributes: {
+			parent: 'string',
+			override_default: 'string'
+		},
+
+		defaults: {
+			parent: 'parent',
+			override_default: 'parent'
+		}
+	}, {
+	});	
+
+	Test.Parent.extend("Test.Derived", {
+		attributes: {
+			derived: 'string'
+		},
+
+		defaults: {
+			derived: 'derived',
+			override_default: 'derived'
+		}
+	}, {
+	});
+
+	var parent = new Test.Parent();
+	equals(parent.parent, 'parent', 'Parent attr is initialized from default');
+
+	var derived = new Test.Derived();
+	equals(derived.derived, 'derived', 'Derived explicitly defined attr is initialized from default')
+	ok(derived.parent !== undefined, 'Derived inherits Parent attr')
+	equals(derived.parent, 'parent', 'Derived inherited attr is initialized from inherited default');
+	equals(derived.override_default, 'derived', 'Derived inherited attr is initialized from overrided default');
+})
