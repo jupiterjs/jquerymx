@@ -12,6 +12,7 @@ var getArgs = function(args){
 	},
 	//used for namespacing
 	id = 0
+
 /**
  * @parent jQuery.Model
  * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/list.js
@@ -101,7 +102,11 @@ $.Class.extend("jQuery.Model.List",
 		// a cache for quick lookup by id
 		this._data = {};
 		//a namespace so we can remove all events bound by this list
-		this._namespace = ".list"+(++id),
+		this._namespace = ".list"+(++id);
+		// get events bound to list
+		this._events = function() {
+			return jQuery._data(this).events 
+		};
         this.push.apply(this, $.makeArray(instances || [] ) );
     },
 	/**
@@ -302,7 +307,7 @@ $.Class.extend("jQuery.Model.List",
 	 *     })
 	 */
 	bind : function(){
-		if(this.__events__ === undefined){
+		if(this._events() === undefined){
 			this.bindings(this);
 			// we should probably remove destroyed models here
 		}
@@ -317,7 +322,7 @@ $.Class.extend("jQuery.Model.List",
 	 */
 	unbind : function(){
 		$.fn.unbind.apply($([this]),arguments);
-		if(this.__events__ === undefined){
+		if(this._events() === undefined){
 			//console.log("unbinding all")
 			$(this).unbind(this._namespace)
 		}
@@ -346,14 +351,14 @@ $.Class.extend("jQuery.Model.List",
 			self = this;
 		//listen to events on this only if someone is listening on us, this means remove won't
 		//be called if we aren't listening for removes
-		if(this.__events__ !== undefined){
+		if(this._events() !== undefined){
 			this.bindings(args);
 		}
 		
 		this._changed = true;
 		var res = push.apply( this, args )
 		//do this first so we could prevent?
-		if( this.__events__ && args.length ){
+		if( this._events() && args.length ){
 			$([this]).trigger("add",[args]);
 		}
 		
