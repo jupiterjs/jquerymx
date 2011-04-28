@@ -759,6 +759,10 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 			if (!attributes ) {
 				return null;
 			}
+			if (attributes.identity !== undefined) {
+				attributes[this.identityMap || 'identity_'] = attributes.identity;
+				delete attributes.identity;
+			}
 			return new this(
 				// checks for properties in an object (like rails 2.0 gives);
 				isObject(attributes[this.singularName]) || 
