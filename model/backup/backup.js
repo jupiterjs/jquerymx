@@ -102,7 +102,6 @@ See this in action:
 				res;
 			
 			if(typeof option === "string") {
-				if(!this._backupStore) return false;
 				var current = this.attrs();
 				
 				return current[option] !== this._backupStore[option] ? true : false;
