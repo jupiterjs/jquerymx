@@ -66,6 +66,21 @@ test("backup / restore with associations", function(){
 	
 	equals(recipe.name, "cheese burger" ,"name back");
 	
+	ok(!recipe.isAttrDirty('name'), "name attr not dirty");
+	
+	recipe.name = 'dirty name';
+	
+	ok(recipe.isAttrDirty('name'), "name attr is dirty");
+	
+	// test non-existence attribute
+	ok(!recipe.isAttrDirty('bogusAttr'), "not dirty since it does not exist");
+	
+	recipe.restore();
+	
+	ok(!recipe.isDirty(), "restored, clean");
+	
+	equals(recipe.name, "cheese burger" ,"name back");
+	
 	// test belongs too
 	
 	ok(!recipe.cookbook.isDirty(), "cookbook not backedup, but clean");

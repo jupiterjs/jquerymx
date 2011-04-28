@@ -117,6 +117,12 @@ See this in action:
 			
 			return false;
 		},
+		isAttrDirty: function(attr) {
+			if(!this._backupStore) return false;
+			var current = this.attrs();
+			
+			return current[attr] !== this._backupStore[attr] ? true : false;
+		},
 		/**
 		 * @function jQuery.Model.prototype.restore
 		 * @plugin jquery/model/backup
