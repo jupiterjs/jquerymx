@@ -66,14 +66,14 @@ test("backup / restore with associations", function(){
 	
 	equals(recipe.name, "cheese burger" ,"name back");
 	
-	ok(!recipe.isAttrDirty('name'), "name attr not dirty");
+	ok(!recipe.isDirty('name'), "name attr not dirty");
 	
 	recipe.name = 'dirty name';
 	
-	ok(recipe.isAttrDirty('name'), "name attr is dirty");
+	ok(recipe.isDirty('name'), "name attr is dirty");
 	
 	// test non-existence attribute
-	ok(!recipe.isAttrDirty('bogusAttr'), "not dirty since it does not exist");
+	ok(!recipe.isDirty('bogusAttr'), "not dirty since it does not exist");
 	
 	recipe.restore();
 	
