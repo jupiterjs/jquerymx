@@ -65,6 +65,7 @@ test("findAll deferred", function(){
 		equals(people.length, 1, "we got a person back");
 		equals(people[0].name, "Justin", "Got a name back");
 		equals(people[0].Class.shortName, "Person", "got a class back");
+		equals(poeple[0].identity_, "zero", "identity field renamed to _identity");
 		start();
 	})
 });
