@@ -89,39 +89,42 @@ See this in action:
 	    * @parent jquery.model.backup
 	    * Returns if the instance needs to be saved.  This will go
 	    * through associations too.
-	    * @param {Boolean} [checkAssociations=false] true if associations should be checked.  Defaults to false.
-	    * be checked, false if otherwise
+	    * @param {Object} [option=false] if a string is passed in then the attribute with that name is checked for dirtiness. Otherwise 
+	    * this parameter determines if associations should be checked. Defaults to false.
 	    * @return {Boolean} true if there are changes, false if otherwise
 	    */
-	   isDirty: function(checkAssociations) {
+	   isDirty: function(option) {
 			if(!this._backupStore) return false;
 			//go through attrs and compare ...
 			var current = this.attrs(),
 				name,
 				association,
 				res;
-			for(name in current){
-				if(current[name] !== this._backupStore[name]){
-					return true;
-				}
-					
-			}
-			if( checkAssociations ){
-				res = associations(this, function(associated){
-					return associated.isDirty();
-				})
-				if(res === true){
-					return true;
-				}
-			}
 			
-			return false;
-		},
-		isAttrDirty: function(attr) {
-			if(!this._backupStore) return false;
-			var current = this.attrs();
-			
-			return current[attr] !== this._backupStore[attr] ? true : false;
+			if(typeof option === "string") {
+				if(!this._backupStore) return false;
+				var current = this.attrs();
+				
+				return current[option] !== this._backupStore[option] ? true : false;
+			}
+			else {
+				for(name in current){
+					if(current[name] !== this._backupStore[name]){
+						return true;
+					}
+						
+				}
+				if( option ){
+					res = associations(this, function(associated){
+						return associated.isDirty();
+					})
+					if(res === true){
+						return true;
+					}
+				}
+				
+				return false;
+			}
 		},
 		/**
 		 * @function jQuery.Model.prototype.restore
