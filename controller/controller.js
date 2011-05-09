@@ -803,9 +803,7 @@ steal.plugins('jquery/class', 'jquery/lang', 'jquery/event/destroyed').then(func
 			this.element.removeClass(fname);
 
 			$.each(this._bindings, function( key, value ) {
-				if ($.isFunction(value)) {
-					value(self.element[0]);
-				}
+				value(self.element[0]);
 			});
 
 			delete this._actions;
