@@ -282,7 +282,7 @@ test("auto methods",function(){
 	   create : steal.root.join("jquery/model/test")+"/create.json",
 	   update : "POST "+steal.root.join("jquery/model/test")+"/update{id}.json"
 	},{})
-	stop(5000);
+	stop();
 	School.findAll({type:"schools"}, function(schools){
 		ok(schools,"findAll Got some data back");
 		equals(schools[0].Class.shortName,"School","there are schools")
