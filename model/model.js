@@ -81,33 +81,6 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 	        }
 	        return collect;
 	    },
-		// makes a deferred request
-		makeRequest = function(self, type, success, error, method){
-			var deferred = $.Deferred(),
-				resolve = function(data){
-					self[method || type+"d"](data);
-					deferred.resolveWith(self,[self, data, type]);
-				},
-				reject = function(data){
-					deferred.rejectWith(self, [data])
-				},
-				args = [self.attrs(), resolve, reject];
-				
-			if(type == 'destroy'){
-				args.shift();
-			}	
-				
-			if(type !== 'create' ){
-				args.unshift(getId(self))
-			} 
-			
-			deferred.then(success);
-			deferred.fail(error);
-			
-			self.Class[type].apply(self.Class, args);
-				
-			return deferred.promise();
-		},
 		// a quick way to tell if it's an object and not some string
 		isObject = function(obj){
 			return typeof obj === 'object' && obj !== null && obj;
@@ -495,6 +468,33 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 				return ajax(str, attrs, success, error, "-restDestroy","delete")
 			}
 		},
+		// makes a deferred request
+		makeRequest: function() {return function(self, type, success, error, method){
+			var deferred = $.Deferred(),
+				resolve = function(data){
+					self[method || type+"d"](data);
+					deferred.resolveWith(self,[self, data, type]);
+				},
+				reject = function(data){
+					deferred.rejectWith(self, [data])
+				},
+				args = [self.attrs(), resolve, reject];
+				
+			if(type == 'destroy'){
+				args.shift();
+			}	
+				
+			if(type !== 'create' ){
+				args.unshift(getId(self))
+			} 
+			
+			deferred.then(success);
+			deferred.fail(error);
+			
+			self.Class[type].apply(self.Class, args);
+				
+			return deferred.promise();
+		}},
 		
 		findAll: function( str ) {
 			/**
@@ -1375,7 +1375,7 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		 * @param {Function} [error] called if the save was not successful.
 		 */
 		save: function( success, error ) {
-			return makeRequest(this, this.isNew()  ? 'create' : 'update' , success, error);
+			return this.Class.makeRequest(this, this.isNew()  ? 'create' : 'update' , success, error);
 		},
 
 		/**
@@ -1394,7 +1394,7 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		 * @param {Function} [error] called if an unsuccessful destroy
 		 */
 		destroy: function( success, error ) {
-			return makeRequest(this, 'destroy' , success, error , 'destroyed');
+			return this.Class.makeRequest(this, 'destroy' , success, error , 'destroyed');
 		},
 		
 
