@@ -8,7 +8,10 @@ steal.plugins('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack').the
 			return method.apply(object, args2);
 		};
 	},
-		event = $.event;
+		event = $.event,
+		clearSelection = window.getSelection ? function(){
+				window.getSelection().removeAllRanges()
+			} : function(){};
 	// var handle = event.handle; //unused
 	/**
 	 * @class jQuery.Drag
@@ -21,8 +24,10 @@ steal.plugins('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack').the
 	 * as a parameter to the drag event callbacks.  By calling
 	 * methods on the drag event, you can alter the drag's
 	 * behavior.
-	 * <h2>Drag Events</h2>
+	 * ## Drag Events
+	 * 
 	 * The drag plugin allows you to listen to the following events:
+	 * 
 	 * <ul>
 	 *  <li><code>dragdown</code> - the mouse cursor is pressed down</li>
 	 *  <li><code>draginit</code> - the drag motion is started</li>
@@ -31,23 +36,27 @@ steal.plugins('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack').the
 	 *  <li><code>dragover</code> - the drag is over a drop point</li>
 	 *  <li><code>dragout</code> - the drag moved out of a drop point</li>
 	 * </ul>
-	 * <p>Just by binding or delegating on one of these events, you make
+	 * 
+	 * Just by binding or delegating on one of these events, you make
 	 * the element dragable.  You can change the behavior of the drag
 	 * by calling methods on the drag object passed to the callback.
-	 * <h3>Example</h3>
+	 * 
+	 * ### Example
+	 * 
 	 * Here's a quick example:
-	 * @codestart
-	 * //makes the drag vertical
-	 * $(".drags").live("draginit", function(event, drag){
-	 *   drag.vertical();
-	 * })
-	 * //gets the position of the drag and uses that to set the width
-	 * //of an element
-	 * $(".resize").live("dragmove",function(event, drag){
-	 *   $(this).width(drag.position.left() - $(this).offset().left   )
-	 * })
-	 * @codeend
-	 * <h2>Drag Object</h2>
+	 * 
+	 *     //makes the drag vertical
+	 *     $(".drags").live("draginit", function(event, drag){
+	 *       drag.vertical();
+	 *     })
+	 *     //gets the position of the drag and uses that to set the width
+	 *     //of an element
+	 *     $(".resize").live("dragmove",function(event, drag){
+	 *       $(this).width(drag.position.left() - $(this).offset().left   )
+	 *     })
+	 * 
+	 * ## Drag Object
+	 * 
 	 * <p>The drag object is passed after the event to drag 
 	 * event callback functions.  By calling methods
 	 * and changing the properties of the drag object,
@@ -142,6 +151,8 @@ steal.plugins('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack').the
 
 			if (!this.callEvents('down', this.element, ev) ) {
 			    this.noSelection(this.delegate);
+				//this is for firefox
+				clearSelection();
 			}
 		},
 		/**
@@ -292,13 +303,27 @@ steal.plugins('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack').the
 			if ( this._cancelled ) {
 				return;
 			}
+			clearSelection();
 			/**
 			 * @attribute location
 			 * The location of where the element should be in the page.  This 
 			 * takes into account the start position of the cursor on the element.
+			 * 
+			 * If the drag is going to be moved to an unacceptable location, you can call preventDefault in
+			 * dragmove to prevent it from being moved there.
+			 * 
+			 *     $('.mover').bind("dragmove", function(ev, drag){
+			 *       if(drag.location.top() < 100){
+			 *         ev.preventDefault()
+			 *       }
+			 *     });
+			 *     
+			 * You can also set the location to where it should be on the page.
 			 */
 			this.location = pointer.minus(this.mouseElementPosition); // the offset between the mouse pointer and the representative that the user asked for
 			// position = mouse - (dragOffset - dragTopLeft) - mousePosition
+			
+			// call move events
 			this.move(event);
 			if ( this._cancelled ) {
 				return;
@@ -383,7 +408,9 @@ steal.plugins('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack').the
 			this.movingElement.css({
 				zIndex: this.oldZIndex
 			});
-			if ( this.movingElement[0] !== this.element[0] ) {
+			if ( this.movingElement[0] !== this.element[0] && 
+				!this.movingElement.has(this.element[0]).length && 
+				!this.element.has(this.movingElement[0]).length ) {
 				this.movingElement.css({
 					display: 'none'
 				});

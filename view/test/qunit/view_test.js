@@ -1,6 +1,22 @@
 
-module("jquery/view")
-test("multipel template types work", function(){
+module("jquery/view");
+
+test("Ajax transport", function(){
+	var order = 0;
+	$.ajax({
+		url: "//jquery/view/test/qunit/template.ejs",
+		dataType : "view",
+		async : false
+	}).done(function(view){
+		equals(++order,1, "called synchronously");
+		equals(view({message: "hi"}).indexOf("<h3>hi</h3>"), 0, "renders stuff!")
+	});
+	
+	equals(++order,2, "called synchronously");
+})
+
+
+test("multiple template types work", function(){
 	
 	$.each(["micro","ejs","jaml", "tmpl"], function(){
 		$("#qunit-test-area").html("");
@@ -55,7 +71,7 @@ test("caching works", function(){
 			var lap2 = new Date - first ,
 				lap1 =  first-startT;
 				
-			ok(lap2 < lap1, "faster this time "+(lap1 - lap2) )
+			ok( lap1 - lap2 > -20, "faster this time "+(lap1 - lap2) )
 			
 			start();
 			$("#qunit-test-area").html("");
@@ -82,7 +98,7 @@ test("inline templates other than 'tmpl' like ejs", function(){
 test("object of deferreds", function(){
 	var foo = $.Deferred(),
 		bar = $.Deferred();
-	stop();
+	stop(1000);
 	$.View("//jquery/view/test/qunit/deferreds.ejs",{
 		foo : foo.promise(),
 		bar : bar
@@ -127,4 +143,8 @@ test("modifier with a deferred", function(){
 		equals($("#qunit-test-area").html(), "FOO", "worked!");
 	},100);
 
-})
+});
+
+/*test("bad url", function(){
+	$.View("//asfdsaf/sadf.ejs")
+});*/

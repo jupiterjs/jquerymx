@@ -184,11 +184,53 @@ test("dragdown" , function(){
 		var offset2 = $('#dragger').offset();
 		equals(offset.top+20, offset2.top, "top")
 		equals(offset.left+20, offset2.left, "left")
-		ok(draginpfocused, "First input was allowed to be focused correctly");
+		// IE doesn't respect preventDefault on text inputs (http://www.quirksmode.org/dom/events/click.html)
+		if(!$.browser.msie)
+			ok(draginpfocused, "First input was allowed to be focused correctly");
 		//ok(!dragnopreventfocused, "Second input was not allowed to focus");
 		start();
 	})
 
 })
+
+test("dragging child element (a handle)" , function(){
+	var div = $("<div>"+
+			"<div id='dragger'>"+
+				"<div id='dragged'>Place to drag</div>"+
+			"</div>"+
+			"</div>");
+	
+	$("#qunit-test-area").html(div);
+	$("#dragger").css({
+		position: "absolute",
+		backgroundColor : "blue",
+		border: "solid 1px black",
+		top: "0px",
+		left: "0px",
+		width: "200px",
+		height: "200px"
+	});
+
+	var dragged = $('#dragged');
+		
+	$('#dragger').bind("draginit", function(ev, drag){
+		drag.only();
+		drag.representative(dragged);
+	})
+	
+	stop();
+
+	var offset = $('#dragger').offset();
+
+	Syn.drag("+20 +20","dragged", function() {
+		var offset2 = $('#dragger').offset();
+		equals(offset.top, offset2.top, "top")
+		equals(offset.left, offset2.left, "left")
+
+		ok(dragged.is(':visible'), "Handle should be visible");
+
+		start();
+	});
+});
 
 });

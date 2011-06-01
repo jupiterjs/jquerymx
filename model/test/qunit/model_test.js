@@ -150,10 +150,9 @@ test("update deferred", function(){
 test("destroy deferred", function(){
 	
 	$.Model("Person",{
-		destroy : function(id, attrs, success, error){
+		destroy : function(id, success, error){
 			return $.ajax({
 				url : "/people/"+id,
-				data : attrs,
 				type : 'post',
 				dataType : "json",
 				fixture: function(){
@@ -207,6 +206,42 @@ test("wrapMany", function(){
 	])
 	equals(people[0].prettyName(),"Mr. Justin","wraps wrapping works")
 });
+
+
+
+test("async setters", function(){
+	
+	/*
+	$.Model("Test.AsyncModel",{
+		setName : function(newVal, success, error){
+			
+			
+			setTimeout(function(){
+				success(newVal)
+			}, 100)
+		}
+	});
+	
+	var model = new Test.AsyncModel({
+		name : "justin"
+	});
+	equals(model.name, "justin","property set right away")
+	
+	//makes model think it is no longer new
+	model.id = 1;
+	
+	var count = 0;
+	
+	model.bind('name', function(ev, newName){
+		equals(newName, "Brian",'new name');
+		equals(++count, 1, "called once");
+		ok(new Date() - now > 0, "time passed")
+		start();
+	})
+	var now = new Date();
+	model.attr('name',"Brian");
+	stop();*/
+})
 
 test("binding", 2,function(){
 	var inst = new Person({foo: "bar"});
@@ -307,4 +342,49 @@ test("Empty uses fixtures", function(){
 	})
 });
 
-
+test("Model events" , function(){
+	var order = 0;
+	$.Model("Test.Event",{
+		create : function(attrs, success){
+			success({id: 1})
+		},
+		update : function(id, attrs, success){
+			success(attrs)
+		},
+		destroy : function(id, success){
+			success()
+		}
+	},{});
+	
+	stop();
+	$([Test.Event]).bind('created',function(ev, passedItem){
+		
+		ok(this === Test.Event, "got model")
+		ok(passedItem === item, "got instance")
+		equals(++order, 1, "order");
+		passedItem.update({});
+		
+	}).bind('updated', function(ev, passedItem){
+		equals(++order, 2, "order");
+		ok(this === Test.Event, "got model")
+		ok(passedItem === item, "got instance")
+		
+		passedItem.destroy({});
+		
+	}).bind('destroyed', function(ev, passedItem){
+		equals(++order, 3, "order");
+		ok(this === Test.Event, "got model")
+		ok(passedItem === item, "got instance")
+		
+		start();
+		
+	})
+	
+	var item = new Test.Event();
+	item.save();
+	
+	
+	
+	
+	
+});
