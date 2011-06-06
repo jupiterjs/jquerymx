@@ -700,7 +700,7 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		// call 'models' on the base class, which is not the desired behavior.
 		//
 		wrap: function( attributes ) {
-			steal.dev.warn('wrap(attributes) is deprecated; use model(attributes) instead');
+			steal.dev.warn('model.js wrap function is deprecated: use model function instead');
 			return this.model(attributes);
 		},
 		/**
@@ -845,7 +845,7 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		// (See comments above 'wrap' above.)
 		//
 		wrapMany: function( instancesRawData ) {
-			steal.dev.warn('wrapMany(instancesRawData) is deprecated; use models(instancesRawData) instead');
+			steal.dev.warn('model.js wrapMany function is deprecated: use models function instead');
 			return this.models(instancesRawData);
 		},
 		/**
