@@ -692,7 +692,17 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		 * @param {Object} attributes
 		 * @return {Model} an instance of the model
 		 */
-		// wrap place holder
+		//
+		// We cannot alias 'model' to 'wrap' in the prototype, because newer models will
+		// override 'model' and 'models' in the subclass rather than 'wrap' and 'wrapMany'.
+		// If we alias them e.g. $.Model.wrapMany = $.Model.models then whenever any legacy
+		// code calls 'wrapMany', it will bypass the overridden 'models' function and instead
+		// call 'models' on the base class, which is not the desired behavior.
+		//
+		wrap: function( attributes ) {
+			steal.dev.warn('model.js wrap function is deprecated: use model function instead');
+			return this.model(attributes);
+		},
 		/**
 		 * $.Model.model is used as a [http://api.jquery.com/extending-ajax/#Converters Ajax converter] 
 		 * to convert the response of a [jQuery.Model.static.findOne] request 
@@ -830,7 +840,14 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		 * @return {Array} a JavaScript array of instances or a [jQuery.Model.List list] of instances
 		 *  if the model list plugin has been included.
 		 */
-		// wrapMany placeholder
+		//
+		// We cannot alias 'models' to 'wrapMany' in the prototype.
+		// (See comments above 'wrap' above.)
+		//
+		wrapMany: function( instancesRawData ) {
+			steal.dev.warn('model.js wrapMany function is deprecated: use models function instead');
+			return this.models(instancesRawData);
+		},
 		/**
 		 * $.Model.models is used as a [http://api.jquery.com/extending-ajax/#Converters Ajax converter] 
 		 * to convert the response of a [jQuery.Model.static.findAll] request 
@@ -892,7 +909,7 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		 * 
 		 *     $.Model('Person',{
 		 *       models : function(data){
-		 *         this._super(data.ballers);
+		 *         return this._super(data.ballers);
 		 *       }
 		 *     },{})
 		 * 
@@ -1467,10 +1484,6 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 			models[shortName] = this;
 		}
 	});
-	// map wrapMany
-	$.Model.wrapMany = $.Model.models;
-	$.Model.wrap = $.Model.model;
-
 
 	each([
 	/**
