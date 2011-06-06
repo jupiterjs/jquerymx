@@ -909,7 +909,7 @@ steal.plugins('jquery/class', 'jquery/lang').then(function() {
 		 * 
 		 *     $.Model('Person',{
 		 *       models : function(data){
-		 *         this._super(data.ballers);
+		 *         return this._super(data.ballers);
 		 *       }
 		 *     },{})
 		 * 
