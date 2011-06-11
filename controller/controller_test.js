@@ -222,7 +222,7 @@ test("dot",function(){
 	var ta = $("<div/>").appendTo( $("#qunit-test-area") );
 	ta.dot().trigger("foo.bar");
 	$("#qunit-test-area").html("");
-})
+});
 
 // HTMLFormElement[0] breaks
 test("the right element", 1, function(){
@@ -234,6 +234,36 @@ test("the right element", 1, function(){
 	$("<form><input name='one'/></form>").appendTo( $("#qunit-test-area") )
 		.form_tester();
 	$("#qunit-test-area").html("")
-})
+});
+
+test("pluginName", function() {
+	expect(5);
+	
+	$.Controller("PluginName", {
+		pluginName : "my_plugin"
+	}, {
+		method : function(arg) {
+			ok(true, "Method called");
+		},
+		
+		update : function(options) {
+			this._super(options);
+			ok(true, "Update called");
+		},
+		
+		destroy : function() {
+			ok(true, "Destroyed");
+			this._super();
+		}
+	});
+	
+	var ta = $("<div/>").appendTo( $("#qunit-test-area") );
+	ta.my_plugin(); // Init
+	ok(ta.hasClass("my_plugin", "Should have class my_plugin"));
+	ta.my_plugin(); // Update
+	ta.my_plugin("method"); // method()
+	ta.controller().destroy(); // destroy
+	ok(!ta.hasClass("my_plugin", "Shouldn't have class my_plugin after being destroyed"));
+});
 
 });
