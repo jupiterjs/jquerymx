@@ -569,11 +569,14 @@ steal.plugins('jquery/class', 'jquery/lang', 'jquery/event/destroyed').then(func
 			//want the raw element here
 			element = element.jquery ? element[0] : element;
 
+			var pluginname = cls.pluginName || cls._fullName;
+			
 			//set element and className on element
-			this.element = $(element).addClass(cls._fullName);
-
+			this.element = $(element).addClass(pluginname);
+			
 			//set in data
-			(data(element) || data(element, {}))[cls._fullName] = this;
+		    (data(element) || data(element, {}))[pluginname] = this;
+			// (data(element) || data(element, {}))[cls._fullName] = this;
 
 			//adds bindings
 			this._bindings = [];
@@ -800,7 +803,7 @@ steal.plugins('jquery/class', 'jquery/lang', 'jquery/event/destroyed').then(func
 				fname = this.Class._fullName,
 				controllers;
 			this._destroyed = true;
-			this.element.removeClass(fname);
+			this.element.removeClass(this.pluginName || this._fullName);
 
 			$.each(this._bindings, function( key, value ) {
 				value(self.element[0]);
