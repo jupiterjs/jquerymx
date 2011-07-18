@@ -4,10 +4,14 @@ steal('jquery/controller', 'jquery/view').then(function( $ ) {
 	};
 
 	var calculatePosition = function( Class, view, action_name ) {
-		var slashes = Class.fullName.replace(/\./g, "/"),
-			hasControllers = slashes.indexOf("/Controllers/" + Class.shortName) != -1,
-			path = jQuery.String.underscore(slashes.replace("/Controllers/" + Class.shortName, "")),
-			controller_name = Class._shortName,
+		var classParts = Class.fullName.split('.'),
+			classPartsWithoutPrefix = classParts.slice(0);
+		classPartsWithoutPrefix.splice(0, 2); // Remove prefix (usually 2 elements)
+		
+		var classPartsWithoutPrefixSlashes = classPartsWithoutPrefix.join('/'),
+			hasControllers = (classParts.length > 2) && classParts[1] == 'Controllers',
+			path = classParts[0].toLowerCase(),
+			controller_name = classPartsWithoutPrefix.join('/').toLowerCase(),
 			suffix = (typeof view == "string" && view.match(/\.[\w\d]+$/)) || jQuery.View.ext;
 
 		//calculate view
