@@ -14,6 +14,7 @@ steal('jquery/controller', 'jquery/view').then(function( $ ) {
 		if ( typeof view == "string" ) {
 			if ( view.substr(0, 2) == "//" ) { //leave where it is
 			} else {
+				view = view.replace(new RegExp(suffix , 'g'), ''); // Remove the suffix
 				view = "//" + new steal.File('views/' + (view.indexOf('/') !== -1 ? view : (hasControllers ? controller_name + '/' : "") + view)).joinFrom(path) + suffix;
 			}
 		} else if (!view ) {
