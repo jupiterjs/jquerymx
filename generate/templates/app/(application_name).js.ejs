@@ -1,7 +1,16 @@
 steal(
-	'./models/models.js',		// steals all your models
-	'./fixtures/fixtures.js',	// sets up fixtures for your models
-	'./<%= application_name %>.css', 					// application CSS file
+	'./models/models.js',           // steals all your models
+    './controllers/controllers.js', // steals all your controllers
+	{                               // sets up fixtures for your models
+        src: './fixtures/fixtures.js',
+        ignore: true
+    },
+
+	'jquery/view/ejs',				// client side templates
+	'jquery/dom/form_params',		// form data helper
+
+	'./<%= application_name %>.css',				// application CSS file
+
 	function(){						// configure your application
-		
+
 	})
