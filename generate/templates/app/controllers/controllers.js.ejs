@@ -1,0 +1,9 @@
+// steal controller files
+
+steal(
+    "jquery/controller",            // a widget factory
+    "jquery/controller/view",       // lookup views with the controller's name
+    'jquery/controller/subscribe'	// subscribe to OpenAjax.hub
+).then( // steal your controllers here
+    //"./recipe_controller.js"
+)
