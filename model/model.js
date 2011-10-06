@@ -84,9 +84,9 @@ steal('jquery/class', 'jquery/lang/string', function() {
 		// makes a deferred request
 		makeRequest = function(self, type, success, error, method){
 			var deferred = $.Deferred(),
-				resolve = function(data){
-					self[method || type+"d"](data);
-					deferred.resolveWith(self,[self, data, type]);
+				resolve = function(data,statusText, jqXHR){
+					self[method || type+"d"](data,jqXHR);
+					deferred.resolveWith(self,[self, data, type,jqXHR]);
 				},
 				reject = function(data){
 					deferred.rejectWith(self, [data])
