@@ -10,36 +10,59 @@ steal('jquery/class', 'jquery/lang/string', function() {
 		extend = $.extend,
 		each = $.each,
 		reqType = /GET|POST|PUT|DELETE/i,
-		ajax = function(ajaxOb, attrs, success, error, fixture, type, dataType){
-			var dataType = dataType || "json",
-				src = "",
-				tmp;
-			if(typeof ajaxOb == "string"){
-				var sp = ajaxOb.indexOf(" ")
+		ajax = function(options,defaults){
+			var url,config=extend({dataType: "json",type: "post"},defaults);
+			
+			if(typeof options == 'string'||typeof options.src == 'string'){
+				
+				var ajaxOb= typeof options == 'string'?options:options.src,
+					sp = ajaxOb.indexOf(" "),
+					tmp;
 				if( sp > 2 && sp <7){
 					tmp = ajaxOb.substr(0,sp);
 					if(reqType.test(tmp)){
-						type = tmp;
+						config.type = tmp;
 					}else{
-						dataType = tmp;
+						config.dataType = tmp;
 					}
-					src = ajaxOb.substr(sp+1)
+					url = ajaxOb.substr(sp+1);
 				}else{
-					src = ajaxOb;
+					url = ajaxOb;
+				}
+				
+				if ($.Model.disableDefaultFixtures){
+					delete config.fixture;
 				}
 			}
-			typeof attrs == "object" && (attrs =  extend({},attrs))
+			if(typeof options == 'object'){
+				//either provide fixture:true to use default fixture names
+				// or provide custom name by fixture:"fixtureName"
+				if (typeof options.fixture === 'undefined'){
+					if ($.Model.disableDefaultFixtures){
+						delete config.fixture;
+					}
+				}else{
+					if (options.fixture === true){
+						//this is just a boolean flag, remove to use preconfigured name
+						delete options.fixture;
+					}else if (options.fixture === false){
+						//fixture explicitly switched off
+						delete config.fixture;
+						delete options.fixture;
+					}
+					//else will use explicitly provided fixture name
+				}
+				
+				config=extend(config,options);
+			}
 			
-			var url = $.String.sub(src, attrs, true)
-			return $.ajax({
-				url : url,
-				data : attrs,
-				success : success,
-				error: error,
-				type : type || "post",
-				dataType : dataType,
-				fixture: fixture
-			});
+			
+			typeof config.data == "object" && (config.data =  extend({},config.data));
+			
+			if (typeof url == "string"){
+				config.url = $.String.sub(url, config.data, true);
+			}
+			return $.ajax(config);
 		},
 		//guesses at a fixture name
 		fixture = function(extra, or){
@@ -438,7 +461,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 	     * @Static
 	     */
 		{
-		create: function(str  ) {
+		create: function(options) {
 			/**
 			 * @function create
 			 * Create is used to create a model instance on the server.  By implementing 
@@ -487,11 +510,11 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * that has the id of the new instance and any other attributes the service needs to add.
 			 * @param {Function} error a function to callback if something goes wrong.  
 			 */
-			return function(attrs, success, error){
-				return ajax(str, attrs, success, error, "-restCreate")
+			return function(data, success, error){
+				return ajax(options,{data:data, success:success, error:error,fixture:"-restCreate"});
 			};
 		},
-		update: function( str ) {
+		update: function( options ) {
 			/**
 			 * @function update
 			 * Update is used to update a model instance on the server.  By implementing 
@@ -562,11 +585,16 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * 
 			 * @param {Function} error a function to callback if something goes wrong.  
 			 */
-			return function(id, attrs, success, error){
-				return ajax(str, addId.call(this,attrs, id), success, error, "-restUpdate","put")
+			return function(id, data, success, error){
+				return ajax(options,{
+					type:"PUT",
+					data:addId.call(this,data, id),
+					success:success, 
+					error:error,
+					fixture:"-restUpdate"});
 			}
 		},
-		destroy: function( str ) {
+		destroy: function( options ) {
 			/**
 			 * @function destroy
 			 * Destroy is used to remove a model instance from the server. By implementing 
@@ -595,13 +623,18 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * @param {Function} error a function to callback if something goes wrong.  
 			 */
 			return function( id, success, error ) {
-				var attrs = {};
-				attrs[this.id] = id;
-				return ajax(str, attrs, success, error, "-restDestroy","delete")
+				var data = {};
+				data[this.id] = id;
+				return ajax(options,{
+					type:"DELETE",
+					data:data, 
+					success:success, 
+					error:error,
+					fixture:"-restDestroy"});
 			}
 		},
 		
-		findAll: function( str ) {
+		findAll: function( options ) {
 			/**
 			 * @function findAll
 			 * FindAll is used to retrive a model instances from the server. By implementing 
@@ -636,17 +669,18 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * @param {Function} success(items) called with an array (or Model.List) of model instances.
 			 * @param {Function} error
 			 */
-			return function(params, success, error){
-				return ajax(str || this.shortName+"s.json", 
-					params, 
-					success, 
-					error, 
-					fixture.call(this,"s"),
-					"get",
-					"json "+this._shortName+".models");
+			return function(data, success, error){
+				return ajax(options,{
+					src:this.shortName+"s.json",
+					type:"GET",dataType:"json "+this._shortName+".models",
+					data:data, 
+					success:success,
+					error:error,
+					fixture:fixture.call(this,"s")
+					});
 			};
 		},
-		findOne: function( str ) {
+		findOne: function( options ) {
 			/**
 			 * @function findOne
 			 * FindOne is used to retrive a model instances from the server. By implementing 
@@ -678,14 +712,15 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * @param {Function} success(item) called with a model instance
 			 * @param {Function} error
 			 */
-			return function(params, success, error){
-				return ajax(str,
-					params, 
-					success,
-					error, 
-					fixture.call(this),
-					"get",
-					"json "+this._shortName+".model");
+			return function(data, success, error){
+				return ajax(options,
+						{type:"GET",
+						 dataType:"json "+this._shortName+".model",
+						 data:data, 
+						 success:success,
+						 error:error,
+						 fixture:fixture.call(this)
+						 });
 			};
 		}
 	};
