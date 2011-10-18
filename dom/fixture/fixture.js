@@ -130,10 +130,12 @@ steal('jquery/dom',
 			}
 			return -1;
 		},
-		// overwrites the settings fixture if an overwrite matches
+		// Overwrites the settings fixture if an overwrite matches, but maintains the -restCreate, 
+		// Update or Delete function names even when the overwrite URL is found (which happens 
+		// when the URL for that method is the same as that of findAll, commom for -restCreate).
 		overwrite = function(settings){
 			var index = find(settings);
-			if(index > -1){
+			if(index > -1 && !/^-rest/.test(settings.fixture)){
 				settings.fixture = overwrites[index].fixture;
 				return $fixture._getData(overwrites[index].url, settings.url)
 			}
