@@ -1404,6 +1404,13 @@ steal('jquery/class', 'jquery/lang/string', function() {
 				args, globalArgs, callback = success,
 				list = Class.list;
 
+            // If the property is a nested model, assign the value(s) using its attrs method
+            // if the new value is an object.
+            if (this._isModel(property) && $.isPlainObject(value)) {
+                this[property].attrs( value );
+                return;
+            }
+            
 			// set the property value
 			// notice that even if there's an error
 			// property values get set
@@ -1452,6 +1459,16 @@ steal('jquery/class', 'jquery/lang/string', function() {
 
 		},
 
+        /**
+         * Determine whether a property of this model is an association, i.e. another nested model.
+         * @hide
+         * @param {String} prop The property to test.
+         * @return {Boolean} Is it a model or not.
+         */
+        _isModel : function(prop) {
+            return !!(this[prop] && this[prop].Class && this[prop].Class._models);
+        },
+		
 		/**
 		 * Removes an attribute from the list existing of attributes. 
 		 * Each attribute is set with [jQuery.Model.prototype.attr attr].
