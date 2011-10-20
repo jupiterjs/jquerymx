@@ -545,7 +545,7 @@ steal('jquery/dom',
 				var item = make(i, items);
 
 				if (!item.id ) {
-					item.id = i;
+					item.id = i + 1;
 				}
 				items.push(item);
 			}
