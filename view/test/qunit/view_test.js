@@ -11,17 +11,17 @@ test("Ajax transport", function(){
 		equals(++order,1, "called synchronously");
 		equals(view({message: "hi"}).indexOf("<h3>hi</h3>"), 0, "renders stuff!")
 	});
-	
+
 	equals(++order,2, "called synchronously");
 })
 
 
 test("multiple template types work", function(){
-	
+
 	$.each(["micro","ejs","jaml", "tmpl"], function(){
 		$("#qunit-test-area").html("");
 		ok($("#qunit-test-area").children().length == 0,this+ ": Empty To Start")
-		
+
 		$("#qunit-test-area").html("//jquery/view/test/qunit/template."+this,{"message" :"helloworld"})
 		ok($("#qunit-test-area").find('h3').length, this+": h3 written for ")
 		ok( /helloworld\s*/.test( $("#qunit-test-area").text()), this+": hello world present for ")
@@ -55,7 +55,7 @@ test("async templates, and caching work", function(){
 	equals(i, 1, "Ajax is not synchronous")
 })
 test("caching works", function(){
-	// this basically does a large ajax request and makes sure 
+	// this basically does a large ajax request and makes sure
 	// that the second time is always faster
 	$("#qunit-test-area").html("");
 	stop();
@@ -64,24 +64,24 @@ test("caching works", function(){
 	$("#qunit-test-area").html("//jquery/view/test/qunit/large.ejs",{"message" :"helloworld"}, function(text){
 		first = new Date();
 		ok(text, "we got a rendered template");
-		
-		
+
+
 		$("#qunit-test-area").html("");
 		$("#qunit-test-area").html("//jquery/view/test/qunit/large.ejs",{"message" :"helloworld"}, function(text){
 			var lap2 = new Date - first ,
 				lap1 =  first-startT;
-				
+
 			ok( lap1 - lap2 > -20, "faster this time "+(lap1 - lap2) )
-			
+
 			start();
 			$("#qunit-test-area").html("");
 		})
-		
+
 	})
 })
 test("hookup", function(){
 	$("#qunit-test-area").html("");
-	
+
 	$("#qunit-test-area").html("//jquery/view/test/qunit/hookup.ejs",{}); //makes sure no error happens
 })
 
@@ -110,7 +110,7 @@ test("object of deferreds", function(){
 		foo.resolve("FOO");
 	},100);
 	bar.resolve("BAR");
-	
+
 });
 
 test("deferred", function(){
@@ -125,14 +125,14 @@ test("deferred", function(){
 			foo: "FOO"
 		});
 	},100);
-	
+
 });
 
 
 test("modifier with a deferred", function(){
 	$("#qunit-test-area").html("");
 	stop();
-	
+
 	var foo = $.Deferred();
 	$("#qunit-test-area").html("//jquery/view/test/qunit/deferred.ejs", foo );
 	setTimeout(function(){

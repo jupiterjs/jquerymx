@@ -18,24 +18,24 @@
 </div>
 <div id="demo-html">
 <ul id='contacts'></ul>
-</div>	
-<script type='text/javascript' 
-        src='../../steal/steal.js'>   
+</div>
+<script type='text/javascript'
+        src='../../steal/steal.js'>
 </script>
-<script type='text/javascript' id="demo-source">   
-steal('jquery/model', 
+<script type='text/javascript' id="demo-source">
+steal('jquery/model',
       'jquery/dom/fixture',
       function(){
-	
+
 	$.fixture("/foobar.json", function( ) {
 	  return [[{'id': 1,'name' : 'Justin Meyer','birthday': '1982-10-20'},
 	       {'id': 2,'name' : 'Brian Moschel','birthday': '1983-11-10'},
 	       {'id': 3,'name' : 'Alex Gomes','birthday': '1980-2-10'}]];
 	});
-	
-	
+
+
 $.Model("Contact",{
-  attributes : { 
+  attributes : {
     // labels birthday a date
     birthday : 'date'
   },
@@ -45,8 +45,8 @@ $.Model("Contact",{
       if(typeof raw == 'string'){
         // if a string, convert to a date
         var matches = raw.match(/(\d+)-(\d+)-(\d+)/)
-        return new Date( matches[1], 
-                         (+matches[2])-1, 
+        return new Date( matches[1],
+                         (+matches[2])-1,
                          matches[3] )
       }else if(raw instanceof Date){
         return raw;
@@ -57,7 +57,7 @@ $.Model("Contact",{
 },{
   // helper function that returns age in years
   age : function(){
-    return new Date().getFullYear() - 
+    return new Date().getFullYear() -
       this.birthday.getFullYear()
   }
 });

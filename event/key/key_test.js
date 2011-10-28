@@ -1,5 +1,5 @@
 steal('funcunit/qunit','funcunit/syn','jquery/event/key').then(function(){
-	
+
 module('jquery/event/key');
 
 test("type some things", function(){
@@ -12,9 +12,9 @@ test("type some things", function(){
 	}).keyup(function(ev){
 		keyup = ev.key();
 	});
-	
+
 	stop();
-	
+
 	Syn.key("a","key", function(){
 		equals(keydown, "a","keydown");
 		equals(keypress,"a","keypress");
@@ -22,5 +22,5 @@ test("type some things", function(){
 		start();
 	});
 })
-	
+
 })

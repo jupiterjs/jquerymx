@@ -5,14 +5,14 @@
 		<title>Grid / Encapsulate Demo</title>
         <style type='text/css'>
             body {font-family: verdana}
-            
+
         </style>
 	</head>
 	<body>
 <div id="demo-instructions">
 <h1>Model Encapsulate Demo</h1>
 <p>This demonstrates how encapsulating Ajax functionality in
-	models makes your code more reusable.  The same grid 
+	models makes your code more reusable.  The same grid
 	widget uses two different models.
 </p>
 </div>
@@ -22,8 +22,8 @@
 <h2>Work Item Grid</h2>
 <div id='workItems'></div>
 </div>
-<script type='text/javascript' 
-        src='../../steal/steal.js'>   
+<script type='text/javascript'
+        src='../../steal/steal.js'>
 </script>
 <script type='text/ejs' id='listView'>
 	<table cellspacing='0px'>
@@ -31,7 +31,7 @@
 	<tr>
 	    <% for(var attr in model.attributes){%>
 	        <% if(attr == 'id') continue;%>
-	        <th><%= attr %> </th>    
+	        <th><%= attr %> </th>
 	    <%}%>
 	    <th>Options</th>
 	</tr>
@@ -42,7 +42,7 @@
 				<%== view('itemView',{item: items[i], model : model})%>
 			</tr>
 		<%} %>
-	    
+
 	</tbody>
 </table>
 </script>
@@ -61,7 +61,7 @@
 <script type='text/javascript'>
 
 </script>
-<script type='text/javascript' id="demo-source"> 
+<script type='text/javascript' id="demo-source">
 steal('jquery/model',
 	'jquery/controller',
 	'jquery/dom/form_params',
@@ -85,7 +85,7 @@ $.fixture.make("workitem",4, function(i, messages){
 	}
 })
 
- 
+
 // A grid widget
 $.Controller("Grid",{
 	// when added to an element, use the model
@@ -101,13 +101,13 @@ $.Controller("Grid",{
 	".update click" : function(el){
 		// get the tr that has our new model data
 		var tr =  el.closest('tr'),
-			
+
 			// get the model isntance
 			item = tr.model();
-		
+
 		// make it look like we are updating
 		el.val("updating ...").attr("disabled", true)
-		
+
 		// update the model instance
 		item.update(tr.formParams(), this.proxy('updated'));
 	},

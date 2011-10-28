@@ -10,12 +10,12 @@ load('steal/rhino/rhino.js');
 steal('steal/generate','steal/generate/system.js',function(steal){
 	var md = steal.generate.convert(_args[0]),
 		data = steal.extend({
-			path: md.path, 
+			path: md.path,
 			application_name: md.appName,
 			current_path: steal.File.cwdURL(),
 			path_to_steal : steal.File(md.path).pathToRoot()
 		}, steal.system)
-	
+
 	steal.generate("jquery/generate/templates/app", md.path, data);
 });
 

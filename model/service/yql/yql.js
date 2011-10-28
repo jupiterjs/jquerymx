@@ -1,5 +1,5 @@
 steal('jquery/model/service').then(function(){
-	
+
 	$.Model.service.yql = $.Model.service({
 		select : "*",
 		from : "flickr.photos.search",
@@ -16,20 +16,20 @@ steal('jquery/model/service').then(function(){
 			return query;
 		},
 		/**
-		 * 
+		 *
 		 * @param {Object} params
 		 */
 		findAll : function(params, success, error){
 			 params = $.extend({}, this._service, params);
 			 var query = ["SELECT",params.select,"FROM",params.from];
-			 
-			 
+
+
 			 if(params.where){
 			 	query.push("WHERE",typeof params.where == "string" || this._service.convert(params.where[0],params.where[1]))
 			 }
 			 var self = this;
-			 
-			 
+
+
 			 var yqlJson = {
 				url: "http://query.yahooapis.com/v1/public/yql",
 				dataType: "jsonp",
@@ -58,9 +58,9 @@ steal('jquery/model/service').then(function(){
 			 }else{
 			 	yqlJson.success = success;
 			 }
-	
+
 	         $.ajax(yqlJson);
 		}
 	});
-	
+
 })

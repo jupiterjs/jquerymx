@@ -6,41 +6,41 @@ steal('jquery/dom/cookie','jquery/model/list').then(function($){
  * @test jquery/model/list/cookie/qunit.html
  * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/model/list/cookie/cookie.js
  * @parent jQuery.Model.List
- * 
- * Provides a store-able list of model instances.  The following 
+ *
+ * Provides a store-able list of model instances.  The following
  * retrieves and saves a list of contacts:
- * 
+ *
  * @codestart
  * var contacts = new Contact.List([]).retrieve("contacts");
- * 
+ *
  * // add each contact to the page
  * contacts.each(function(){
 	addContact(this);
  * });
- * 
+ *
  * // when a new cookie is crated
  * $("#contact").submit(function(ev){
  * 	ev.preventDefault();
  * 	var data = $(this).formParams();
- * 	
+ *
  * 	// gives it a random id
  * 	data.id = +new Date();
  * 	var contact = new Contact(data);
- * 	
- * 	//add it to the list of contacts 
+ *
+ * 	//add it to the list of contacts
  * 	contacts.push(contact);
- * 	
+ *
  * 	//store the current list
  * 	contacts.store("contacts");
- * 	
+ *
  * 	//show the contact
  * 	addContact(contact);
  * })
  * @codeend
- * 
+ *
  * You can see this in action in the following demo.  Create a contact, then
  * refresh the page.
- * 
+ *
  * @demo jquery/model/list/cookie/cookie.html
  */
 $.Model.List("jQuery.Model.List.Cookie",
@@ -79,7 +79,7 @@ $.Model.List("jQuery.Model.List.Cookie",
 			$.cookie(inst.identity(), $.toJSON(inst.attrs()), { expires: days });
 			ids.push(inst.identity());
 		});
-		
+
 		$.cookie(name, $.toJSON({
 			type: this[0] && this[0].constructor.fullName,
 			ids: ids
@@ -87,6 +87,6 @@ $.Model.List("jQuery.Model.List.Cookie",
 		return this;
 	}
 })
-	
+
 })
 

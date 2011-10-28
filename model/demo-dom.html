@@ -17,9 +17,9 @@
 </div>
 <div id="demo-html">
 <ul id='contacts'></ul>
-</div>	
-<script type='text/javascript' 
-        src='../../steal/steal.js'>   
+</div>
+<script type='text/javascript'
+        src='../../steal/steal.js'>
 </script>
 <script type='text/javascript'  id="demo-source">
 steal('jquery/model','jquery/dom/fixture').then(function(){
@@ -33,17 +33,17 @@ $.fixture("GET /contacts.json", function(){
 $.fixture("DELETE /contacts.json", function(){
 	return true;
 })
-		
+
 // A contact model
 $.Model.extend("Contact",{
-	attributes : { 
+	attributes : {
 		birthday : 'date'
 	},
 	findAll : "/contacts.json",
 	destroy : "/contacts.json"
 },{
 	ageThisYear : function(){
-		return new Date().getFullYear() - 
+		return new Date().getFullYear() -
 			this.birthday.getFullYear()
 	}
 
@@ -61,7 +61,7 @@ Contact.findAll({},function(contacts){
 $("#contacts a").live('click', function(){
   //get the element for this recipe
   var contactEl = $(this).closest('.contact')
-  
+
   // get the conctact instance
   contactEl.model()
            // call destroy on the instance
@@ -69,7 +69,7 @@ $("#contacts a").live('click', function(){
                       // remove the element
                       contactEl.remove();
                     })
-		  
+
 });
 
 });

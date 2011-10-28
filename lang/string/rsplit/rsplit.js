@@ -5,9 +5,9 @@ steal('jquery/lang/string',function( $ ) {
 	$.String.
 	/**
 	 * Splits a string with a regex correctly cross browser
-	 * 
+	 *
 	 *     $.String.rsplit("a.b.c.d", /\./) //-> ['a','b','c','d']
-	 * 
+	 *
 	 * @param {String} string The string to split
 	 * @param {RegExp} regex A regular expression
 	 * @return {Array} An array of strings

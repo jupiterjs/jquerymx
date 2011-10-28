@@ -18,12 +18,12 @@
 </div>
 <div id="demo-html">
 <ul id='contacts'></ul>
-</div>	
-<script type='text/javascript' 
-        src='../../steal/steal.js'>   
+</div>
+<script type='text/javascript'
+        src='../../steal/steal.js'>
 </script>
 
-<script type='text/javascript' id="demo-source">   
+<script type='text/javascript' id="demo-source">
 steal('jquery/model',
 		'jquery/dom/fixture',
 		'jquery/model/list',
@@ -43,8 +43,8 @@ $.Model("Contact",{
 	setBirthday : function(raw){
 		if(typeof raw == 'string'){
 				var matches = raw.match(/(\d+)-(\d+)-(\d+)/)
-				return new Date( matches[1], 
-				                (+matches[2])-1, 
+				return new Date( matches[1],
+				                (+matches[2])-1,
 			                     matches[3] )
 		}else if(raw instanceof Date){
 			return raw;
@@ -56,7 +56,7 @@ $.Model("Contact",{
 
 // get the distance between years
 var age = function(birthday){
-   return new Date().getFullYear() - 
+   return new Date().getFullYear() -
           birthday.getFullYear()
 };
 

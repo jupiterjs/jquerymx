@@ -12,13 +12,13 @@
 	</head>
 	<body>
 <form>
-	
+
 </form>
 </div>
-<script type='text/javascript' 
-        src='../../../steal/steal.js'>   
+<script type='text/javascript'
+        src='../../../steal/steal.js'>
 </script>
-<script type='text/javascript'  id="demo-source">   
+<script type='text/javascript'  id="demo-source">
 steal('jquery/model',
 		'jquery/dom/fixture',
 		'jquery/model/list',
@@ -36,7 +36,7 @@ $.Model("Contact",{
 			}
 		})
 	},
-	attributes : { 
+	attributes : {
 		birthday : 'date'
 	},
 	convert: {
@@ -53,12 +53,12 @@ $.Model("Contact",{
 	},
 	serialize : {
 		date :  function(){
-			
+
 		}
 	}
 },{
 	ageThisYear : function(){
-		return new Date().getFullYear() - 
+		return new Date().getFullYear() -
 		      this.birthday.getFullYear()
 	},
 	getBirthday : function(){

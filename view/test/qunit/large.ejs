@@ -2,15 +2,15 @@
     body  {font-family: verdana;}
 </style>
 
-<p>Complex JavaScript applications are mostly about making it easy to create, 
-read, update, and delete (CRUD) data.  But being so close to the UI, 
-most JavaScript developers ignore the data layer and focus on 
-making animated drag-drop effects.  
+<p>Complex JavaScript applications are mostly about making it easy to create,
+read, update, and delete (CRUD) data.  But being so close to the UI,
+most JavaScript developers ignore the data layer and focus on
+making animated drag-drop effects.
 </p>
-<p>We're doing ourselves a disservice! A strong Model layer can make an architecture infinitely more robust, reusable, and maintainable. 
+<p>We're doing ourselves a disservice! A strong Model layer can make an architecture infinitely more robust, reusable, and maintainable.
 </p>
-<p>JavaScriptMVC's model layer is designed to be as flexible and lightweight as possible. 
- The remainder of this article highlights the features of jQuery.Model, 
+<p>JavaScriptMVC's model layer is designed to be as flexible and lightweight as possible.
+ The remainder of this article highlights the features of jQuery.Model,
  how to use them, and why they are important.
 </p>
 <h2>Downloads</h2>
@@ -39,7 +39,7 @@ making animated drag-drop effects.
 
 <h2>Service / Ajax Encapsulation</h2>
 
-<p>Models encapsulate your application's raw data.  
+<p>Models encapsulate your application's raw data.
 The majority of the time, the raw data comes from services your server provides.  For example, if you make a request to:
 </p>
 <pre><code>GET /contacts.json</code></pre>
@@ -63,7 +63,7 @@ data:
 </p>
 <pre><code>
 $.get('/contacts.json',
-      {type: 'tasty'}, 
+      {type: 'tasty'},
       successCallback,
       'json')</code></pre>
 <p>
@@ -73,7 +73,7 @@ Instead, model encapsulates (wraps) this request so you call it like:
 Contact.findAll({type: 'old'}, successCallback);
 </code></pre>
 <p>
-This might seem like unnecessary overhead, but by encapsulating your 
+This might seem like unnecessary overhead, but by encapsulating your
 application's data, your application benefits in two significant ways:
 </p>
 
@@ -81,8 +81,8 @@ application's data, your application benefits in two significant ways:
 
 
 <p>
-Over the development lifecycle of an application, is very likely that 
-your services will change.  Models help localize your application's use of 
+Over the development lifecycle of an application, is very likely that
+your services will change.  Models help localize your application's use of
 services to a single (<b>TESTABLE!</b>) location.
 </p>
 
@@ -92,7 +92,7 @@ services to a single (<b>TESTABLE!</b>) location.
 Complex widgets, like Grids and Trees, need to make Ajax requests to operate correctly.  Often these widgets need to be configured by a variety of options and callbacks.  There's no uniformity, and sometimes you have to change your service to match the needs of the widget.
 </p>
 <p>
-Instead, models normalize how widgets access your services, making it easy to use 
+Instead, models normalize how widgets access your services, making it easy to use
 different models for the same widget.
 </p>
 <h3>Encapsulation Demo</h3>
@@ -100,9 +100,9 @@ different models for the same widget.
 <p><a href='http://v3.javascriptmvc.com/jquery/model/demo-encapsulate.html'>The encapsulation demo</a> shows using two different models with the same widget.</p>
 <h3>How to Encapsulate</h3>
 <p>
-Think of models as a contract for creating, reading, updating, and deleting data.  
-By filling out a model, you can pass that model to a widget and the 
-widget will use the model as a proxy for your data.  
+Think of models as a contract for creating, reading, updating, and deleting data.
+By filling out a model, you can pass that model to a widget and the
+widget will use the model as a proxy for your data.
 </p>
 <p>
 The following chart shows the methods most models provide:
@@ -122,29 +122,29 @@ Contact.findOne(params, success, error)</pre></td>
         <td>Delete</td><td><pre>Contact.destroy(id, success, error)</pre></td>
     </tr>
 </table>
-<p>By filling out these methods, you get the benefits of encapsulation, 
+<p>By filling out these methods, you get the benefits of encapsulation,
 AND all the other magic Model provides.  Lets see how we might fill out the
 <code>Contact.findAll</code> function:</p>
 <pre><code>$.Model.extend('Contact',
 {
   findAll : function(params, success, error){
-  
+
     // do the ajax request
     $.get('/contacts.json',
-      params, 
-      function( json ){ 
-        
+      params,
+      function( json ){
+
         // on success, create new Contact
         // instances for each contact
         var wrapped = [];
-        
+
         for(var i =0; i< json.length;i++){
           wrapped.push( new Contact(json[i] ) );
         }
-        
+
         //call success with the contacts
         success( wrapped );
-        
+
       },
       'json');
   }
@@ -154,25 +154,25 @@ AND all the other magic Model provides.  Lets see how we might fill out the
   // We'll learn about this soon!
 });</code></pre>
 
-<p>Well, that would be annoying to write out every time.  Fortunately, 
+<p>Well, that would be annoying to write out every time.  Fortunately,
 models have
 the <a href='http://v3.javascriptmvc.com/index.html#&who=jQuery.Model.static.wrapMany'>wrapMany</a> method which will make it easier:</p>
 <pre><code>  findAll : function(params, success, error){
     $.get('/contacts.json',
-      params, 
-      function( json ){ 
-        success(Contact.wrapMany(json));		
+      params,
+      function( json ){
+        success(Contact.wrapMany(json));
       },
       'json');
   }
 </code></pre>
-<p>Model is based off JavaScriptMVC's 
-<a href='http://jupiterjs.com/news/a-simple-powerful-lightweight-class-for-jquery'><code>jQuery.Class</code></a>. It's 
+<p>Model is based off JavaScriptMVC's
+<a href='http://jupiterjs.com/news/a-simple-powerful-lightweight-class-for-jquery'><code>jQuery.Class</code></a>. It's
 <a href='http://v3.javascriptmvc.com/index.html#&who=jQuery.Class.static.callback'>callback method</a> allows us to pipe
 wrapMany into the success handler and make our code even shorter:</p>
 <pre><code>  findAll : function(params, success, error){
     $.get('/contacts.json',
-    params, 
+    params,
     this.proxy(['wrapMany', success]),
     'json')
   }
@@ -194,18 +194,18 @@ lets us wrap and manipulate the data into a more usable format.
 </p>
 <p>
     You notice that the server sends back Contact birthdays like:
-    <code>'1982-10-20'</code>.  
+    <code>'1982-10-20'</code>.
 	A string representation of dates
-     is not terribly convient.  
+     is not terribly convient.
 	 We can use our model to convert it to something closer to
      <code>new Date(1982,10,20)</code>.  We can do this in two ways:
-    
+
 </p>
 
 <h3>Way 1: Setters</h3>
-<p>In our Contact model, we can add a setBirthday method 
+<p>In our Contact model, we can add a setBirthday method
 that will convert the raw
-data passed from the server to a 
+data passed from the server to a
 format more useful for JavaScript:  </p>
 <pre><code>$.Model.extend("Contact",
 {
@@ -215,15 +215,15 @@ format more useful for JavaScript:  </p>
   setBirthday : function(raw){
     if(typeof raw == 'string'){
       var matches = raw.match(/(\d+)-(\d+)-(\d+)/)
-      return new Date( matches[1], 
-                      (+matches[2])-1, 
+      return new Date( matches[1],
+                      (+matches[2])-1,
                        matches[3] )
     }else if(raw instanceof Date){
       return raw;
     }
   }
 })</code></pre>
-<p>The <code>setBirthday</code> setter function takes the 
+<p>The <code>setBirthday</code> setter function takes the
 raw string date, parses it returns the JavaScript friendly
 date.</p>
 <h3>Way 2: Attributes and Converters</h3>
@@ -233,15 +233,15 @@ set the type of an attribute and provide a function to convert that type.</p>
 conversion function:</p>
 <pre><code>$.Model.extend("Contact",
 {
-  attributes : { 
+  attributes : {
     birthday : 'date'
   },
   convert : {
     date : function(raw){
       if(typeof raw == 'string'){
         var matches = raw.match(/(\d+)-(\d+)-(\d+)/)
-        return new Date( matches[1], 
-                        (+matches[2])-1, 
+        return new Date( matches[1],
+                        (+matches[2])-1,
                          matches[3] )
       }else if(raw instanceof Date){
         return raw;
@@ -253,20 +253,20 @@ conversion function:</p>
 {
   // No prototype properties necessary
 })</code></pre>
-<p>This technique uses a Model's 
+<p>This technique uses a Model's
 <a href='http://v3.javascriptmvc.com/index.html#&who=jQuery.Model.static.attributes'>
-	attributes</a> and 
+	attributes</a> and
 	<a href='http://v3.javascriptmvc.com/index.html#&who=jQuery.Model.static.convert'>
 		convert</a> properties.</p>
 
-<p>Now our recipe instances will have a nice <code>Date</code> 
-birthday property. 
+<p>Now our recipe instances will have a nice <code>Date</code>
+birthday property.
 We can use it to list how old each person will be this year:
 
 </p>
 <pre><code>
 var age = function(birthday){
-   return new Date().getFullYear() - 
+   return new Date().getFullYear() -
           birthday.getFullYear()
 }
 
@@ -293,7 +293,7 @@ Contact.findAll({},function(contacts){
 },
 {
   ageThisYear : function(){
-    return new Date().getFullYear() - 
+    return new Date().getFullYear() -
           this.birthday.getFullYear()
   }
 })</code></pre>
@@ -307,17 +307,17 @@ Contact.findAll({},function(contacts){
 });</code></pre>
 
 <p>Now that we are showing contacts on the page, lets do something with them.
-  First, we'll need a way to get back our models from the page.  For this we'll use ...  
+  First, we'll need a way to get back our models from the page.  For this we'll use ...
 </p>
 
 <h2>DOM Helper Functions</h2>
 <p>It's common practice with jQuery to put additional data 'on' html elements
-with 
-<a href='http://api.jquery.com/jQuery.data/'>jQuery.data</a>.  
+with
+<a href='http://api.jquery.com/jQuery.data/'>jQuery.data</a>.
 It's a great technique because you can remove the elements
-and jQuery will clean the data (letting the Garbage Collector do its work).  
+and jQuery will clean the data (letting the Garbage Collector do its work).
 </p>
-<p>Model supports something similar with the 
+<p>Model supports something similar with the
 <code>model</code> and <code>models</code> helpers.
 They let us set and retrieve model instances on elements.
 </p>
@@ -334,16 +334,16 @@ in the <a href='http://v3.javascriptmvc.com/jquery/model/demo-dom.html'>
             .appendTo(contactsEl)
   }
 });</code></pre>
-<p>When a model is added to an element's data, it also adds it's name a unique 
+<p>When a model is added to an element's data, it also adds it's name a unique
 identifier to the element.  For example, the first <code>li</code> element
 will look like:</p>
 <pre><code>&lt;li class='contact contact_5'> ... &lt;/li></code></pre>
-<p>When someone clicks on <code>DELETE</code>, we want to remove that contact.  
+<p>When someone clicks on <code>DELETE</code>, we want to remove that contact.
 We implement it like:</p>
 <pre><code>$("#contacts a").live('click', function(){
   //get the element for this recipe
   var contactEl = $(this).closest('.contact')
-  
+
   // get the conctact instance
   contactEl.model()
            // call destroy on the instance
@@ -351,19 +351,19 @@ We implement it like:</p>
                       // remove the element
                       contactEl.remove();
                     })
-		  
+
 })</code></pre>
-<p>This assumes we've filled out <code>Contact.destroy</code>.  
+<p>This assumes we've filled out <code>Contact.destroy</code>.
 </p>
 <p>There's one more very useful DOM helper: <code>contact.elements()</code>.
-<a href='http://v3.javascriptmvc.com/index.html#&who=jQuery.Model.prototype.elements'>Elements</a> returns the elements that 
+<a href='http://v3.javascriptmvc.com/index.html#&who=jQuery.Model.prototype.elements'>Elements</a> returns the elements that
 have a particular model instance.
 We'll see how this helps us in the next section.
 </p>
 
 
 <h2>Events</h2>
-<p>Consider the case where we have two representations of the 
+<p>Consider the case where we have two representations of the
 same recipe data on the page.  Maybe when we click a contact,
 we show additional information on the page, like an input to change the
 contact's birthday.

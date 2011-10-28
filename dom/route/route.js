@@ -2,13 +2,13 @@ steal('jquery/lang/observe', 'jquery/event/hashchange', 'jquery/lang/string/depa
 function( $ ) {
 
     // Helper methods used for matching routes.
-	var 
+	var
 		// RegEx used to match route variables of the type ':name'.
         // Any word character or a period is matched.
         matcher = /\:([\w\.]+)/g,
         // Regular expression for identifying &amp;key=value lists.
         paramsMatcher = /^(?:&[^=]+=[^&]*)+/,
-        // Converts a JS Object into a list of parameters that can be 
+        // Converts a JS Object into a list of parameters that can be
         // inserted into an html element tag.
 		makeProps = function( props ) {
 			var html = [],
@@ -28,8 +28,8 @@ function( $ ) {
 		},
 		// Checks if a route matches the data provided. If any route variable
         // is not present in the data the route does not match. If all route
-        // variables are present in the data the number of matches is returned 
-        // to allow discerning between general and more specific routes. 
+        // variables are present in the data the number of matches is returned
+        // to allow discerning between general and more specific routes.
 		matchesData = function(route, data) {
 			var count = 0;
 			for ( var i = 0; i < route.names.length; i++ ) {
@@ -40,7 +40,7 @@ function( $ ) {
 			}
 			return count;
 		},
-        // 
+        //
 		onready = true,
 		location = window.location;
 
@@ -50,157 +50,157 @@ function( $ ) {
 	 * @plugin jquery/dom/route
 	 * @parent dom
 	 * @tag 3.2
-	 * 
+	 *
 	 * jQuery.route helps manage browser history (and
 	 * client state) by
 	 * synchronizing the window.location.hash with
 	 * an [jQuery.Observe].
-	 * 
+	 *
 	 * ## Background Information
-	 * 
+	 *
 	 * To support the browser's back button and bookmarking
 	 * in an Ajax application, most applications use
 	 * the <code>window.location.hash</code>.  By
-	 * changing the hash (via a link or JavaScript), 
-	 * one is able to add to the browser's history 
+	 * changing the hash (via a link or JavaScript),
+	 * one is able to add to the browser's history
 	 * without changing the page.  The [jQuery.event.special.hashchange event] allows
 	 * you to listen to when the hash is changed.
-	 * 
+	 *
 	 * Combined, this provides the basics needed to
 	 * create history enabled Ajax websites.  However,
 	 * jQuery.Route addresses several other needs such as:
-	 * 
+	 *
 	 *   - Pretty Routes
 	 *   - Keeping routes independent of application code
 	 *   - Listening to specific parts of the history changing
 	 *   - Setup / Teardown of widgets.
-	 * 
+	 *
 	 * ## How it works
-	 * 
+	 *
 	 * <code>$.route</code> is a [jQuery.Observe $.Observe] that represents the
-	 * <code>window.location.hash</code> as an 
+	 * <code>window.location.hash</code> as an
 	 * object.  For example, if the hash looks like:
-	 * 
+	 *
 	 *     #!type=videos&id=5
-	 *     
+	 *
 	 * the data in <code>$.route</code> would look like:
-	 * 
+	 *
 	 *     { type: 'videos', id: 5 }
-	 * 
-	 * 
+	 *
+	 *
 	 * $.route keeps the state of the hash in-sync with the data in
 	 * $.route.
-	 * 
+	 *
 	 * ## $.Observe
-	 * 
+	 *
 	 * $.route is a [jQuery.Observe $.Observe]. Understanding
 	 * $.Observe is essential for using $.route correctly.
-	 * 
+	 *
 	 * You can
 	 * listen to changes in an Observe with bind and
-	 * delegate and change $.route's properties with 
+	 * delegate and change $.route's properties with
 	 * attr and attrs.
-	 * 
+	 *
 	 * ### Listening to changes in an Observable
-	 * 
-	 * Listen to changes in history 
+	 *
+	 * Listen to changes in history
 	 * by [jQuery.Observe.prototype.bind bind]ing to
 	 * changes in <code>$.route</code> like:
-	 * 
+	 *
 	 *     $.route.bind('change', function(ev, attr, how, newVal, oldVal) {
-	 *     
+	 *
 	 *     })
-	 * 
+	 *
      *  - attr - the name of the changed attribute
      *  - how - the type of Observe change event (add, set or remove)
      *  - newVal/oldVal - the new and old values of the attribute
-     * 
-	 * You can also listen to specific changes 
+     *
+	 * You can also listen to specific changes
 	 * with [jQuery.Observe.prototype.delegate delegate]:
-	 * 
+	 *
 	 *     $.route.delegate('id','change', function(){ ... })
-	 * 
+	 *
 	 * Observe lets you listen to the following events:
-	 * 
+	 *
 	 *  - change - any change to the object
 	 *  - add - a property is added
 	 *  - set - a property value is added or changed
 	 *  - remove - a property is removed
-	 * 
+	 *
 	 * Listening for <code>add</code> is useful for widget setup
 	 * behavior, <code>remove</code> is useful for teardown.
-	 * 
+	 *
 	 * ### Updating an observable
-	 * 
+	 *
 	 * Create changes in the route data like:
-	 * 
+	 *
 	 *     $.route.attr('type','images');
-	 * 
+	 *
 	 * Or change multiple properties at once with
 	 * [jQuery.Observe.prototype.attrs attrs]:
-	 * 
+	 *
 	 *     $.route.attrs({type: 'pages', id: 5}, true)
-	 * 
+	 *
 	 * When you make changes to $.route, they will automatically
 	 * change the <code>hash</code>.
-	 * 
+	 *
 	 * ## Creating a Route
-	 * 
-	 * Use <code>$.route(url, defaults)</code> to create a 
-	 * route. A route is a mapping from a url to 
+	 *
+	 * Use <code>$.route(url, defaults)</code> to create a
+	 * route. A route is a mapping from a url to
 	 * an object (that is the $.route's state).
-	 * 
-	 * If no routes are added, or no route is matched, 
+	 *
+	 * If no routes are added, or no route is matched,
 	 * $.route's data is updated with the [jQuery.String.deparam deparamed]
 	 * hash.
-	 * 
+	 *
 	 *     location.hash = "#!type=videos";
 	 *     // $.route -> {type : "videos"}
-	 *     
+	 *
 	 * Once routes are added and the hash changes,
 	 * $.route looks for matching routes and uses them
 	 * to update $.route's data.
-	 * 
+	 *
 	 *     $.route( "content/:type" );
 	 *     location.hash = "#!content/images";
 	 *     // $.route -> {type : "images"}
-	 *     
+	 *
 	 * Default values can also be added:
-	 * 
+	 *
 	 *     $.route("content/:type",{type: "videos" });
 	 *     location.hash = "#!content/"
 	 *     // $.route -> {type : "videos"}
-	 *     
+	 *
 	 * ## Delay setting $.route
-	 * 
+	 *
 	 * By default, <code>$.route</code> sets its initial data
-	 * on document ready.  Sometimes, you want to wait to set 
+	 * on document ready.  Sometimes, you want to wait to set
 	 * this data.  To wait, call:
-	 * 
+	 *
 	 *     $.route.ready(false);
-	 * 
+	 *
 	 * and when ready, call:
-	 * 
+	 *
 	 *     $.route.ready(true);
-	 * 
+	 *
 	 * ## Changing the route.
-	 * 
+	 *
 	 * Typically, you never want to set <code>location.hash</code>
 	 * directly.  Instead, you can change properties on <code>$.route</code>
 	 * like:
-	 * 
+	 *
 	 *     $.route.attr('type', 'videos')
-	 *     
-	 * This will automatically look up the appropriate 
+	 *
+	 * This will automatically look up the appropriate
 	 * route and update the hash.
-	 * 
+	 *
 	 * Often, you want to create links.  <code>$.route</code> provides
-	 * the [jQuery.route.link] and [jQuery.route.url] helpers to make this 
+	 * the [jQuery.route.link] and [jQuery.route.url] helpers to make this
 	 * easy:
-	 * 
+	 *
 	 *     $.route.link("Videos", {type: 'videos'})
-	 * 
-	 * @param {String} url the fragment identifier to match.  
+	 *
+	 * @param {String} url the fragment identifier to match.
 	 * @param {Object} [defaults] an object of default values
 	 * @return {jQuery.route}
 	 */
@@ -214,7 +214,7 @@ function( $ ) {
 
 		// Add route in a form that can be easily figured out
 		$route.routes[url] = {
-            // A regular expression that will match the route when variable values 
+            // A regular expression that will match the route when variable values
             // are present; i.e. for :page/:type the regEx is /([\w\.]*)/([\w\.]*)/ which
             // will match for any value of :page and :type (word chars or period).
 			test: new RegExp("^" + test),
@@ -236,7 +236,7 @@ function( $ ) {
 		 * If a route matching the provided data is found that URL is built
          * from the data. Any remaining data is added at the end of the
          * URL as &amp; separated key/value parameters.
-		 * 
+		 *
 		 * @param {Object} data
          * @return {String} The route URL and &amp; separated parameters.
 		 */
@@ -264,15 +264,15 @@ function( $ ) {
                         return data[name] === route.defaults[name] ? "" : data[name];
                     }),
                     after;
-					
+
 					// remove matching default values
 					for(name in route.defaults) {
 						if(cpy[name] === route.defaults[name]) {
 							delete cpy[name]
 						}
 					}
-					
-					// The remaining elements of data are added as 
+
+					// The remaining elements of data are added as
 					// $amp; separated parameters to the url.
 				    after = $.param(cpy);
 				return res + (after ? "&" + after : "")
@@ -282,7 +282,7 @@ function( $ ) {
 		},
 		/**
 		 * Populate the JS data object from a given URL.
-		 * 
+		 *
 		 * @param {Object} url
 		 */
 		deparam: function( url ) {
@@ -298,7 +298,7 @@ function( $ ) {
 				}
 			}
             // If a route was matched
-			if ( route.length > -1 ) { 
+			if ( route.length > -1 ) {
 				var // Since RegEx backreferences are used in route.test (round brackets)
                     // the parts will contain the full matched string and each variable (backreferenced) value.
                     parts = url.match(route.test),
@@ -331,20 +331,20 @@ function( $ ) {
          * @attribute
          * @type Object
 		 * @hide
-		 * 
+		 *
          * A list of routes recognized by the router indixed by the url used to add it.
          * Each route is an object with these members:
-         * 
- 		 *  - test - A regular expression that will match the route when variable values 
+         *
+ 		 *  - test - A regular expression that will match the route when variable values
          *    are present; i.e. for :page/:type the regEx is /([\w\.]*)/([\w\.]*)/ which
          *    will match for any value of :page and :type (word chars or period).
-		 * 
+		 *
          *  - route - The original URL, same as the index for this entry in routes.
-         * 
+         *
 		 *  - names - An array of all the variable names in this route
-         * 
+         *
 		 *  - defaults - Default values provided for the variables or an empty object.
-         * 
+         *
 		 *  - length - The number of parts in the URL separated by '/'.
          */
 		routes: {},
@@ -352,7 +352,7 @@ function( $ ) {
 		 * Indicates that all routes have been added and sets $.route.data
 		 * based upon the routes and the current hash.
 		 * @param {Boolean} [start]
-		 * @return 
+		 * @return
 		 */
 		ready: function(val) {
 			if( val === false ) {
@@ -367,7 +367,7 @@ function( $ ) {
 		 * Returns a url from the options
 		 * @param {Object} options
 		 * @param {Boolean} merge true if the options should be merged with the current options
-		 * @return {String} 
+		 * @return {String}
 		 */
 		url: function( options, merge ) {
 			if (merge) {
@@ -419,7 +419,7 @@ function( $ ) {
 	$(function() {
 		$.route.ready();
 	});
-	
+
     // The functions in the following list applied to $.route (e.g. $.route.attr('...')) will
     // instead act on the $.route.data Observe.
 	$.each(['bind','unbind','delegate','undelegate','attr','attrs','serialize','removeAttr'], function(i, name){
@@ -444,15 +444,15 @@ function( $ ) {
         setState = function() {
 			// commented out code handles people setting attrs before onready
 			//if( $.isEmptyObject( $route.data.serialize() ) ) {
-				var hash = location.hash.substr(1, 1) === '!' ? 
-					location.hash.slice(2) : 
+				var hash = location.hash.substr(1, 1) === '!' ?
+					location.hash.slice(2) :
 					location.hash.slice(1); // everything after #!
 				curParams = $route.deparam( hash );
 				$route.attrs(curParams, true);
 			//} else {
 			//	window.location.hash = "#!" + $route.param($route.data.serialize())
 			//}
-			
+
 		};
 
 	// If the hash changes, update the $.route.data

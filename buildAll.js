@@ -9,13 +9,13 @@ load('steal/rhino/rhino.js')
 
 steal('steal/build/pluginify','steal/build/apps','steal/build/scripts').then( function(s){
 	var ignore = /\.\w+|test|generate|dist|qunit|fixtures|pages/
-	
+
 	var plugins = [],
 		/**
 		 * {"path/to/file.js" : ["file2/thing.js", ...]}
 		 */
 		files = {};
-		
+
 	s.File('jquery').contents(function( name, type, current ) {
 		if (type !== 'file' && !ignore.test(name)) {
 			var folder = current+"/"+name;
@@ -24,20 +24,20 @@ steal('steal/build/pluginify','steal/build/apps','steal/build/scripts').then( fu
 				plugins.push(folder);
 				steal.File(folder).contents(arguments.callee, folder)
 			}
-			
+
 			//steal.File(path + "/" + (current ? current + "/" : "") + name).contents(arguments.callee, (current ? current + "/" : "") + name);
 		}
 	},"jquery");
-	
+
 	// tell it to load all plugins into this page
 
-	
+
 	//steal.win().build_in_progress = true;
 	print("  LOADING APP ")
 	steal.build.open('steal/rhino/blank.html', {
 			startFiles: plugins
 	}, function(opener){
-		
+
 		opener.each('js', function(options, text, stl){
 			print(options.rootSrc)
 			var dependencies = files[options.rootSrc] = [];
@@ -50,7 +50,7 @@ steal('steal/build/pluginify','steal/build/apps','steal/build/scripts').then( fu
 				}
 			}
 		})
-		
+
 		s.File("jquery/dist/standalone").mkdirs();
 		s.File("jquery/dist/standalone/dependencies.json").save($.toJSON(files));
 		//get each file ...
@@ -74,9 +74,9 @@ steal('steal/build/pluginify','steal/build/apps','steal/build/scripts').then( fu
 			s.File("jquery/dist/standalone/"+out+".js").save(content);
 			s.File("jquery/dist/standalone/"+out+".min.js").save(compressor(content));
 		}
-		
+
 	})
-	
+
 	/*
 	var pageSteal = steal.build.open("steal/rhino/empty.html").steal,
 		steals = pageSteal.total,
@@ -91,21 +91,21 @@ steal('steal/build/pluginify','steal/build/apps','steal/build/scripts').then( fu
 						print("123  " + depend.path);
 						//depends(depend, steals);
 					}
-					
-					
+
+
 				}
 			}
 		},
 		all = function(c){
 			for(var i =0; i < steals.length; i++){
 				var pSteal =steals[i];
-				
+
 				if(!pSteal.func){
 					c(pSteal)
 				}
-				
+
 			}
-			
+
 		};
 	print("  LOADED, GETTING DEPENDS");
 	all(function(stl){
@@ -123,8 +123,8 @@ steal('steal/build/pluginify','steal/build/apps','steal/build/scripts').then( fu
 			}
 		}
 	})*/
-	
-	
-	
+
+
+
 
 })

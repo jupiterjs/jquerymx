@@ -1,7 +1,7 @@
 steal('jquery','jquery/dom/range').then(function($){
 var convertType = function(type){
 	return  type.replace(/([a-z])([a-z]+)/gi, function(all,first,  next){
-			  return first+next.toLowerCase()	
+			  return first+next.toLowerCase()
 			}).replace(/_/g,"");
 },
 reverse = function(type){
@@ -29,7 +29,7 @@ getElementsSelection = function(el, win){
 		fromElementToCurrent.move("END_TO_START", current);
 		startPos = fromElementToCurrent.toString().length
 	}
-	
+
 	// now we need to make sure current isn't to the right of us ...
 	if(current.compare("END_TO_END", entireElement) >= 0){
 		endPos = entireElement.toString().length
@@ -44,12 +44,12 @@ getElementsSelection = function(el, win){
 getSelection = function(el){
 	// use selectionStart if we can.
 	var win = getWindow(el);
-	
+
 	if (el.selectionStart !== undefined) {
 
-		if(document.activeElement 
-		 	&& document.activeElement != el 
-			&& el.selectionStart == el.selectionEnd 
+		if(document.activeElement
+		 	&& document.activeElement != el
+			&& el.selectionStart == el.selectionEnd
 			&& el.selectionStart == 0){
 			return {start: el.value.length, end: el.value.length};
 		}
@@ -65,7 +65,7 @@ getSelection = function(el){
 			if (el.nodeName.toLowerCase() == 'input') {
 				var real = getWindow(el).document.selection.createRange(), r = el.createTextRange();
 				r.setEndPoint("EndToStart", real);
-				
+
 				var start = r.text.length
 				return {
 					start: start,
@@ -81,7 +81,7 @@ getSelection = function(el){
 				var current = $.Range.current().clone(),
 					r2 = current.clone().collapse().range,
 					r3 = current.clone().collapse(false).range;
-				
+
 				r2.moveStart('character', -1)
 				r3.moveStart('character', -1)
 				// if we aren't at the start, but previous is empty, we are at start of newline
@@ -92,13 +92,13 @@ getSelection = function(el){
 				if (res.endPos != 0 && r3.text == "") {
 					res.endPos += 2;
 				}
-				
+
 				return res
 			}
 		}catch(e){
 			return {start: el.value.length, end: el.value.length};
 		}
-	} 
+	}
 },
 select = function( el, start, end ) {
 	var win = getWindow(el)
@@ -117,7 +117,7 @@ select = function( el, start, end ) {
 		r.moveStart('character', start);
 		end = end || start;
 		r.moveEnd('character', end - el.value.length);
-		
+
 		r.select();
 	} else if(win.getSelection){
 		var	doc = win.document,
@@ -127,11 +127,11 @@ select = function( el, start, end ) {
 		getCharElement([el],ranges);
 		range.setStart(ranges[0].el, ranges[0].count);
 		range.setEnd(ranges[1].el, ranges[1].count);
-		
+
 		// removeAllRanges is suprisingly necessary for webkit ... BOOO!
         sel.removeAllRanges();
         sel.addRange(range);
-		
+
 	} else if(win.document.body.createTextRange){ //IE's weirdness
 		var range = document.body.createTextRange();
 		range.moveToElementText(el);
@@ -163,7 +163,7 @@ replaceWithLess = function(start, len, range, el){
 getCharElement = function( elems , range, len ) {
 	var elem,
 		start;
-	
+
 	len = len || 0;
 	for ( var i = 0; elems[i]; i++ ) {
 		elem = elems[i];
@@ -172,7 +172,7 @@ getCharElement = function( elems , range, len ) {
 			start = len
 			len += elem.nodeValue.length;
 			//check if len is now greater than what's in counts
-			replaceWithLess(start, len, range, elem ) 
+			replaceWithLess(start, len, range, elem )
 		// Traverse everything else, except comment nodes
 		} else if ( elem.nodeType !== 8 ) {
 			len = getCharElement( elem.childNodes, range, len );
@@ -183,45 +183,45 @@ getCharElement = function( elems , range, len ) {
 /**
  * @parent dom
  * @tag beta
- * 
+ *
  * Gets or sets the current text selection.
- * 
+ *
  * ## Getting
- * 
+ *
  * Gets the current selection in the context of an element.  For example:
- * 
+ *
  *     $('textarea').selection() // -> { .... }
- *     
+ *
  * returns an object with:
- * 
+ *
  *   - __start__ - The number of characters from the start of the element to the start of the selection.
  *   - __end__ - The number of characters from teh start of the element to the end of the selection.
  *   - __range__ - A [jQuery.Range $.Range] that represents the current selection.
- * 
+ *
  * This lets you get the selected text in a textarea like:
- * 
+ *
  *     var textarea = $('textarea')
  *       selection = textarea.selection(),
  *       selected = textarea.val().substr(selection.start, selection.end);
- *       
+ *
  *     alert('You selected '+selected+'.');
- *     
+ *
  * Selection works with all elements.  If you want to get selection information of the document:
- * 
+ *
  *     $(document.body).selection();
- *     
+ *
  * ## Setting
- * 
+ *
  * By providing a start and end offset, you can select text within a given element.
- * 
+ *
  *     $('#rte').selection(30, 40)
- * 
+ *
  * ## Demo
- * 
+ *
  * This demo shows setting the selection in various elements
- * 
+ *
  * @demo jquery/dom/selection/selection.html
- * 
+ *
  * @param {Number} [start] Start of the range
  * @param {Number} [end] End of the range
  * @return {Object|jQuery} returns the selection information or the jQuery collection for

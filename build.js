@@ -2,12 +2,12 @@
 
 load('steal/rhino/rhino.js')
 
-var i, fileName, cmd, 
+var i, fileName, cmd,
 	plugins = [
-	"class" , 
+	"class" ,
 	"controller",
 	{
-		plugin: "controller/subscribe", 
+		plugin: "controller/subscribe",
 		exclude: ["jquery/controller/controller.js",
 				  "jquery/class/class.js",
 				  "jquery/lang/lang.js",
@@ -19,16 +19,16 @@ var i, fileName, cmd,
 	"event/pause",
 	"event/resize",
 	{
-		plugin: "event/drag/limit", 
+		plugin: "event/drag/limit",
 		exclude: ["jquery/lang/vector/vector.js", "jquery/event/livehack/livehack.js", "jquery/event/drag/drag.js"]},
 	{
-		plugin: "event/drag/scroll", 
+		plugin: "event/drag/scroll",
 		exclude: ["jquery/dom/within/within.js", "jquery/dom/compare/compare.js", "jquery/event/drop/drop.js","jquery/lang/vector/vector.js", "jquery/event/livehack/livehack.js", "jquery/event/drag/drag.js"]},
 	{
 		plugin: "event/drop",
 		exclude: ["jquery/lang/vector/vector.js", "jquery/event/livehack/livehack.js", "jquery/event/drag/drag.js"]},
 	"event/hover",
-	"view/ejs", 
+	"view/ejs",
 	"dom/closest",
 	"dom/compare",
 	{
@@ -37,7 +37,7 @@ var i, fileName, cmd,
 	},
 	"dom/fixture",
 	"dom/form_params",
-	"dom/within", 
+	"dom/within",
 	"dom/cur_styles",
 	"model",
 	{
@@ -109,14 +109,14 @@ var plugin, exclude, fileDest, fileName;
 			out: fileDest,
 			exclude: exclude.length? exclude: false
 		})
-		
-		
+
+
 		var outBaos = new java.io.ByteArrayOutputStream();
 		var output = new java.io.PrintStream(outBaos);
 		runCommand("java", "-jar", "steal/build/scripts/compiler.jar", "--compilation_level", "SIMPLE_OPTIMIZATIONS", "--warning_level", "QUIET", "--js", fileDest, {
 			output: output
 		});
-		
+
 		var minFileDest = fileDest.replace(".js", ".min.js")
 		new steal.File(minFileDest).save(outBaos.toString());
 	}
@@ -133,13 +133,13 @@ for (i = 0; i < plugins.length; i++) {
 	}
 	fileName = fileName || "jquery." + plugin.replace(/\//g, ".").replace(/dom\./, "").replace(/\_/, "") + ".js";
 	fileDest = "jquery/dist/" + fileName
-	// compress 
+	// compress
 	var outBaos = new java.io.ByteArrayOutputStream();
 	var output = new java.io.PrintStream(outBaos);
 	runCommand("java", "-jar", "steal/build/scripts/compiler.jar", "--compilation_level", "SIMPLE_OPTIMIZATIONS", "--warning_level", "QUIET", "--js", fileDest, {
 		output: output
 	});
-	
+
 	var minFileDest = fileDest.replace(".js", ".min.js")
 	new steal.File(minFileDest).save(outBaos.toString());
 	print("***" + fileName + " pluginified and compressed")

@@ -4,12 +4,12 @@ steal('jquery/dom/range','jquery/controller','jquery/event/livehack').then(funct
 
 
 	var event = $.event;
-	
+
 	event.selection = {
 		delay : 300,
 		preventDefault : event.supportTouch
 	};
-	
+
 	event.setupHelper( ["selectionStart","selectionEnd","selectionEnding","selectionMoving","selectionMove"], "mousedown", function(ev){
 		//now start checking mousemoves to update location
 		var delegate = ev.liveFired || ev.currentTarget,
@@ -34,10 +34,10 @@ steal('jquery/dom/range','jquery/controller','jquery/event/livehack').then(funct
 				 startRange = null;
 			},
 			mouseup =  function(moveev){
-				
+
 				if(!ready){
 					cleanUp();
-					return 
+					return
 				}
 				$.each(event.find(delegate, ["selectionMoving"], selector), function(){
 					this.call(el, moveev, range)
@@ -47,14 +47,14 @@ steal('jquery/dom/range','jquery/controller','jquery/event/livehack').then(funct
 				$.each(event.find(delegate, ["selectionEnd"], selector), function(){
 					this.call(el, ev, range);
 				});
-				
+
 			},
 			mousemove = function(moveev){
 				// safari keeps triggering moves even if we haven't moved
 				if(moveev.clientX == ev.clientX && moveev.clientY == ev.clientY){
 					return;
 				}
-				
+
 				if(!ready){
 					return cleanUp();
 				}
@@ -73,24 +73,24 @@ steal('jquery/dom/range','jquery/controller','jquery/event/livehack').then(funct
 				$.each(event.find(delegate, ["selectionStart"], selector), function(){
 					this.call(el, startEv, startRange)
 				});
-				
+
 				if(event.selection.preventDefault && startEv.isDefaultPrevented()){
 					ready = false;
 					cleanUp();
 				}
 			},
 			moveTimer;
-			
+
 		if(event.selection.preventDefault){
 			ev.preventDefault();
 			moveTimer = setTimeout(start, event.selection.delay);
 		} else {
 			start();
 		}
-		
-		
+
+
 		$(delegate).bind('mousemove', mousemove)
 				   .bind('mouseup',mouseup)
 	});
-	
+
 });

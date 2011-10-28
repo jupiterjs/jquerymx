@@ -37,27 +37,27 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 		bracketNum = function(content){
 			var lefts = content.match(leftBracket),
 				rights = content.match(rightBracket);
-				
-			return (lefts ? lefts.length : 0) - 
+
+			return (lefts ? lefts.length : 0) -
 				   (rights ? rights.length : 0);
 		},
 		/**
 		 * @class jQuery.EJS
-		 * 
+		 *
 		 * @plugin jquery/view/ejs
 		 * @parent jQuery.View
 		 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/view/ejs/ejs.js
 		 * @test jquery/view/ejs/qunit.html
-		 * 
-		 * 
-		 * Ejs provides <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/">ERB</a> 
+		 *
+		 *
+		 * Ejs provides <a href="http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/">ERB</a>
 		 * style client side templates.  Use them with controllers to easily build html and inject
 		 * it into the DOM.
-		 * 
+		 *
 		 * ###  Example
-		 * 
+		 *
 		 * The following generates a list of tasks:
-		 * 
+		 *
 		 * @codestart html
 		 * &lt;ul>
 		 * &lt;% for(var i = 0; i < tasks.length; i++){ %>
@@ -65,84 +65,84 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 		 * &lt;% } %>
 		 * &lt;/ul>
 		 * @codeend
-		 * 
+		 *
 		 * For the following examples, we assume this view is in <i>'views\tasks\list.ejs'</i>.
-		 * 
-		 * 
+		 *
+		 *
 		 * ## Use
-		 * 
+		 *
 		 * ### Loading and Rendering EJS:
-		 * 
+		 *
 		 * You should use EJS through the helper functions [jQuery.View] provides such as:
-		 * 
+		 *
 		 *   - [jQuery.fn.after after]
 		 *   - [jQuery.fn.append append]
 		 *   - [jQuery.fn.before before]
-		 *   - [jQuery.fn.html html], 
+		 *   - [jQuery.fn.html html],
 		 *   - [jQuery.fn.prepend prepend],
-		 *   - [jQuery.fn.replaceWith replaceWith], and 
+		 *   - [jQuery.fn.replaceWith replaceWith], and
 		 *   - [jQuery.fn.text text].
-		 * 
+		 *
 		 * or [jQuery.Controller.prototype.view].
-		 * 
+		 *
 		 * ### Syntax
-		 * 
+		 *
 		 * EJS uses 5 types of tags:
-		 * 
+		 *
 		 *   - <code>&lt;% CODE %&gt;</code> - Runs JS Code.
 		 *     For example:
-		 *     
+		 *
 		 *         <% alert('hello world') %>
-		 *     
+		 *
 		 *   - <code>&lt;%= CODE %&gt;</code> - Runs JS Code and writes the _escaped_ result into the result of the template.
 		 *     For example:
-		 *     
+		 *
 		 *         <h1><%= 'hello world' %></h1>
-		 *         
+		 *
 		 *   - <code>&lt;%== CODE %&gt;</code> - Runs JS Code and writes the _unescaped_ result into the result of the template.
 		 *     For example:
-		 *     
+		 *
 		 *         <h1><%== '<span>hello world</span>' %></h1>
-		 *         
+		 *
 		 *   - <code>&lt;%%= CODE %&gt;</code> - Writes <%= CODE %> to the result of the template.  This is very useful for generators.
-		 *     
+		 *
 		 *         <%%= 'hello world' %>
-		 *         
+		 *
 		 *   - <code>&lt;%# CODE %&gt;</code> - Used for comments.  This does nothing.
-		 *     
+		 *
 		 *         <%# 'hello world' %>
-		 *        
+		 *
 		 * ## Hooking up controllers
-		 * 
+		 *
 		 * After drawing some html, you often want to add other widgets and plugins inside that html.
 		 * View makes this easy.  You just have to return the Contoller class you want to be hooked up.
-		 * 
+		 *
 		 * @codestart
 		 * &lt;ul &lt;%= Mxui.Tabs%>>...&lt;ul>
 		 * @codeend
-		 * 
+		 *
 		 * You can even hook up multiple controllers:
-		 * 
+		 *
 		 * @codestart
 		 * &lt;ul &lt;%= [Mxui.Tabs, Mxui.Filler]%>>...&lt;ul>
 		 * @codeend
-		 * 
+		 *
 		 * To hook up a controller with options or any other jQuery plugin use the
 		 * [jQuery.EJS.Helpers.prototype.plugin | plugin view helper]:
-		 * 
+		 *
 		 * @codestart
 		 * &lt;ul &lt;%= plugin('mxui_tabs', { option: 'value' }) %>>...&lt;ul>
 		 * @codeend
-		 * 
+		 *
 		 * Don't add a semicolon when using view helpers.
-		 * 
-		 * 
+		 *
+		 *
 		 * <h2>View Helpers</h2>
-		 * View Helpers return html code.  View by default only comes with 
+		 * View Helpers return html code.  View by default only comes with
 		 * [jQuery.EJS.Helpers.prototype.view view] and [jQuery.EJS.Helpers.prototype.text text].
 		 * You can include more with the view/helpers plugin.  But, you can easily make your own!
 		 * Learn how in the [jQuery.EJS.Helpers Helpers] page.
-		 * 
+		 *
 		 * @constructor Creates a new view
 		 * @param {Object} options A hash with the following options
 		 * <table class="options">
@@ -168,7 +168,7 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 		 *    </tbody></table>
 		 */
 		EJS = function( options ) {
-			// If called without new, return a function that 
+			// If called without new, return a function that
 			// renders with data and helpers like
 			// EJS({text: '<%= message %>'})({message: 'foo'});
 			// this is useful for steal's build system
@@ -192,17 +192,17 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 		};
 	// add EJS to jQuery if it exists
 	window.jQuery && (jQuery.EJS = EJS);
-	/** 
+	/**
 	 * @Prototype
 	 */
 	EJS.prototype.
 	/**
 	 * Renders an object with view helpers attached to the view.
-	 * 
+	 *
 	 *     new EJS({text: "<%= message %>"}).render({
 	 *       message: "foo"
 	 *     },{helper: function(){ ... }})
-	 *     
+	 *
 	 * @param {Object} object data to be rendered
 	 * @param {Object} [extraHelpers] an object with view helpers
 	 * @return {String} returns the result of the string
@@ -221,24 +221,24 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 		/**
 		 * Used to convert what's in &lt;%= %> magic tags to a string
 		 * to be inserted in the rendered output.
-		 * 
+		 *
 		 * Typically, it's a string, and the string is just inserted.  However,
-		 * if it's a function or an object with a hookup method, it can potentially be 
+		 * if it's a function or an object with a hookup method, it can potentially be
 		 * be ran on the element after it's inserted into the page.
-		 * 
+		 *
 		 * This is a very nice way of adding functionality through the view.
 		 * Usually this is done with [jQuery.EJS.Helpers.prototype.plugin]
 		 * but the following fades in the div element after it has been inserted:
-		 * 
+		 *
 		 * @codestart
 		 * &lt;%= function(el){$(el).fadeIn()} %>
 		 * @codeend
-		 * 
+		 *
 		 * @param {String|Object|Function} input the value in between the
 		 * write magic tags: &lt;%= %>
 		 * @return {String} returns the content to be added to the rendered
 		 * output.  The content is different depending on the type:
-		 * 
+		 *
 		 *   * string - the original string
 		 *   * null or undefined - the empty string ""
 		 *   * an object with a hookup method - the attribute "data-view-id='XX'", where XX is a hookup number for jQuery.View
@@ -281,9 +281,9 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 			return input.toString ? input.toString() : "";
 		},
 		/**
-		 * Escapes the text provided as html if it's a string.  
+		 * Escapes the text provided as html if it's a string.
 		 * Otherwise, the value is passed to EJS.text(text).
-		 * 
+		 *
 		 * @param {String|Object|Array|Function} text to escape.  Otherwise,
 		 * the result of [jQuery.EJS.text] is returned.
 		 * @return {String} the escaped text or likely a $.View data-view-id attribute.
@@ -301,11 +301,11 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 		/**
 		 * @attribute options
 		 * Sets default options for all views.
-		 * 
+		 *
 		 *     $.EJS.options.type = '['
-		 * 
+		 *
 		 * Only one option is currently supported: type.
-		 * 
+		 *
 		 * Type is the left hand magic tag.
 		 */
 		options: {
@@ -447,28 +447,28 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 						switch ( startTag ) {
 						case scanner.left:
 							// <%
-							
+
 							// get the number of { minus }
 							bn = bracketNum(content);
 							// how are we ending this statement
-							var last = 
+							var last =
 								// if the stack has value and we are ending a block
-								endStack.length && bn == -1 ? 
+								endStack.length && bn == -1 ?
 								// use the last item in the block stack
-								endStack.pop() : 
+								endStack.pop() :
 								// or use the default ending
 								";";
-							
+
 							// if we are ending a returning block
 							// add the finish text which returns the result of the
-							// block 
+							// block
 							if(last === doubleParen) {
 								buff.push(finishTxt)
 							}
 							// add the remaining content
 							buff.push(content, last);
-							
-							// if we have a block, start counting 
+
+							// if we have a block, start counting
 							if(bn === 1 ){
 								endStack.push(";")
 							}
@@ -478,25 +478,25 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 							bn = bracketNum(content);
 							if( bn ) {
 								endStack.push(doubleParen)
-							} 
+							}
 							buff.push(insert_cmd, "jQuery.EJS.clean(", content,bn ? startTxt : doubleParen);
 							break;
 						case scanner.eeLeft:
 							// <%== content
-							
-							// get the number of { minus } 
+
+							// get the number of { minus }
 							bn = bracketNum(content);
 							// if we have more {, it means there is a block
 							if( bn ){
 								// when we return to the same # of { vs } end wiht a doubleParen
 								endStack.push(doubleParen)
-							} 
-							
-							buff.push(insert_cmd, "jQuery.EJS.text(", content, 
+							}
+
+							buff.push(insert_cmd, "jQuery.EJS.text(", content,
 								// if we have a block
-								bn ? 
+								bn ?
 								// start w/ startTxt "var _v1ew = [])"
-								startTxt : 
+								startTxt :
 								// if not, add doubleParent to close push and text
 								doubleParen
 								);
@@ -530,10 +530,10 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 
 
 	// A Buffer used to add content to.
-	// This is useful for performance and simplifying the 
+	// This is useful for performance and simplifying the
 	// code above.
 	// We also can use this so we know line numbers when there
-	// is an error.  
+	// is an error.
 	// pre_cmd - code that sets up the buffer
 	// post - code that finalizes the buffer
 	EJS.Buffer = function( pre_cmd, post ) {
@@ -576,37 +576,37 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 	/**
 	 * @class jQuery.EJS.Helpers
 	 * @parent jQuery.EJS
-	 * By adding functions to jQuery.EJS.Helpers.prototype, those functions will be available in the 
+	 * By adding functions to jQuery.EJS.Helpers.prototype, those functions will be available in the
 	 * views.
-	 * 
+	 *
 	 * The following helper converts a given string to upper case:
-	 * 
+	 *
 	 * 	$.EJS.Helpers.prototype.toUpper = function(params)
 	 * 	{
 	 * 		return params.toUpperCase();
 	 * 	}
-	 * 
+	 *
 	 * Use it like this in any EJS template:
-	 * 
+	 *
 	 * 	<%= toUpper('javascriptmvc') %>
-	 * 
+	 *
 	 * To access the current DOM element return a function that takes the element as a parameter:
-	 * 
+	 *
 	 * 	$.EJS.Helpers.prototype.upperHtml = function(params)
 	 * 	{
 	 * 		return function(el) {
 	 * 			$(el).html(params.toUpperCase());
 	 * 		}
 	 * 	}
-	 * 
+	 *
 	 * In your EJS view you can then call the helper on an element tag:
-	 * 
+	 *
 	 * 	<div <%= upperHtml('javascriptmvc') %>></div>
-	 * 
-	 * 
-	 * @constructor Creates a view helper.  This function 
+	 *
+	 *
+	 * @constructor Creates a view helper.  This function
 	 * is called internally.  You should never call it.
-	 * @param {Object} data The data passed to the 
+	 * @param {Object} data The data passed to the
 	 * view.  Helpers have access to it through this._data
 	 */
 	EJS.Helpers = function( data, extras ) {

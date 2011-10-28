@@ -46,7 +46,7 @@
     </head>
     <body>
 
-    
+
 <div id="demo-html">
 <p>Adjust The red box's layout properties.</p>
 <label>  Width</label> <input id='width'/><br/>
@@ -56,7 +56,7 @@
 <label>= Outer</label> <input id='outerWidth'/><br/>
 <label>  Margin</label> <input id='marginRight'/><br/>
 <br/>
-    
+
 <div id='wrapper'>
     <div id='block'>
         <div id='inner'>
@@ -66,21 +66,21 @@
 </div>
 </div>
 <div style='clear:both'></div>
-        <script type='text/javascript' 
-                src='../../../steal/steal.js'>   
+        <script type='text/javascript'
+                src='../../../steal/steal.js'>
         </script>
 <script type='text/javascript' id="demo-source">
 steal('jquery/dom/dimensions').then(function(){
 // sets the values in the input boxes
 var set = function() {
-    
+
   var block =  $('#block');
-    
+
   //get with .fn helpers
   $("#outerWidth, #innerWidth, #width").each(function(){
     $(this).val( block[this.id]() )
   })
-    
+
   //use curStyles
   $.each($('#block').curStyles("paddingRight",
     "borderRightWidth",
@@ -102,7 +102,7 @@ var update = function( ev ) {
       block = $('#block'),
       css = {};
 
-  if( block[name] ) { 
+  if( block[name] ) {
     // set with innerHeight, outerHeight, etc
     block[name]( val )[otherName](val)
   }else{
@@ -115,7 +115,7 @@ var update = function( ev ) {
   set();
 };
 
-// call update on change or after  
+// call update on change or after
 // typing has stopped for a second
 var timer;
 $("input").live('change',update)

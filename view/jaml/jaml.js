@@ -1,5 +1,5 @@
 steal("jquery/view").then(function(){
-	
+
 
 
 /**
@@ -7,36 +7,36 @@ steal("jquery/view").then(function(){
  * @plugin jquery/view/jaml
  * @parent jQuery.View
  * @author Ed Spencer (http://edspencer.net)
- * Jaml is a simple JavaScript library which makes 
+ * Jaml is a simple JavaScript library which makes
  * HTML generation easy and pleasurable.
- * 
+ *
  * Instead of magic tags, Jaml is pure JS.  It looks like:
- * 
+ *
  * @codestart
  * function(data) {
  *   h3(data.message);
  * }
  * @codeend
- * 
+ *
  * Jaml is integrated into jQuery.View so you can use it like:
- * 
+ *
  * @codestart
  * $("#foo").html('//app/views/template.jaml',{});
  * @codeend
- * 
+ *
  * ## Use
- * 
+ *
  * For more info check out:
- * 
+ *
  *  - [http://edspencer.net/2009/11/jaml-beautiful-html-generation-for-javascript.html introduction]
  *  - [http://edspencer.github.com/jaml examples]
- * 
+ *
  */
 Jaml = function() {
   return {
     templates: {},
     helpers  : {},
-    
+
     /**
      * Registers a template by name
      * @param {String} name The name of the template
@@ -45,7 +45,7 @@ Jaml = function() {
     register: function(name, template ) {
       this.templates[name] = template;
     },
-    
+
     /**
      * Renders the given template name with an optional data object
      * @param {String} name The name of the template to render
@@ -54,10 +54,10 @@ Jaml = function() {
     render: function(name, data ) {
       var template = this.templates[name],
           renderer = new Jaml.Template(template);
-          
+
       return renderer.render(data);
     },
-    
+
     /**
      * Registers a helper function
      * @param {String} name The name of the helper
@@ -83,14 +83,14 @@ Jaml.Node = function(tagName) {
    * This node's current tag
    */
   this.tagName = tagName;
-  
+
   /**
    * @attribute attributes
    * @type Object
    * Sets of attributes on this node (e.g. 'cls', 'id', etc)
    */
   this.attributes = {};
-  
+
   /**
    * @attribute children
    * @type Array
@@ -108,11 +108,11 @@ Jaml.Node.prototype = {
     for (var key in attrs) {
       //convert cls to class
       var mappedKey = key == 'cls' ? 'class' : key;
-      
+
       this.attributes[mappedKey] = attrs[key];
     }
   },
-  
+
   /**
    * Adds a child string to this node. This can be called as often as needed to add children to a node
    * @param {String} childText The text of the child node
@@ -120,7 +120,7 @@ Jaml.Node.prototype = {
   addChild: function(childText ) {
     this.children.push(childText);
   },
-  
+
   /**
    * Renders this node with its attributes and children
    * @param {Number} lpad Amount of whitespace to add to the left of the string (defaults to 0)
@@ -128,45 +128,45 @@ Jaml.Node.prototype = {
    */
   render: function(lpad ) {
     lpad = lpad || 0;
-    
+
     var node      = [],
         attrs     = [],
         textnode  = (this instanceof Jaml.TextNode),
         multiline = this.multiLineTag();
-    
+
     for (var key in this.attributes) {
       attrs.push(key + '=' + this.attributes[key]);
     }
-    
+
     //add any left padding
     if (!textnode) node.push(this.getPadding(lpad));
-    
+
     //open the tag
     node.push("<" + this.tagName);
-    
+
     //add any tag attributes
     for (var key in this.attributes) {
       node.push(" " + key + "=\"" + this.attributes[key] + "\"");
     }
-    
+
     if (this.isSelfClosing()) {
       node.push(" />\n");
     } else {
       node.push(">");
-      
+
       if (multiline) node.push("\n");
-      
+
       for (var i=0; i < this.children.length; i++) {
         node.push(this.children[i].render(lpad + 2));
       }
-      
+
       if (multiline) node.push(this.getPadding(lpad));
       node.push("</", this.tagName, ">\n");
     }
-    
+
     return node.join("");
   },
-  
+
   /**
    * Returns true if this tag should be rendered with multiple newlines (e.g. if it contains child nodes)
    * @return {Boolean} True to render this tag as multi-line
@@ -174,12 +174,12 @@ Jaml.Node.prototype = {
   multiLineTag: function() {
     var childLength = this.children.length,
         multiLine   = childLength > 0;
-    
+
     if (childLength == 1 && this.children[0] instanceof Jaml.TextNode) multiLine = false;
-    
+
     return multiLine;
   },
-  
+
   /**
    * Returns a string with the given number of whitespace characters, suitable for padding
    * @param {Number} amount The number of whitespace characters to add
@@ -188,21 +188,21 @@ Jaml.Node.prototype = {
   getPadding: function(amount ) {
     return new Array(amount + 1).join(" ");
   },
-  
+
   /**
    * Returns true if this tag should close itself (e.g. no </tag> element)
    * @return {Boolean} True if this tag should close itself
    */
   isSelfClosing: function() {
     var selfClosing = false;
-    
+
     for (var i = this.selfClosingTags.length - 1; i >= 0; i--){
       if (this.tagName == this.selfClosingTags[i]) selfClosing = true;
     }
-    
+
     return selfClosing;
   },
-  
+
   /**
    * @attribute selfClosingTags
    * @type Array
@@ -227,7 +227,7 @@ Jaml.TextNode.prototype = {
  * When a template is rendered its node structure is computed with any provided template
  * data, culminating in one or more root nodes.  The root node(s) are then joined together
  * and returned as a single output string.
- * 
+ *
  * The render process uses two dirty but necessary hacks.  First, the template function is
  * decompiled into a string (but is not modified), so that it can be eval'ed within the scope
  * of Jaml.Template.prototype. This allows the second hack, which is the use of the 'with' keyword.
@@ -240,7 +240,7 @@ Jaml.Template = function(tpl) {
    * The function this template was created from
    */
   this.tpl = tpl;
-  
+
   this.nodes = [];
 };
 
@@ -252,29 +252,29 @@ Jaml.Template.prototype = {
    */
   render: function(data ) {
     data = data || {};
-    
+
     //the 'data' argument can come in two flavours - array or non-array. Normalise it
     //here so that it always looks like an array.
     if (data.constructor.toString().indexOf("Array") == -1) {
       data = [data];
     }
-    
+
     with(this) {
       for (var i=0; i < data.length; i++) {
         eval("(" + this.tpl.toString() + ")(data[i])");
       };
     }
-    
+
     var roots  = this.getRoots(),
         output = "";
-    
+
     for (var i=0; i < roots.length; i++) {
       output += roots[i].render();
     };
-    
+
     return output;
   },
-  
+
   /**
    * Returns all top-level (root) nodes in this template tree.
    * Templates are tree structures, but there is no guarantee that there is a
@@ -283,21 +283,21 @@ Jaml.Template.prototype = {
    */
   getRoots: function() {
     var roots = [];
-    
+
     for (var i=0; i < this.nodes.length; i++) {
       var node = this.nodes[i];
-      
+
       if (node.parent == undefined) roots.push(node);
     };
-    
+
     return roots;
   },
-  
+
   tags: [
     "html", "head", "body", "script", "meta", "title", "link", "script",
     "div", "p", "span", "a", "img", "br", "hr",
     "table", "tr", "th", "td", "thead", "tbody",
-    "ul", "ol", "li", 
+    "ul", "ol", "li",
     "dl", "dt", "dd",
     "h1", "h2", "h3", "h4", "h5", "h6", "h7",
     "form", "input", "label"
@@ -309,10 +309,10 @@ Jaml.Template.prototype = {
  */
 (function() {
   var tags = Jaml.Template.prototype.tags;
-  
+
   for (var i = tags.length - 1; i >= 0; i--){
     var tagName = tags[i];
-    
+
     /**
      * This function is created for each tag name and assigned to Template's
      * prototype below
@@ -320,7 +320,7 @@ Jaml.Template.prototype = {
     var fn = function(tagName) {
       return function(attrs) {
         var node = new Jaml.Node(tagName);
-        
+
         var firstArgIsAttributes =  (typeof attrs == 'object')
                                  && !(attrs instanceof Jaml.Node)
                                  && !(attrs instanceof Jaml.TextNode);
@@ -335,20 +335,20 @@ Jaml.Template.prototype = {
           if (typeof arg == "string" || arg == undefined) {
             arg = new Jaml.TextNode(arg || "");
           }
-          
+
           if (arg instanceof Jaml.Node || arg instanceof Jaml.TextNode) {
             arg.parent = node;
           }
 
           node.addChild(arg);
         };
-        
+
         this.nodes.push(node);
-        
+
         return node;
       };
     };
-    
+
     Jaml.Template.prototype[tagName] = fn(tagName);
   };
 })();

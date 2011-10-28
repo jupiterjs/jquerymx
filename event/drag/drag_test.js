@@ -10,7 +10,7 @@ module("jquery/event/drag",{
 			"<div id='midpoint'></div>"+
 			"<div id='drop'></div>"+
 			"</div>");
-	
+
 		div.appendTo($("#qunit-test-area"));
 		var basicCss = {
 			width: "20px",
@@ -39,10 +39,10 @@ test("dragging an element", function(){
 	$("#drag").css(basicCss).css({top: "0px", left: "0px", zIndex: 1000, backgroundColor: "red"})
 	$("#midpoint").css(basicCss).css({top: "0px", left: "30px"})
 	$("#drop").css(basicCss).css({top: "30px", left: "30px"});
-	
-	
+
+
 	var drags = {}, drops ={};
-	
+
 	$('#drag')
 		.live("dragdown", function(){
 			drags.dragdown = true;
@@ -63,27 +63,27 @@ test("dragging an element", function(){
 			drags.dragout = true;
 		})
 	$('#drop')
-		.live("dropinit", function(){ 
+		.live("dropinit", function(){
 			drops.dropinit = true;
 		})
-		.live("dropover", function(){ 
+		.live("dropover", function(){
 			drops.dropover = true;
 		})
-		.live("dropout", function(){ 
+		.live("dropout", function(){
 			drops.dropout = true;
 		})
-		.live("dropmove", function(){ 
+		.live("dropmove", function(){
 			drops.dropmove = true;
 		})
-		.live("dropon", function(){ 
+		.live("dropon", function(){
 			drops.dropon = true;
 		})
-		.live("dropend", function(){ 
+		.live("dropend", function(){
 			drops.dropend = true;
 		})
 
 	stop();
-	
+
 	Syn.drag({to: "#midpoint"},"drag", function(){
 		ok(drags.dragdown, "dragdown fired correctly")
 		ok(drags.draginit, "draginit fired correctly")
@@ -105,30 +105,30 @@ test("dragging an element", function(){
 		ok(drops.dropon,	"dropon fired correctly")
 	}).drag({to: "#midpoint"}, function(){
 		ok(drags.dragout, 	"dragout fired correctly")
-	
+
 		ok(drops.dropout, 	"dropout fired correctly")
 		//div.remove();
 		start();
 	})
-	
 
 
-	
+
+
 })
 
 test("drag position", function(){
 	this.makePoints();
-	
-	
+
+
 	var drags = {}, drops ={};
-	
+
 	$('#drag').live("draginit", function(){
 		drags.draginit = true;
 	})
 	var offset = $('#drag').offset();
 
 	stop();
-	
+
 	Syn.drag("+20 +20","drag", function(){
 		var offset2 = $('#drag').offset();
 		equals(offset.top+20, offset2.top, "top")
@@ -145,7 +145,7 @@ test("dragdown" , function(){
 				"<input type='text' id='dragnoprevent' />"+
 			"</div>"+
 			"</div>");
-	
+
 	$("#qunit-test-area").html(div);
 	$("#dragger").css({
 		position: "absolute",
@@ -158,14 +158,14 @@ test("dragdown" , function(){
 	})
 	var draginpfocused = false,
 		dragnopreventfocused = false;
-	
+
 	$('#draginp').focus(function(){
 		draginpfocused = true;
 	})
 	$('#dragnoprevent').focus(function(){
 		dragnopreventfocused = true;
 	})
-	
+
 	$('#dragger').bind("dragdown", function(ev, drag){
 		if(ev.target.id == 'draginp'){
 			drag.cancel();
@@ -180,7 +180,7 @@ test("dragdown" , function(){
 		var offset2 = $('#dragger').offset();
 		equals(offset.top, offset2.top, "top")
 		equals(offset.left, offset2.left, "left")
-		
+
 	}).drag("+20 +20","dragnoprevent", function(){
 		var offset2 = $('#dragger').offset();
 		equals(offset.top+20, offset2.top, "top")
@@ -200,7 +200,7 @@ test("dragging child element (a handle)" , function(){
 				"<div id='dragged'>Place to drag</div>"+
 			"</div>"+
 			"</div>");
-	
+
 	$("#qunit-test-area").html(div);
 	$("#dragger").css({
 		position: "absolute",
@@ -213,12 +213,12 @@ test("dragging child element (a handle)" , function(){
 	});
 
 	var dragged = $('#dragged');
-		
+
 	$('#dragger').bind("draginit", function(ev, drag){
 		drag.only();
 		drag.representative(dragged);
 	})
-	
+
 	stop();
 
 	var offset = $('#dragger').offset();

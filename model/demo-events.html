@@ -15,7 +15,7 @@
 		<h1>Model Events Demo</h1>
 		<p>This demo shows listening to model update events.
 		Clicking on a person's name will show a form to update
-		their birthday.  Change the birthday and 'blur' the 
+		their birthday.  Change the birthday and 'blur' the
 		input to update their listed age.</p>
 </div>
 <div id="demo-html">
@@ -23,7 +23,7 @@
 
 <h2>Direct Binding</h2>
 <p>
-   The following list binds 
+   The following list binds
    directly to "birthday" events.
 </p>
 <div id='contacts1'></div>
@@ -35,8 +35,8 @@
 </p>
 <div id='contacts2'></div>
 </div>
-<script type='text/javascript' 
-        src='../../steal/steal.js'>   
+<script type='text/javascript'
+        src='../../steal/steal.js'>
 </script>
 
 <script type='text/javascript'>
@@ -46,7 +46,7 @@ steal('jquery/model',
 	  'jquery/controller',
 	   function(){
 
-// =============== Setup Fixtures =============== 
+// =============== Setup Fixtures ===============
 
 $.fixture("GET /contacts.json", function(){
 	return [[{'id': 1,'name' : 'Justin Meyer','birthday': '1982-10-20'},
@@ -58,10 +58,10 @@ $.fixture("PUT /contacts/{id}.json", function(){
 	return {};
 })
 
-// =============== Contacts Model =============== 
+// =============== Contacts Model ===============
 
 $.Model("Contact",{
-	attributes : { 
+	attributes : {
 		birthday : 'date'
 	},
 	convert : {
@@ -70,8 +70,8 @@ $.Model("Contact",{
 			if(typeof raw == 'string'){
 				// if a string, convert to a date
 				var matches = raw.match(/(\d+)-(\d+)-(\d+)/)
-				return new Date( matches[1], 
-				                 (+matches[2])-1, 
+				return new Date( matches[1],
+				                 (+matches[2])-1,
 				                 matches[3] )
 			}else if(raw instanceof Date){
 				return raw;
@@ -82,7 +82,7 @@ $.Model("Contact",{
 	update : "/contacts/{id}.json"
 },{
 	ageThisYear : function(){
-		return new Date().getFullYear() - 
+		return new Date().getFullYear() -
 		      this.birthday.getFullYear()
 	},
 	getBirthday : function(){
@@ -116,7 +116,7 @@ $.Controller("NameUpdater",{
 });
 
 
-// =============== A list that binds on each contact =============== 
+// =============== A list that binds on each contact ===============
 
 bindOnEachContact = function(contacts){
   var contactsEl = $('#contacts1');
@@ -131,7 +131,7 @@ bindOnEachContact = function(contacts){
               " <a>Show</a>");
     })
   })
-  
+
 };
 
 $('#contacts1').delegate("li","click", function(){
@@ -142,9 +142,9 @@ $('#contacts1').delegate("li","click", function(){
 
 makeListWithoutBinding = function(contacts){
   var contactsEl = $('#contacts2'),
-  	html = [], 
+  	html = [],
 	contact;
-	
+
   for(var i =0; i < contacts.length;i++){
   	contact = contacts[i]
 	html.push("<li class='contact ",
@@ -154,14 +154,14 @@ makeListWithoutBinding = function(contacts){
 		"</li>")
   }
   contactsEl.html(html.join(""))
-  
-  
+
+
   $('#contacts2').delegate("li","click", function(){
 	$('#update').name_updater({
 		contact : contacts.get(this)[0]
 	});
   });
-  
+
 };
 
 Contact.bind("updated", function(ev, contact){

@@ -5,9 +5,9 @@
         <title>CurStyles Performance Test/Demo</title>
         <style type='text/css'>
             body {font-family: verdana}
-			#content {height: 100px; width: 300px; 
-			margin: 20px; 
-			padding: 10px; 
+			#content {height: 100px; width: 300px;
+			margin: 20px;
+			padding: 10px;
 			border: solid 1px black;
 			cursor: pointer;
 			}
@@ -21,13 +21,13 @@
 	Click To Run
 </div>
 </div>
-<script type='text/javascript'  
+<script type='text/javascript'
         src='../../../steal/steal.js'></script>
 
 
 <script type='text/javascript' id="demo-source">
 steal('jquery/dom/cur_styles').then(function(){
-	
+
 $.fn.fastHeight = function(){
 	var sum = this[0] && this[0].offsetHeight;
 	$.each(this.curStyles(

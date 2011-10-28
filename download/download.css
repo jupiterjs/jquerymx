@@ -32,7 +32,7 @@ body {
 	overflow: auto;
 	border-bottom: dotted 1px #000;
 	padding: 16px 16px 18px;
-	
+
 	background: #eee;
 }
 
@@ -55,7 +55,7 @@ body {
 	padding: 0px;
 	overflow: auto;
 	width: 422px;
-	
+
 }
 
 #plugins .plugin input {

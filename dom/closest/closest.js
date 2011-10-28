@@ -6,16 +6,16 @@ steal('jquery/dom').then(function(){
 	 * @function closest
 	 * @parent dom
 	 * @plugin jquery/dom/closest
-	 * Overwrites closest to allow open > selectors.  This allows controller 
+	 * Overwrites closest to allow open > selectors.  This allows controller
 	 * actions such as:
-	 * 
+	 *
 	 *     ">li click" : function( el, ev ) { ... }
 	 */
 	var oldClosest = jQuery.fn.closest;
 	jQuery.fn.closest = function(selectors, context){
 		var rooted = {}, res, result, thing, i, j, selector, rootedIsEmpty = true, selector, selectorsArr = selectors;
 		if(typeof selectors == "string") selectorsArr = [selectors];
-		
+
 		$.each(selectorsArr, function(i, selector){
 		    if(selector.indexOf(">") == 0 ){
 				if(selector.indexOf(" ") != -1){
@@ -26,9 +26,9 @@ steal('jquery/dom').then(function(){
 				rootedIsEmpty = false;
 			}
 		})
-		
+
 		res = oldClosest.call(this, selectors, context);
-		
+
 		if(rootedIsEmpty) return res;
 		i =0;
 		while(i < res.length){

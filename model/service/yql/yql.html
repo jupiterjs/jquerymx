@@ -11,14 +11,14 @@
         </style>
 	</head>
 	<body>
-		<script type='text/javascript' 
+		<script type='text/javascript'
                 src='../../../../steal/steal.js?steal[app]=jquery/model/service/yql&steal[env]=development'
                 package='main.js'
-                compress='false'>   
+                compress='false'>
         </script>
 		<script type='text/javascript'>
 			var yahooImages = $.Model.service.yql({from: "search.images"});
-			
+
 			yahooImages.findAll({where: "query='dog'"}, function(data){
 				console.log(data)
 			})

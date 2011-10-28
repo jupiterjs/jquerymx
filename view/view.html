@@ -44,7 +44,7 @@
 		<pre><code class='javascript'>$("#tmpl").html("template.tmpl",{message: "Hello World"})</code></pre>
 		<pre class='temp'>&lt;h3>{%= message %}&lt;/h3></pre>
 		<div id='tmpl'  class='out'></div>
-		<script type='text/javascript' src='../../steal/steal.js'>   
+		<script type='text/javascript' src='../../steal/steal.js'>
         </script>
 <script type='text/javascript'>
 steal('jquery/view/jaml',
@@ -52,11 +52,11 @@ steal('jquery/view/jaml',
 	'jquery/view/ejs',
 	'jquery/view/tmpl')
 	.then(function(){
-		
+
 	$.each(["micro","ejs","jaml",'tmpl'], function(){
 		$("#"+this).html("test/qunit/template."+this,{"message" :"Hello World"})
 	})
-	
+
 })	.then("//jmvcdoc/resources/highlight",
 		'//jmvcdoc/resources/languages/javascript',
 		'//jmvcdoc/resources/languages/www',
@@ -64,7 +64,7 @@ function(){
 	 var names = []
 	 $("code").each(function(){
 			names.push( this.parentNode.className)
-			
+
 		})
 	 hljs.initHighlighting();
 	$(function(){
@@ -72,8 +72,8 @@ function(){
 			this.parentNode.className = names[i];
 		})
 	})
-		
-	
+
+
 });
 		</script>
 	</body>

@@ -16,28 +16,28 @@
 		<p>This demo demonstrates using validations to prevent
 		a person's birthday from being in the future.</p>
 		<p>Clicking a person's name will show a form to update
-		their birthday.  Change the birthday and 'blur' the 
+		their birthday.  Change the birthday and 'blur' the
 		input to update their listed age.</p>
 </div>
 <div id="demo-html">
 <div id='contacts1'></div>
 <div id='update'></div>
 </div>
-<script type='text/javascript' 
-        src='../../../steal/steal.js'>   
+<script type='text/javascript'
+        src='../../../steal/steal.js'>
 </script>
-<script type='text/javascript'  id="demo-source">   
+<script type='text/javascript'  id="demo-source">
 steal('jquery/model',
 		'jquery/dom/fixture',
 		'jquery/model/list',
 		'jquery/model/validations').then(function(){
-	
+
 $.Model.convert.date = function(raw){
 	if(typeof raw == 'string'){
 		var matches = raw.match(/(\d+)-(\d+)-(\d+)/)
-		
-		return matches ? new Date( +matches[1], 
-		                 (+matches[2])-1, 
+
+		return matches ? new Date( +matches[1],
+		                 (+matches[2])-1,
 		                 +matches[3] )
 					   : null;
 	}else if(raw instanceof Date){
@@ -65,14 +65,14 @@ $.Model("Contact",{
 			}
 		})
 	},
-	attributes : { 
+	attributes : {
 		birthday : 'date'
 	},
 	findAll : "/contacts.json",
 	update : "/contacts/{id}.json"
 },{
 	ageThisYear : function(){
-		return new Date().getFullYear() - 
+		return new Date().getFullYear() -
 		      this.birthday.getFullYear()
 	},
 	getBirthday : function(){
@@ -88,8 +88,8 @@ makeAgeUpdater = function(contact){
 	updater.html("");
 	updater.append("<span>" +contact.name+"'s birthday </span>")
 	$('<input/>').val(contact.attr("birthday")).change(function(){
-		
-		
+
+
 		contact.attr("birthday", this.value , function(){
 			$('#error').hide();
 		}, function(errors){
@@ -112,7 +112,7 @@ Contact.findAll({},function(contacts){
               " <a>Show</a>");
     })
   })
-  
+
   contactsEl.delegate("li","click", function(){
 	 makeAgeUpdater( $(this).closest('.contact').model() );
   });

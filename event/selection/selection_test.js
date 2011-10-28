@@ -1,5 +1,5 @@
 steal("funcunit/qunit", "jquery/dom/selection").then(function(){
-  	
+
 module("jquery/dom/selection");
 
 test("getCharElement", function(){
@@ -25,13 +25,13 @@ test("getCharElement", function(){
 		for(var i =0; i< types.length; i++){
 			res.push( $(types[i]).selection() );
 		}
-		
-		
-		
+
+
+
 		for(var i =0; i< res.length; i++){
 			same(res[i],{start: 1, end: 5},types[i])
 		}
-		
+
 		start();
 	},1000)
 });

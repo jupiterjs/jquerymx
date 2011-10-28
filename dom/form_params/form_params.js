@@ -24,10 +24,10 @@ steal("jquery/dom").then(function( $ ) {
 		 * @download http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/dom/form_params/form_params.js
 		 * @plugin jquery/dom/form_params
 		 * @test jquery/dom/form_params/qunit.html
-		 * 
-		 * Returns an object of name-value pairs that represents values in a form.  
+		 *
+		 * Returns an object of name-value pairs that represents values in a form.
 		 * It is able to nest values whose element's name has square brackets.
-		 * 
+		 *
 		 * Example html:
 		 * @codestart html
 		 * &lt;form>
@@ -36,12 +36,12 @@ steal("jquery/dom").then(function( $ ) {
 		 * &lt;form/>
 		 * @codeend
 		 * Example code:
-		 * 
+		 *
 		 *     $('form').formParams() //-> { foo:{bar:'2', ced: '4'} }
-		 * 
-		 * 
+		 *
+		 *
 		 * @demo jquery/dom/form_params/form_params.html
-		 * 
+		 *
 		 * @param {Boolean} [convert=false] True if strings that look like numbers and booleans should be converted.  Defaults to true.
 		 * @return {Object} An object of name-value pairs.
 		 */

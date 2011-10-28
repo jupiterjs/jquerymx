@@ -1,9 +1,9 @@
 steal("jquery/model/list",'funcunit/qunit', 'jquery/dom/fixture', function(){
-	 
+
 module("jquery/model/list", {
 	setup: function() {
 		$.Model.extend("Person")
-	
+
 		$.Model.List("Person.List",{
 			destroy : "DELETE /person/destroyAll",
 			update : "PUT /person/updateAll"
@@ -17,11 +17,11 @@ module("jquery/model/list", {
 })
 
 test("hookup with list", function(){
-	
-	
-	
+
+
+
 	var div = $("<div>")
-	
+
 	for(var i =0; i < 20 ; i ++){
 		var child = $("<div>");
 		var p = new Person({foo: "bar"+i, id: i});
@@ -36,9 +36,9 @@ test("hookup with list", function(){
 })
 
 test("create", function(){
-	
+
 	equals(this.people.length, 20)
-	
+
 	equals(this.people.get("a2")[0].id,"a2" , "get works")
 })
 
@@ -48,7 +48,7 @@ test("splice", function(){
 	this.people.splice(1,1)
 	equals(this.people.length, 19)
 	ok(!this.people.get("a1").length,"nothing where a1 is")
-	
+
 })
 
 test("remove", function(){
@@ -69,7 +69,7 @@ test("destroy a list", function(){
 	stop();
 	// make sure a request is made
 	$.fixture('DELETE /person/destroyAll', function(){
-		
+
 		ok(true, "called right fixture");
 		return true;
 	})
@@ -77,14 +77,14 @@ test("destroy a list", function(){
 	people[0].bind('destroyed', function(){
 		ok(true, "destroyed event called")
 	})
-	
+
 	people.destroy(function(deleted){
 		ok(true, "destroy callback called");
 		ok(people.length, 0, "objects removed");
 		ok(deleted.length, 2, "got back deleted items")
 		start()
 		// make sure the list is empty
-		
+
 	})
 
 });
@@ -92,13 +92,13 @@ test("destroy a list", function(){
 test("destroy a list with nothing in it", function(){
 	var people = Person.models([]);
 	stop();
-	
+
 	// make sure a request is made
 	$.fixture('DELETE /person/destroyAll', function(){
 		ok(true, "called right fixture");
 		return true;
 	});
-	
+
 	people.destroy(function(deleted){
 		ok(true, "destroy callback called");
 		equal(deleted.length, people.length, "got back deleted items")
@@ -116,20 +116,20 @@ test("update a list", function(){
 			newProp : "yes"
 		};
 	stop();
-	
+
 	// make sure a request is made
-	$.fixture('PUT /person/updateAll', function(orig){	
+	$.fixture('PUT /person/updateAll', function(orig){
 		ok(true, "called right fixture");
 		ok(orig.data.ids.length, 2, "got 2 ids")
 		same(orig.data.attrs, updateWith, "got the same attrs")
 		return newProps;
 	})
-	
+
 	// make sure the people have a destroyed event
 	people[0].bind('updated', function(){
 		ok(true, "updated event called")
 	})
-	
+
 	people.update(updateWith,function(updated){
 		ok(true, "updated callback called");
 		ok(updated.length, 2, "got back deleted items");
@@ -145,7 +145,7 @@ test("update a list with nothing in it", function(){
 			age : 29
 		};
 	stop();
-	
+
 	// make sure a request is made
 	$.fixture('PUT /person/updateAll', function(orig){
 		ok(true, "called right fixture");
@@ -165,20 +165,20 @@ test("events - add", 4, function(){
 		ok(1, "add called");
 		equals(items.length, 1, "we get an array")
 	});
-	
+
 	var person = new Person({id: 1, name: "alex"});
-	
-	
+
+
 	list.push(person);
-	
+
 	// check that we are listening to updates on person ...
-	
+
 	ok( $(person).data("events"), "person has events" );
-	
+
 	list.unbind("add");
-	
+
 	ok( !$(person).data("events"), "person has no events" );
-	
+
 });
 
 test("events - update", function(){
@@ -186,13 +186,13 @@ test("events - update", function(){
 	list.bind("update", function(ev, updated){
 		ok(1, "update called");
 		ok(person === updated, "we get the person back");
-		
+
 		equals(updated.name, "Alex", "got the right name")
 	});
-	
+
 	var person = new Person({id: 1, name: "justin"});
 	list.push(person);
-	
+
 	person.updated({name: "Alex"})
 });
 
