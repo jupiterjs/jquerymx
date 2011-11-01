@@ -15,7 +15,7 @@ $.Class('jQuery.Model.Store',
 		this.sets = [];
 		this.data = {};
 		// listen on create and add ... listen on destroy and remove
-		
+
 		this.namespace.bind('destroyed', this.callback('remove'))
 		this.namespace.bind('updated', this.callback('updated'))
 	},
@@ -23,12 +23,12 @@ $.Class('jQuery.Model.Store',
 		// go through lists and remove this guy if he is in the list and should not be ...
 		var sets  = this.sets.slice(0),
 			report = ["Store - updating "];
-			
+
 		for(var i=0; i < sets.length; i++){
 			var set = sets[i],
 				inSet = this.filter(item, set.params) !== false,
 				inList = set.list.get(item)[0];
-			
+
 			if(inSet && !inList){
 				report.push("adding to", set.params, "; ");
 				set.list.push(item)
@@ -55,18 +55,18 @@ $.Class('jQuery.Model.Store',
 		}
 		// need to unbind?  Of course lists should cause this to happen
 		delete this.data[id];
-		// go through sets ... 
-		
+		// go through sets ...
+
 		/*var sets  = this.sets.slice(0),
 			report = ["Store - removing from "];
 		for(var i=0; i < sets.length; i++){
 			var set = sets[i],
 				removed;
-			
+
 			if(set.list){
 				removed = set.list.remove(item)
 			}
-			
+
 			if(removed.length) {
 				report.push(set.params, "; ");
 			}
@@ -80,13 +80,13 @@ $.Class('jQuery.Model.Store',
 	id: "id",
 	/**
 	 * Adds items ... this essentially creates / updates them ...
-	 * or looks 
+	 * or looks
 	 * @param {Array} items
 	 * @param {Object} [params] will only add to matching sets
 	 */
 	add : function(items, params){
 		// need to check the filter rules, if we can even add this ...
-		
+
 		var len = items.length,
 			i=0,
 			item,
@@ -102,7 +102,7 @@ $.Class('jQuery.Model.Store',
 			} else {
 				added.push(this.data[id] = this.create(item))
 			}
-			
+
 		}
 		// go through sets and add to them ...
 		//   slice so that if in callback, the number of sets increases, you are ok
@@ -111,7 +111,7 @@ $.Class('jQuery.Model.Store',
 		for(var i=0; i < sets.length; i++){
 			var set = sets[i],
 				itemsForSet = [];
-			
+
 			for(var j =0; j< added.length; j++){
 				item = added[j]
 				if( this.filter(item, set.params) !== false) {
@@ -123,16 +123,16 @@ $.Class('jQuery.Model.Store',
 				set.list.push(itemsForSet);
 			}
 		}
-		
+
 		/*if(report.length > 1) {
 			console.log.apply(console, report);
 		} else {
 			console.log("Store - Got new items, but no matches")
 		}*/
-		
+
 		// check if item would be added to set
-		
-		// make sure item isn't already in set?  
+
+		// make sure item isn't already in set?
 	},
 	/**
 	 * updates the properties of currentItem
@@ -141,7 +141,7 @@ $.Class('jQuery.Model.Store',
 		currentItem.attrs(newItem.serialize());
 	},
 	/**
-	 * 
+	 *
 	 * @param {Object} newItem
 	 */
 	create : function(newItem){
@@ -149,13 +149,13 @@ $.Class('jQuery.Model.Store',
 	},
 	has : function(params){
 		// check if it has an evil param ...
-		
+
 		return $.Object.subsets(params, this.sets).length
 	},
 	/**
 	 * Called with the item and the current params.
 	 * Should return __false__ if the item should be filtered out of the result.
-	 * 
+	 *
 	 * By default this goes through each param in params and see if it matches the
 	 * same property in item (if item has the property defined).
 	 * @param {Object} item
@@ -167,9 +167,9 @@ $.Class('jQuery.Model.Store',
 		for ( var param in params ) {
 			i=0;
 			paramValue = params[param];
-			
+
 			// in fixtures we ignore null, I don't want to now
-			if ( paramValue !== undefined && item[param] !== undefined 
+			if ( paramValue !== undefined && item[param] !== undefined
 				 && !this._compare(param, item[param] ,paramValue) ) {
 				return false;
 			}
@@ -181,7 +181,7 @@ $.Class('jQuery.Model.Store',
 	},
 	/**
 	 * Sorts the object in place
-	 * 
+	 *
 	 * By default uses an order property in the param
 	 * @param {Object} items
 	 */
@@ -214,7 +214,7 @@ $.Class('jQuery.Model.Store',
 	pagination : function(items, params){
 		var offset = parseInt(params.offset, 10) || 0,
 			limit = parseInt(params.limit, 10) || (items.length - offset);
-		
+
 		return items.slice(offset, offset + limit);
 	},
 	get : function(id){
@@ -243,7 +243,7 @@ $.Class('jQuery.Model.Store',
 	/**
 	 * Returns a list that interacts with the store
 	 * @param {Object} params
-	 * @param {Boolean} register registers this list as owning some content, but does not 
+	 * @param {Boolean} register registers this list as owning some content, but does not
 	 * actually do the request ...
 	 */
 	findAll : function(params, register, ready){
@@ -255,20 +255,20 @@ $.Class('jQuery.Model.Store',
 			cb = function(){
 				ready(list)
 			};
-			
+
 		if(typeof  register === 'function' ){
 			ready = register;
 			register = false;
 		}
 		ready  = ready || function(){};
-		
+
 		for(var i =0; i < this.sets.length; i++){
 			var set = this.sets[i];
 			if( $.Object.subset(params, set.params, this.compare)  ){
 				parentLoadedSet = set;
 				//console.log($.Object.same( set.params, params), set.params, params );
 				if( $.Object.same( set.params, params, this.compare) ){
-					
+
 					// what if it's not loaded
 					if(!set.def){
 						//console.log("Store - a listening list, but not loaded", params, ready);
@@ -290,30 +290,30 @@ $.Class('jQuery.Model.Store',
 						}
 						//ready && ready(set.list);
 					}
-					
+
 					return set.list;
 				}
 			}
 		}
 
-		
+
 		// create a list, a set and add the set to our list of sets
 		list = new this.namespace.List();
 		var sameSet = {
 				params: $.extend({},params),
 				list: list
 			};
-			
+
 		this.sets.push(sameSet);
-		
+
 
 		// we have loaded or are loading what we need
 		if( parentLoadedSet ) {
 			// find the first set with a deferred
 			if( !parentLoadedSet.def ) {
-				
+
 				// we need to load this ...
-				
+
 			} else if( parentLoadedSet.def.isResolved() ){
 				// add right away
 				//console.log("Store - already loaded parent set",params);
@@ -331,32 +331,32 @@ $.Class('jQuery.Model.Store',
 					cb();
 				})
 			}
-			
+
 		} else {
-			
+
 			if( register ) {
 				// do nothing ...
-				
-				
+
+
 			} else {
 				// we need to load it
 				//console.log("Store - loading data for the first time", params, ready);
 				var def = this.namespace.findAll(params);
 				sameSet.def = def;
-				
+
 				def.done(function(items){
 					self.add(items, params);
 					cb();//ready && ready(sameSet.list);
 				})
-				
+
 			}
 
 		}
-		
-		
-		
+
+
+
 		// wait until the items are loaded, do the reset and pushing ...
-		
+
 		// check later if no one is listening ...
 		setTimeout(function(){
 			//console.log('unbinding ...?')
@@ -365,13 +365,13 @@ $.Class('jQuery.Model.Store',
 				// we need to remove these items too ... (unless we are a superset)
 			}*/
 		},10);
-		return list;		
-		
+		return list;
+
 	},
 	findAllCached : function(params){
 		// remove anything not filtering ....
 		//   - sorting, grouping, limit, and offset
-		
+
 		var list = [],
 			data = this.data,
 			item;
@@ -381,7 +381,7 @@ $.Class('jQuery.Model.Store',
 				list.push(item)
 			}
 		}
-		
+
 		// do sorting / grouping
 		list = this.pagination(this.sort(list, params), params);
 		// take limit and offset ...

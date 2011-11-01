@@ -1,7 +1,7 @@
 steal("jquery").then(function(){
-	
-var $event = $.event, 
-	oldTrigger = $event.trigger, 
+
+var $event = $.event,
+	oldTrigger = $event.trigger,
 	isElement = function(o){
 		return (
 			typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
@@ -45,7 +45,7 @@ $.event.trigger = function(event, data, elem, onlyHandlers){
 		event.exclusive = exclusive;
 		event.namespace = namespaces.join(".");
 		event.namespace_re = new RegExp("(^|\\.)" + namespaces.join("\\.(?:.*\\.)?") + "(\\.|$)");
-		
+
 		// triggerHandler() and global events don't bubble or run the default action
 		if ( onlyHandlers || !elem ) {
 			event.preventDefault();
@@ -136,12 +136,12 @@ $.event.trigger = function(event, data, elem, onlyHandlers){
 				jQuery.event.triggered = undefined;
 			}
 		}
-		
+
 		return event.result;
 }
-// a copy of $'s handle function that goes until it finds 
+// a copy of $'s handle function that goes until it finds
 $.event.handle = function( event ) {
-	
+
 	event = jQuery.event.fix( event || window.event );
 	// Snapshot the handlers list since a called handler may add/remove events.
 	var handlers = ((jQuery._data( this, "events" ) || {})[ event.type ] || []).slice(0),
@@ -153,18 +153,18 @@ $.event.handle = function( event ) {
 	event.currentTarget = this;
 
 	// JMVC CHANGED
-	var oldType = event.type, 
+	var oldType = event.type,
 		// run if default is included
-		runDefault = event.type !== "default" && $event.special['default'] && 
+		runDefault = event.type !== "default" && $event.special['default'] &&
 			// and its not an original event
-			!event.originalEvent && 
-			// and its an element 
+			!event.originalEvent &&
+			// and its an element
 			isElement(event.target);
 	if (runDefault) {
 		$event.special['default'].triggerDefault(event, this, args[1]);
 	}
 	event.type = oldType;
-	
+
 	for ( var j = 0, l = handlers.length; j < l; j++ ) {
 		var handleObj = handlers[ j ];
 		if( event.firstPass ){
@@ -197,7 +197,7 @@ $.event.handle = function( event ) {
 			}
 		}
 	}
-	
+
 	// JMVC CHANGED
 	if (runDefault) {
 		$event.special['default'].checkAndRunDefaults(event, this);

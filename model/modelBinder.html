@@ -8,7 +8,7 @@
             .error {border: solid 1px red;}
             .error_text { color: red; font-size: 10px;}
             td {padding: 3px;}
-			
+
 			#sliderWrapper {
 				border: solid 1px gray;
 				width: 300px;
@@ -27,8 +27,8 @@
 		<input type='text' id='value' />
 
 		<textarea id='foo'></textarea>
-		
-		
+
+
 		<select id='bar'>
 			<option value='1'>1</option>
 			<option value='2'>2</option>
@@ -41,15 +41,15 @@
 			<option value='9'>9</option>
 			<option value='10'>10</option>
 		</select>
-<script type='text/javascript' 
-        src='../../steal/steal.js'>   
+<script type='text/javascript'
+        src='../../steal/steal.js'>
 </script>
 
-<script type='text/javascript'>   
+<script type='text/javascript'>
 steal('jquery/model','mxui/slider').then(function(){
 
 	$.fn.hookup = function(inst, attr, type){
-		
+
 		inst.bind(attr, {jQ : this},function(ev, val){
 			if(type){
 				ev.data.jQ[type]("val", val)
@@ -71,21 +71,21 @@ steal('jquery/model','mxui/slider').then(function(){
 			this.val(value)
 		}
 	};
-	
-	
-	
-	
+
+
+
+
 	$.Model("Person",{},{});
-	
+
 	var person = new Person({age: 1})
-	
+
 	$("#slider").mxui_slider({interval: 1, min: 1, max: 10})
-		
+
 		.hookup(person,"age","mxui_slider");
-	
+
 	$('#value, #foo, #bar').hookup(person,"age");
-	
-	
+
+
 });
 </script>
 	</body>

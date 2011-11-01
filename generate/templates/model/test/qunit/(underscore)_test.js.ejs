@@ -1,6 +1,6 @@
 steal("funcunit/qunit", "<%= appPath %>/fixtures", "<%= appPath %>/models/<%= underscore %>.js", function(){
 	module("Model: <%= name %>")
-	
+
 	test("findAll", function(){
 		expect(4);
 		stop();
@@ -11,9 +11,9 @@ steal("funcunit/qunit", "<%= appPath %>/fixtures", "<%= appPath %>/models/<%= un
 	        ok(<%= plural %>[0].description)
 			start();
 		});
-		
+
 	})
-	
+
 	test("create", function(){
 		expect(3)
 		stop();
@@ -37,7 +37,7 @@ steal("funcunit/qunit", "<%= appPath %>/fixtures", "<%= appPath %>/models/<%= un
 						start();
 	        		})
 	            })
-	
+
 	});
 	test("destroy", function(){
 		expect(1);

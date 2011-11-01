@@ -9,7 +9,7 @@
             .error_text { color: red; font-size: 10px;}
             td {padding: 3px;}
 			.resizable {border: solid 1px red;
-			
+
 			}
 			body  {
 				margin: 0px;
@@ -35,7 +35,7 @@
 			.top {
 				border: dotted 1px orange;
 			}
-			
+
         </style>
 		<link type="text/css" href="../../../mxui/data/grid/grid.css" rel="stylesheet" />
 	</head>
@@ -67,16 +67,16 @@
 							</div>
 						</div>
 					</div>
-					
+
 				</div>
 				<span>A footer</span>
 			</div>
 		</div>
-		<script type='text/javascript' 
-                src='../../../steal/steal.js'>   
+		<script type='text/javascript'
+                src='../../../steal/steal.js'>
 
-			
-			
+
+
         </script>
 		<script type='text/ejs' id='rowEjs'>
 			<td><%= name %></td>
@@ -86,23 +86,23 @@
 		<script type='text/javascript'>
 				steal('mxui/data/grid','mxui/layout/split',
 					'jquery/dom/fixture').then(function(){
-		
+
 		$('#content').mxui_layout_fill({
 			parent : $(document.body)
 		})
-		
-		
+
+
 		$('#split').mxui_layout_fill({
 			parent : $('#content')
 		}).mxui_layout_split({ direction: "vertical", panelClass: "panel" })
-		
-		
+
+
 		$('#vsplit').mxui_layout_fill({
 			parent : $('#leftPanel')
 		}).mxui_layout_split({ direction: "horizontal" });
-		
-		
-			
+
+
+
 			$.Model('Thing',{
 				attributes : {birthday: "date"}
 			},{})
@@ -114,13 +114,13 @@
 					foo : "bar"
 				}
 			})
-			
-			
-			
+
+
+
 			// we need to also provide the grid with data ...
 
 			var paramsScroll = new Mxui.Data({limit : 50, offset: 0})
-			
+
 			// Forever Scroll
 			$("#forever").mxui_data_grid({
 				model : Thing,
@@ -133,17 +133,17 @@
 				row : "rowEjs",
 				offsetEmpties: false
 			})
-			
+
 			$("#forever .scrollBody").bind("scroll", function(){
 				if(this.clientHeight+this.scrollTop + 70 >= this.scrollHeight && !paramsScroll.updating){
-					
+
 					paramsScroll.attr('offset', paramsScroll.offset + 30)
 				}
 			})
-		
-		
+
+
 	});
-			
+
 		</script>
 	</body>
 </html>

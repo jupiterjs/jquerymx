@@ -28,7 +28,7 @@
                 <a href="#!pages///">#!pages///</a>
                 <a href="#!/val1/val2">#!/val1/val2</a>
                 <br />
-                URLs without paths: 
+                URLs without paths:
                 <a href="#!pages//">#!pages//</a>
                 <a href="#!pages//">#!///</a>
                 <br />
@@ -55,12 +55,12 @@
 		<script type='text/javascript'>
             steal('jquery/dom/route', 'jquery/lang/json', 'jquery/dom/form_params',
             function() {
-                
+
                 window.location.hash = "";
                 $('#data_update_target').html();
                 $('#hash_update_target').html();
                 var hash_cnt = 0, data_cnt = 0;
-                
+
                 $.route.routes = {};
                 $.route("");
                 $.route("pages/:var1/:var2/:var3", {
@@ -72,7 +72,7 @@
                     'var1': 'def1',
                     'var2': 'def2'
                 });
-                
+
                 $(window).bind('hashchange', function() {
                     $('#hash_update_target').append( ++hash_cnt + ": Hash: <span class=\"green\">" + window.location.hash )
                                             .append( "</span> Route data: " + $.toJSON( $.route.data._data ) + "<br />" );
@@ -99,7 +99,7 @@
                         break;
                     }
                 }
-                
+
                 $('#data_form').bind('submit', function() {
                     data = $('#data_form').formParams();
                     for (var val in data) {

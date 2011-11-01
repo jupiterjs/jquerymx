@@ -5,21 +5,21 @@ module("jquery/dom/fixture");
 
 test("static fixtures", function(){
 	stop(3000);
-	
+
 	$.fixture("GET something", "//jquery/dom/fixture/fixtures/test.json");
 	$.fixture("POST something", "//jquery/dom/fixture/fixtures/test.json");
-	
-	
+
+
 	$.get("something",function(data){
 		equals(data.sweet,"ness","$.get works");
-		
+
 		$.post("something",function(data){
 			equals(data.sweet,"ness","$.post works");
-			
-			
+
+
 			start();
 		},'json');
-		
+
 	},'json');
 })
 
@@ -29,51 +29,51 @@ test("dynamic fixtures",function(){
 	$.fixture("something", function(){
 		return [{sweet: "ness"}]
 	})
-	
+
 	$.get("something",function(data){
 		equals(data.sweet,"ness","$.get works");
 		start();
-		
+
 	},'json');
 });
 
 test("fixture function", 3, function(){
-	
+
 	stop();
 	var url = steal.root.join("jquery/dom/fixture/fixtures/foo.json");
 	$.fixture(url,"//jquery/dom/fixture/fixtures/foobar.json" );
-	
+
 	$.get(url,function(data){
 		equals(data.sweet,"ner","url passed works");
-		
+
 		$.fixture(url,"//jquery/dom/fixture/fixtures/test.json" );
-		
-		$.get(url,function(data){ 
-		
+
+		$.get(url,function(data){
+
 			equals(data.sweet,"ness","replaced");
-			
+
 			$.fixture(url, null );
-		
-			$.get(url,function(data){ 
-			
+
+			$.get(url,function(data){
+
 				equals(data.a,"b","removed");
-				
+
 				start();
-				
+
 			},'json')
-			
-			
+
+
 		},'json')
-		
-		
-		
+
+
+
 	},"json");
 
 });
 
 
 test("fixtures with converters", function(){
-	
+
 	stop();
 	$.ajax( {
 	  url : steal.root.join("jquery/dom/fixture/fixtures/foobar.json"),
@@ -103,7 +103,7 @@ test("$.fixture.make fixtures",function(){
 			id: i,
 			name: "thing "+i
 		}
-	}, 
+	},
 	function(item, settings){
 		if(settings.data.searchText){
 			var regex = new RegExp("^"+settings.data.searchText)
@@ -130,12 +130,12 @@ test("$.fixture.make fixtures",function(){
 
 test("simulating an error", function(){
 	var st = '{type: "unauthorized"}';
-	
+
 	$.fixture("/foo", function(){
 		return [401,st]
 	});
 	stop();
-	
+
 	$.ajax({
 		url : "/foo",
 		success : function(){
@@ -155,7 +155,7 @@ test("rand", function(){
 	var num = rand(5);
 	equals(typeof num, "number");
 	ok(num >= 0 && num < 5, "gets a number" );
-	
+
 	stop();
 	var zero, three, between, next = function(){
 		start()
@@ -177,7 +177,7 @@ test("rand", function(){
 			setTimeout(arguments.callee, 10)
 		}
 	}, 10)
-	
+
 });
 
 
@@ -192,40 +192,40 @@ test("_compare", function(){
 	var same = $.Object.same(
 		{url : "/thingers/5"},
 		{url : "/thingers/{id}"}, $.fixture._compare)
-	
+
 	ok(same, "they are similar");
-	
+
 	same = $.Object.same(
 		{url : "/thingers/5"},
 		{url : "/thingers"}, $.fixture._compare);
-		
+
 	ok(!same, "they are not the same");
 })
 
 test("_similar", function(){
-	
+
 	var same = $.fixture._similar(
 		{url : "/thingers/5"},
 		{url : "/thingers/{id}"});
-		
+
 	ok(same, "similar");
-	
+
 	same = $.fixture._similar(
 		{url : "/thingers/5", type: "get"},
 		{url : "/thingers/{id}"});
-		
+
 	ok(same, "similar with extra pops on settings");
-	
+
 	var exact = $.fixture._similar(
 		{url : "/thingers/5", type: "get"},
 		{url : "/thingers/{id}"}, true);
-	
+
 	ok(!exact, "not exact" )
-	
+
 	var exact = $.fixture._similar(
 		{url : "/thingers/5"},
 		{url : "/thingers/5"}, true);
-		
+
 	ok(exact, "exact" )
 })
 
@@ -251,27 +251,27 @@ test("replacing and removing a fixture", function(){
 	stop();
 	$.get(url,{}, function(json){
 		equals(json.weird,"ness!","fixture set right")
-		
+
 		$.fixture("GET "+url, function(){
 			return {weird: "ness?"}
 		})
-		
+
 		$.get(url,{}, function(json){
 			equals(json.weird,"ness?","fixture set right");
-			
+
 			$.fixture("GET "+url, null )
-			
+
 			$.get(url,{}, function(json){
 				equals(json.weird,"ness","fixture set right");
 
 				start();
 			});
-			
-			
+
+
 		},'json')
-		
-		
-		
+
+
+
 	},'json')
 })
 

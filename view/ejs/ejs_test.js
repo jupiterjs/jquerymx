@@ -10,15 +10,15 @@ module("jquery/view/ejs, rendering",{
 				}
 			}
 		}
-		
+
 		this.squareBrackets = "<ul>[% this.animals.each(function(animal){%]" +
-		               "<li>[%= animal %]</li>" + 
+		               "<li>[%= animal %]</li>" +
 			      "[%});%]</ul>"
 	    this.squareBracketsNoThis = "<ul>[% animals.each(function(animal){%]" +
-		               "<li>[%= animal %]</li>" + 
+		               "<li>[%= animal %]</li>" +
 			      "[%});%]</ul>"
 	    this.angleBracketsNoThis  = "<ul><% animals.each(function(animal){%>" +
-		               "<li><%= animal %></li>" + 
+		               "<li><%= animal %></li>" +
 			      "<%});%></ul>";
 
 	}
@@ -39,7 +39,7 @@ test("default carrot", function(){
 test("render with double angle", function(){
 	var text = "<%% replace_me %>"+
 			  "<ul><% animals.each(function(animal){%>" +
-	               "<li><%= animal %></li>" + 
+	               "<li><%= animal %></li>" +
 		      "<%});%></ul>";
 	var compiled = new $.EJS({text: text}).render({animals: this.animals}) ;
 	equals(compiled, "<% replace_me %><ul><li>sloth</li><li>bear</li><li>monkey</li></ul>", "works")
@@ -48,7 +48,7 @@ test("render with double angle", function(){
 test("comments", function(){
 	var text = "<%# replace_me %>"+
 			  "<ul><% animals.each(function(animal){%>" +
-	               "<li><%= animal %></li>" + 
+	               "<li><%= animal %></li>" +
 		      "<%});%></ul>";
 	var compiled = new $.EJS({text: text}).render({animals: this.animals}) ;
 	equals(compiled,"<ul><li>sloth</li><li>bear</li><li>monkey</li></ul>" )
@@ -57,7 +57,7 @@ test("comments", function(){
 test("multi line", function(){
 	var text = "a \n b \n c",
 		result = new $.EJS({text: text}).render({}) ;
-		
+
 	equals(result, text)
 })
 
@@ -66,7 +66,7 @@ test("escapedContent", function(){
 	var compiled = new $.EJS({text: text}).render({tags: "foo < bar < car > zar > poo",
 							quotes : "I use 'quote' fingers \"a lot\"",
 							number : 123}) ;
-	
+
 	var div = $('<div/>').html(compiled)
 	equals(div.find('span').text(), "foo < bar < car > zar > poo" );
 	equals(div.find('strong').text(), 123 );
@@ -78,7 +78,7 @@ test("unescapedContent", function(){
 	var text = "<span><%== tags %></span><div><%= tags %></div><input value='<%== quotes %>'/>";
 	var compiled = new $.EJS({text: text}).render({tags: "<strong>foo</strong><strong>bar</strong>",
 							quotes : "I use &#39;quote&#39; fingers &quot;a lot&quot;"}) ;
-	
+
 	var div = $('<div/>').html(compiled)
 	equals(div.find('span').text(), "foobar" );
 	equals(div.find('div').text().toLowerCase(), "<strong>foo</strong><strong>bar</strong>" );
@@ -90,8 +90,8 @@ test("returning blocks", function(){
 	var somethingHelper = function(cb){
 		return cb([1,2,3,4])
 	}
-	
-	var res = $.View("//jquery/view/ejs/test_template.ejs",{something: somethingHelper, 
+
+	var res = $.View("//jquery/view/ejs/test_template.ejs",{something: somethingHelper,
 		items: ['a','b']});
 	// make sure expected values are in res
 	ok(/\s4\s/.test(res), "first block called" );

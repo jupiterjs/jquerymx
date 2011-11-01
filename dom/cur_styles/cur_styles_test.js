@@ -5,14 +5,14 @@ module("jquery/dom/curStyles");
 
 
 test("reading", function(){
-	
+
 	$("#qunit-test-area").html("//jquery/dom/cur_styles/test/curStyles.micro",{})
 
-	var res = $.curStyles( $("#styled")[0], 
+	var res = $.curStyles( $("#styled")[0],
 	   ["padding-left",
 		'position',
 		'display',
-		"margin-top", 
+		"margin-top",
 		"borderTopWidth",
 		"float"] );
 	equals(res.borderTopWidth, "2px","border top");

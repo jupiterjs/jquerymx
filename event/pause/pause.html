@@ -102,7 +102,7 @@
 <script type='text/javascript' id="demo-source">
 steal("jquery/controller",'jquery/event/pause','jquery/event/default')
 	.then(function(){
-		
+
 $.Controller("Tabs",{
   init : function(el){
     $(el).children("li:first").addClass('active');
@@ -128,7 +128,7 @@ $.Controller("Tabs",{
 	})
   }
 })
-  
+
 // adds the controller to the element
 $("#tabs").tabs();
 
@@ -170,7 +170,7 @@ $.Controller("Modal",{
 	"a click" : function(a){
 		this.element.hide();
 		this.options[a.attr('id')]();
-		
+
 		this.destroy();
 	}
 })

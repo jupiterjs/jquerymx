@@ -1,5 +1,5 @@
 steal("jquery/event/destroyed")  //load your app
- .then('funcunit/qunit') 
+ .then('funcunit/qunit')
  .then(function(){
 
 module("jquery/event/destroyed")

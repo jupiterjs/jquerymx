@@ -6,18 +6,18 @@ module("jquery/swipe", {setup : function(){
 			"<div id='inner1'>one</div>"+
 			"<div id='inner2'>two<div id='inner3'>three</div></div>"+
 			"</div>");
-	
+
 	div.appendTo($("#qunit-test-area"));
 	var basicCss = {
 		position: "absolute",
 		border: "solid 1px black"
 	}
-	$("#outer").css(basicCss).css({top: "10px", left: "10px", 
+	$("#outer").css(basicCss).css({top: "10px", left: "10px",
 		zIndex: 1000, backgroundColor: "green", width: "200px", height: "200px"})
 }});
 
 test("swipe right event",2, function(){
-	
+
 	$("#outer").bind("swipe",function(){
 		ok(true,"swipe called");
 	}).bind("swipeleft", function(){
@@ -33,12 +33,12 @@ test("swipe right event",2, function(){
 	},"outer", function(){
 		start();
 	})
-	
+
 });
 
 
 test("swipe left event",2, function(){
-	
+
 	$("#outer").bind("swipe",function(){
 		ok(true,"swipe called");
 	}).bind("swipeleft", function(){
@@ -54,12 +54,12 @@ test("swipe left event",2, function(){
 	},"outer", function(){
 		start();
 	})
-	
+
 });
 
 
 test("swipe up event",2, function(){
-	
+
 	$("#outer").bind("swipe",function(){
 		ok(true,"swipe called");
 	}).bind("swipeup", function(){
@@ -77,11 +77,11 @@ test("swipe up event",2, function(){
 	},"outer", function(){
 		start();
 	})
-	
+
 });
 
 test("swipe down event",2, function(){
-	
+
 	$("#outer").bind("swipe",function(){
 		ok(true,"swipe called");
 	}).bind("swipeup", function(){
@@ -99,7 +99,7 @@ test("swipe down event",2, function(){
 	},"outer", function(){
 		start();
 	})
-	
+
 });
 
 

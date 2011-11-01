@@ -1,12 +1,12 @@
 steal("jquery/controller",'jquery/controller/subscribe')  //load your app
  .then('funcunit/qunit')  //load qunit
  .then(function(){
- 	
+
 module("jquery/controller")
 test("subscribe testing works", function(){
-	
+
 	var ta = $("<div/>").appendTo( $("#qunit-test-area") )
-	
+
 	ta.html("click here")
 
 	var clicks = 0, destroys = 0;
@@ -19,7 +19,7 @@ test("subscribe testing works", function(){
 			subscribes++
 		},
 		destroy: function() {
-			
+
 			this._super()
 			destroys++;
 		}
@@ -27,31 +27,31 @@ test("subscribe testing works", function(){
 	ta.my_test();
 	ta.trigger("click")
 	equals(clicks,1, "can listen to clicks")
-	
+
 	OpenAjax.hub.publish("a.b",{})
 	equals(subscribes,1, "can subscribe")
 	var controllerInstance = ta.controller('my_test')
 	ok( controllerInstance.Class == MyTest, "can get controller" )
 	controllerInstance.destroy()
-	
+
 	equals(destroys,1, "destroy called once")
 	ok(!ta.controller(), "controller is removed")
-	
+
 	OpenAjax.hub.publish("a.b",{})
 	equals(subscribes,1, "subscription is torn down")
 	ta.trigger("click")
 	equals(clicks,1, "No longer listening")
-	
-	
-	
+
+
+
 	ta.my_test();
 	ta.trigger("click")
 	OpenAjax.hub.publish("a.b",{})
 	equals(clicks,2, "can listen again to clicks")
 	equals(subscribes,2, "can listen again to subscription")
-	
+
 	ta.remove();
-	
+
 	ta.trigger("click")
 	OpenAjax.hub.publish("a.b",{})
 	equals(clicks,2, "Clicks stopped")
@@ -62,7 +62,7 @@ test("subscribe testing works", function(){
 
 test("bind to any special", function(){
 	jQuery.event.special.crazyEvent = {
-		
+
 	}
 	var called = false;
 	jQuery.Controller.extend("WeirdBind",{
@@ -74,9 +74,9 @@ test("bind to any special", function(){
 	a.weird_bind();
 	a.trigger("crazyEvent")
 	ok(called, "heard the trigger");
-	
+
 	$("#qunit-test-area").html("")
-	
+
 })
 
 test("parameterized actions", function(){
@@ -90,7 +90,7 @@ test("parameterized actions", function(){
 	a.weirder_bind({parameterized: "sillyEvent"});
 	a.trigger("sillyEvent")
 	ok(called, "heard the trigger")
-	
+
 	$("#qunit-test-area").html("")
 })
 
@@ -105,11 +105,11 @@ test("windowresize", function(){
 	$("#weird").window_bind();
 	$(window).trigger('resize')
 	ok(called,"got window resize event");
-	
+
 	$("#qunit-test-area").html("")
 })
 
-// this.delegate(this.cached.header.find('tr'), "th", "mousemove", "th_mousemove"); 
+// this.delegate(this.cached.header.find('tr'), "th", "mousemove", "th_mousemove");
 test("delegate", function(){
 	var called = false;
 	jQuery.Controller.extend("DelegateTest",{
@@ -133,7 +133,7 @@ test("inherit", function(){
 		}
 	})
 	Parent.extend( "Child", {
-		
+
 	})
 	var els = $("<div><span><a href='#'>click me</a></span></div>").appendTo($("#qunit-test-area"))
 	els.child();
@@ -151,16 +151,16 @@ test("objects in action", function(){
 			equals(thing.name,"Justin","Raw, not jQuery wrapped thing")
 		}
 	});
-	
+
 	var thing1 = {name: "Justin"};
-	
+
 	var ta = $("<div/>").appendTo( $("#qunit-test-area") )
 	ta.thing({item : thing1});
-	
+
 	$(thing1).trigger("someEvent");
-	
+
 	$("#qunit-test-area").html("");
-	
+
 });
 
 test("dot",function(){
@@ -169,7 +169,7 @@ test("dot",function(){
 			ok(true,'called')
 		}
 	});
-	
+
 	var ta = $("<div/>").appendTo( $("#qunit-test-area") );
 	ta.dot().trigger("foo.bar");
 	$("#qunit-test-area").html("");
@@ -253,15 +253,15 @@ test("update rebinding", 2, function(){
 			}
 		}
 	});
-	
+
 	var item1 = {id: 1},
 		item2 = {id: 2},
 		el = $('<div>').rebinder({item: item1})
-	
+
 	$(item1).trigger("foo")
-	
+
 	el.rebinder({item: item2});
-	
+
 	$(item2).trigger("foo")
 })
 

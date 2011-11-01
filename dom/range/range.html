@@ -29,9 +29,9 @@
 		<p>We'll figure out what to do with form elements later.</p>
 		<pre id='info'></pre>
 		</div>
-		<script type='text/javascript' 
-                src='../../../steal/steal.js'>   
-			
+		<script type='text/javascript'
+                src='../../../steal/steal.js'>
+
         </script>
 		<script type='text/javascript'>
 			steal('jquery/dom/range', function(){
@@ -52,15 +52,15 @@
 					var starter = htmlEl(start.container);
 					var ender = htmlEl(end.container),
 						parenter = range.parent();
-					
+
 					curStart = $(starter).addClass('start');
 					curEnd = $(ender).addClass('end');
 					curParent = $(parenter).addClass('parent')
 					$("#info").html("startOffset = "+start.offset+"\nendOffset = "+end.offset)
 				})
-				
+
 			})
-			
+
 		</script>
 	</body>
 </html>

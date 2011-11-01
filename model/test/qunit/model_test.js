@@ -1,4 +1,4 @@
-module("jquery/model", { 
+module("jquery/model", {
 	setup: function() {
         var ids = 0;
 	    $.Model.extend("Person",{
@@ -27,7 +27,7 @@ module("jquery/model", {
 
 
 test("CRUD", function(){
-   
+
 	Person.findAll({}, function(response){
 		equals("findAll", response)
 	})
@@ -90,7 +90,7 @@ test("findOne deferred", function(){
 });
 
 test("save deferred", function(){
-	
+
 	$.Model("Person",{
 		create : function(attrs, success, error){
 			return $.ajax({
@@ -105,21 +105,21 @@ test("save deferred", function(){
 			})
 		}
 	},{});
-	
+
 	var person = new Person({name: "Justin"}),
 		personD = person.save();
-	
+
 	stop();
 	personD.then(function(person){
 		start()
 		equals(person.id, 5, "we got an id")
-		
+
 	});
-	
+
 });
 
 test("update deferred", function(){
-	
+
 	$.Model("Person",{
 		update : function(id, attrs, success, error){
 			return $.ajax({
@@ -134,21 +134,21 @@ test("update deferred", function(){
 			})
 		}
 	},{});
-	
+
 	var person = new Person({name: "Justin", id:5}),
 		personD = person.save();
-	
+
 	stop();
 	personD.then(function(person){
 		start()
 		equals(person.thing, "er", "we got updated")
-		
+
 	});
-	
+
 });
 
 test("destroy deferred", function(){
-	
+
 	$.Model("Person",{
 		destroy : function(id, success, error){
 			return $.ajax({
@@ -162,15 +162,15 @@ test("destroy deferred", function(){
 			})
 		}
 	},{});
-	
+
 	var person = new Person({name: "Justin", id:5}),
 		personD = person.destroy();
-	
+
 	stop();
 	personD.then(function(person){
 		start()
 		equals(person.thing, "er", "we got destroyed")
-		
+
 	});
 });
 
@@ -210,28 +210,28 @@ test("models", function(){
 
 
 test("async setters", function(){
-	
+
 	/*
 	$.Model("Test.AsyncModel",{
 		setName : function(newVal, success, error){
-			
-			
+
+
 			setTimeout(function(){
 				success(newVal)
 			}, 100)
 		}
 	});
-	
+
 	var model = new Test.AsyncModel({
 		name : "justin"
 	});
 	equals(model.name, "justin","property set right away")
-	
+
 	//makes model think it is no longer new
 	model.id = 1;
-	
+
 	var count = 0;
-	
+
 	model.bind('name', function(ev, newName){
 		equals(newName, "Brian",'new name');
 		equals(++count, 1, "called once");
@@ -245,14 +245,14 @@ test("async setters", function(){
 
 test("binding", 2,function(){
 	var inst = new Person({foo: "bar"});
-	
+
 	inst.bind("foo", function(ev, val){
-		ok(true,"updated")	
+		ok(true,"updated")
 		equals(val, "baz", "values match")
 	});
-	
+
 	inst.attr("foo","baz");
-	
+
 });
 
 test("error binding", 1, function(){
@@ -269,8 +269,8 @@ test("error binding", 1, function(){
 		equals(error, "no name", "error message provided")
 	})
 	school.attr("name","");
-	
-	
+
+
 })
 
 test("auto methods",function(){
@@ -286,24 +286,24 @@ test("auto methods",function(){
 	School.findAll({type:"schools"}, function(schools){
 		ok(schools,"findAll Got some data back");
 		equals(schools[0].constructor.shortName,"School","there are schools")
-		
+
 		School.findOne({id : "4"}, function(school){
 			ok(school,"findOne Got some data back");
 			equals(school.constructor.shortName,"School","a single school");
-			
-			
+
+
 			new School({name: "Highland"}).save(function(){
 				equals(this.name,"Highland","create gets the right name")
 				this.update({name: "LHS"}, function(){
 					start();
 					equals(this.name,"LHS","create gets the right name")
-					
+
 					$.fixture.on = true;
 				})
 			})
-			
+
 		})
-		
+
 	})
 })
 
@@ -355,34 +355,34 @@ test("Model events" , function(){
 			success()
 		}
 	},{});
-	
+
 	stop();
 	$([Test.Event]).bind('created',function(ev, passedItem){
-		
+
 		ok(this === Test.Event, "got model")
 		ok(passedItem === item, "got instance")
 		equals(++order, 1, "order");
 		passedItem.update({});
-		
+
 	}).bind('updated', function(ev, passedItem){
 		equals(++order, 2, "order");
 		ok(this === Test.Event, "got model")
 		ok(passedItem === item, "got instance")
-		
+
 		passedItem.destroy({});
-		
+
 	}).bind('destroyed', function(ev, passedItem){
 		equals(++order, 3, "order");
 		ok(this === Test.Event, "got model")
 		ok(passedItem === item, "got instance")
-		
+
 		start();
-		
+
 	})
-	
+
 	var item = new Test.Event();
 	item.save();
-	
+
 });
 
 
@@ -449,7 +449,7 @@ test("removeAttr test", function(){
 	var person = new Person({foo: "bar"})
 	equals(person.foo, "bar", "property set");
 	person.removeAttr('foo')
-	
+
 	equals(person.foo, undefined, "property removed");
 	var attrs = person.attrs()
 	equals(attrs.foo, undefined, "attrs removed");
@@ -467,10 +467,10 @@ test("save error args", function(){
 	var Foo = $.Model('Testin.Models.Foo',{
 		create : "/testinmodelsfoos.json"
 	},{
-		
+
 	})
 	var st = '{type: "unauthorized"}';
-	
+
 	$.fixture("/testinmodelsfoos.json", function(){
 		return [401,st]
 	});
@@ -482,7 +482,7 @@ test("save error args", function(){
 		ok(jQXHR.getResponseHeader,"jQXHR object")
 		start()
 	})
-	
-	
-	
+
+
+
 })

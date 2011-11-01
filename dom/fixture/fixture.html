@@ -13,7 +13,7 @@
 <div id="demo-html">
 <div id='content'></div>
 </div>
-<script type='text/javascript'  
+<script type='text/javascript'
         src='../../../steal/steal.js'></script>
 <script type='text/javascript' id="demo-source">
 steal('jquery/dom/fixture',
@@ -21,14 +21,14 @@ steal('jquery/dom/fixture',
 	  function(){
 
 $.fixture("/messages.php",
-	'fixtures/messages.html')	
+	'fixtures/messages.html')
 
 // gets content from a fixture
 $.get("/messages.php",
   function(html){
     // put the result in content
     $('#content').html(html)
-  }, 
+  },
   'text');
 
 
@@ -44,12 +44,12 @@ $.fixture.make(["messages","message"],20, function(i, messages){
 
 // gets messages on submit
 $("#getMessages").live("submit",function(ev){
-    
+
   ev.preventDefault();
-    
+
   //get the limit and offset
   var params = $(this).formParams().params;
-    
+
   //use -messages fixture created by make
   $.ajax({
     url: "/messages.json",
@@ -71,12 +71,12 @@ $.fixture["-createMessage"] = function(settings, cbType){
     user: "Justin",
     createdAt: String(new Date())
   }, settings.data);
-  
+
   message.id = $.fixture["~messages"].length;
-    
+
   // adds the message to the fixture data
   $.fixture["~messages"].push(message);
-    
+
   // return the data for the callback
   return [message];
 };
@@ -85,27 +85,27 @@ $.fixture["-createMessage"] = function(settings, cbType){
 // creates a message on submit
 $("#message").live("submit", function(ev){
   ev.preventDefault();
-    
+
   // get message data
   var message = $(this).formParams().message;
-    
+
   // uses -createMessage fixture
   $.post("/message.json", message,function(json){
-        
+
     //clear the message form
     $('[name*=message]').val("");
-    
+
     //show the new message
     $('[name*=offset]').val(json.id)
     $('[name*=limit]').val(1)
     $("#getMessages").submit();
-        
+
   },'json',"-createMessage")
 })
 
 //creates the html from message data
 var messagesHTML = function(json){
-  var html = ["<h4>Messages (count=", 
+  var html = ["<h4>Messages (count=",
               json.count,
               ")</h4>",
               "<table>",
@@ -114,14 +114,14 @@ var messagesHTML = function(json){
 	          "body",
 			  "user",
 			  "createdAt"];
-  
-  // html for the column headers		  
+
+  // html for the column headers
   $.each(cols, function(i, prop){
     html.push("<th>"+prop+"</th>")
   })
-  
+
   html.push("</tr>")
-  
+
   // html for the messages
   $.each(json.data, function(m, message){
     html.push("<tr>")
@@ -130,7 +130,7 @@ var messagesHTML = function(json){
     })
     html.push("</tr>")
   })
-  
+
   html.push("</table>");
   return html.join("");
 }

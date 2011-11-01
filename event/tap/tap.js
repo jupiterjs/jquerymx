@@ -28,8 +28,8 @@ $.event.setupHelper( ["tap"], touchStartEvent, function(ev){
 		moved = false,
 		touching = true,
 		timer;
-	
-	
+
+
 	function upHandler(event){
 		stop = data(event);
 		if ((Math.abs( start.coords[0] - stop.coords[0] ) < 10) ||
@@ -39,13 +39,13 @@ $.event.setupHelper( ["tap"], touchStartEvent, function(ev){
 			})
 		}
 	};
-	
+
 	timer = setTimeout(function() {
 		$(delegate).unbind(touchStopEvent, upHandler);
 	}, 500 );
-	
+
 	$(delegate).one(touchStopEvent, upHandler);
-	
+
 });
 
 });

@@ -2,35 +2,35 @@
  * @page jquerymx.lang Language Helpers
  * @parent jquerymx
  * JavaScriptMVC has several lightweight language helper plugins.
- * 
+ *
  * ## [jQuery.Object Object]
- * 
+ *
  * Methods useful for comparing Objects. For example, if two
  * objects are the same:
- * 
+ *
  *     $.Object.same({foo: "bar"}, {foo: "bar"});
- *     
+ *
  * ## [jQuery.Observe Observe]
- * 
+ *
  * Makes an Object's properties observable:
- * 
+ *
  *     var person = new $.Observe({ name: "Justin" })
  *     person.bind('change', function(){ ... })
  *     person.attr('name', "Brian");
- *     
+ *
  * ## [jQuery.String String]
- * 
+ *
  * String helpers capitalize, underscore, and perform similar manipulations
  * on strings.  They can also lookup a value in an object:
- * 
+ *
  *    $.String.getObject("foo.bar",{foo: {bar: "car"}})
- * 
+ *
  * ## [jQuery.toJSON toJSON]
- * 
+ *
  * Used to create or consume JSON strings.
- * 
+ *
  * ## [jQuery.Vector Vector]
- * 
+ *
  * Used for vector math.
  */
 //string helpers
@@ -59,16 +59,16 @@ steal('jquery').then(function( $ ) {
 		},
 		// a reference
 		getObject,
-		/** 
+		/**
 		 * @class jQuery.String
 		 * @parent jquerymx.lang
-		 * 
+		 *
 		 * A collection of useful string helpers. Available helpers are:
 		 * <ul>
 		 *   <li>[jQuery.String.capitalize|capitalize]: Capitalizes a string (some_string &raquo; Some_string)</li>
-		 *   <li>[jQuery.String.camelize|camelize]: Capitalizes a string from something undercored 
+		 *   <li>[jQuery.String.camelize|camelize]: Capitalizes a string from something undercored
 		 *       (some_string &raquo; someString, some-string &raquo; someString)</li>
-		 *   <li>[jQuery.String.classize|classize]: Like [jQuery.String.camelize|camelize], 
+		 *   <li>[jQuery.String.classize|classize]: Like [jQuery.String.camelize|camelize],
 		 *       but the first part is also capitalized (some_string &raquo; SomeString)</li>
 		 *   <li>[jQuery.String.niceName|niceName]: Like [jQuery.String.classize|classize], but a space separates each 'word' (some_string &raquo; Some String)</li>
 		 *   <li>[jQuery.String.underscore|underscore]: Underscores a string (SomeString &raquo; some_string)</li>
@@ -78,42 +78,42 @@ steal('jquery').then(function( $ ) {
 		 *       //-> "foo far"</pre></code>
 		 *   </li>
 		 * </ul>
-		 * 
+		 *
 		 */
 		str = $.String = $.extend( $.String || {} , {
-			
-			
+
+
 			/**
 			 * @function getObject
 			 * Gets an object from a string.  It can also modify objects on the
 			 * 'object path' by removing or adding properties.
-			 * 
+			 *
 			 *     Foo = {Bar: {Zar: {"Ted"}}}
 		 	 *     $.String.getobject("Foo.Bar.Zar") //-> "Ted"
-			 * 
+			 *
 			 * @param {String} name the name of the object to look for
-			 * @param {Array} [roots] an array of root objects to look for the 
+			 * @param {Array} [roots] an array of root objects to look for the
 			 *   name.  If roots is not provided, the window is used.
-			 * @param {Boolean} [add] true to add missing objects to 
-			 *  the path. false to remove found properties. undefined to 
+			 * @param {Boolean} [add] true to add missing objects to
+			 *  the path. false to remove found properties. undefined to
 			 *  not modify the root object
 			 * @return {Object} The object.
 			 */
 			getObject : getObject = function( name, roots, add ) {
-			
+
 				// the parts of the name we are looking up
 				// ['App','Models','Recipe']
 				var parts = name ? name.split(regs.dot) : [],
 					length =  parts.length,
 					current,
-					ret, 
+					ret,
 					i,
 					r = 0,
 					type;
-				
+
 				// make sure roots is an array
 				roots = $.isArray(roots) ? roots : [roots || window];
-				
+
 				if(length == 0){
 					return roots[0];
 				}
@@ -126,10 +126,10 @@ steal('jquery').then(function( $ ) {
 					}
 					// if we can get a property from the 2nd to last object
 					if( isContainer(current) ) {
-						
+
 						// get (and possibly set) the property
-						ret = getNext(current, parts[i], add); 
-						
+						ret = getNext(current, parts[i], add);
+
 						// if there is a value, we exit
 						if( ret !== undefined ) {
 							// if add is false, delete the property
@@ -137,7 +137,7 @@ steal('jquery').then(function( $ ) {
 								delete current[parts[i]];
 							}
 							return ret;
-							
+
 						}
 					}
 				}
@@ -202,10 +202,10 @@ steal('jquery').then(function( $ ) {
 			},
 			/**
 			 * Returns a string with {param} replaced values from data.
-			 * 
+			 *
 			 *     $.String.sub("foo {bar}",{bar: "far"})
 			 *     //-> "foo far"
-			 *     
+			 *
 			 * @param {String} s The string to replace
 			 * @param {Object} data The data to be used to look for properties.  If it's an array, multiple
 			 * objects can be used.
@@ -217,7 +217,7 @@ steal('jquery').then(function( $ ) {
 				obs.push(s.replace(regs.replacer, function( whole, inside ) {
 					//convert inside to type
 					var ob = getObject(inside, data, remove);
-					
+
 					// if a container, push into objs (which will return objects found)
 					if( isContainer(ob) ){
 						obs.push(ob);
@@ -226,7 +226,7 @@ steal('jquery').then(function( $ ) {
 						return ""+ob;
 					}
 				}));
-				
+
 				return obs.length <= 1 ? obs[0] : obs;
 			},
 			_regs : regs

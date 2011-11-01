@@ -1,6 +1,6 @@
 steal('jquery/model').then(function(){
 	var convert = function(method, func){
-		
+
 		return typeof method == 'function' ? function(){
 			var old = this._service,
 				ret;
@@ -16,15 +16,15 @@ steal('jquery/model').then(function(){
 	 * @param {Object} methods
 	 */
 	$.Model.service = function(properties){
-		
+
 		var func = function(newProps){
 			return $.Model.service( $.extend({}, properties, newProps) );
 		};
-		
+
 		for(var name in properties){
 			func[name] = convert(properties[name], func)
 		}
-		
+
 		return func;
 	}
 });

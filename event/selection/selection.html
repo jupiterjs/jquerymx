@@ -31,18 +31,18 @@
 			</tr>
 		</table>
 
-		
+
 		<div id='selectionArea'><p>Hello    <b>World</b>! how are you  today?</p>
 			<p>I am good, thank you.</p>
 		</div>
-		
-		
-		<script type='text/javascript' 
-                src='../../../steal/steal.js?jquery/event/selection'>   
-			
+
+
+		<script type='text/javascript'
+                src='../../../steal/steal.js?jquery/event/selection'>
+
 			(function(){
 				$.event.selection.preventDefault = true;
-				
+
 				var selection = $("<div/>").css({
 								opacity: 0.5,
 								backgroundColor: 'blue',
@@ -55,9 +55,9 @@
 					highlight = function(entire){
 						var rects = entire.rects(),
 							childs = selection.children();
-							
+
 						for(var i =0; i < rects.length; i++){
-							
+
 							var child = childs.eq(i).length ? childs.eq(i) : $('<div/>').css({
 								backgroundColor: 'blue',
 								position: 'absolute',
@@ -65,19 +65,19 @@
 							})
 							//.text(rects[i].left)
 							.appendTo(selection);
-							
+
 							child.css({
 								left: rects[i].left+"px",
 								top: rects[i].top+"px"
 							}).width(rects[i].width)
 							  .height(rects[i].height);
 						}
-						
+
 						childs.slice(i).remove();
-						
+
 						selection.show();
 					};
-				
+
 				$(document.body).bind('mousedown', function(){
 					selection.hide();
 				})
@@ -90,12 +90,12 @@
 				.bind('selectionMove', function(ev, range){
 					highlight(range);
 				})
-				
+
 			})();
-			
+
         </script>
 		<script type='text/javascript'>
-			
+
 		</script>
 	</body>
 </html>

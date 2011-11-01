@@ -1,7 +1,7 @@
 (function(){
 	var isReady,
 		stateAfterScript;
-		
+
 //we probably have to have this only describing where the tests are
 steal('jquery').then(function(){
 	$(function(){
@@ -22,9 +22,9 @@ steal('jquery').then(function(){
 	  'jquery/event/hover/hover_test.js',
 	  'jquery/event/key/key_test.js',
 	  'jquery/tie/tie_test.js'
-	  
-	  
-	  ).then(	
+
+
+	  ).then(
 
 'jquery/controller/view/test/qunit',
 'jquery/model/test/qunit',
@@ -35,7 +35,7 @@ steal('jquery').then(function(){
 
 ).then('./integration.js',
 	   'jquery/event/default/default_pause_test.js',function(){
-	
+
 	stateAfterScript = isReady;
 	module('jquery v steal');
 
@@ -43,7 +43,7 @@ steal('jquery').then(function(){
 	test("jquery isn't ready", function(){
 		ok(!stateAfterScript, "jQuery isn't ready yet")
 	})
-   	
+
 });
 
 })();

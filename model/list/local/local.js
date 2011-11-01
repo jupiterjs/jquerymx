@@ -35,8 +35,8 @@ $.Model.List("jQuery.Model.List.Local",
 		};
 		return this;
 	}
-	
+
 });
-	
+
 })
 

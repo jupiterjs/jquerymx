@@ -40,9 +40,9 @@ $.Model.service.jsonRest = $.Model.service({
 			singular = this._service.getSingularUrl(this, id),
 			plural = this._service.getPluralUrl(this),
 			self = this;
-			
-        
-            
+
+
+
         $.ajax({
             url: singular,
             type: 'put',
@@ -55,7 +55,7 @@ $.Model.service.jsonRest = $.Model.service({
 		        success({})
 			},
             fixture: "-restUpdate"
-            
+
         })
     },
 	destroy : function(id, success, error){
@@ -74,7 +74,7 @@ $.Model.service.jsonRest = $.Model.service({
 			plural = this._service.getPluralUrl(this),
 			self = this,
 			name = this._service.getName(this);
-			
+
 		$.ajax({
 		    url: plural,
 		    type: 'post',

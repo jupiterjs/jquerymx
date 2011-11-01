@@ -15,7 +15,7 @@ var current,
 /**
  * @function
  * @parent jquery.event.pause
- * 
+ *
  * Resumes an event
  */
 //
@@ -23,36 +23,36 @@ var current,
  * @page jquery.event.pause Pause-Resume
  * @plugin jquery/event/pause
  * @parent specialevents
- * The jquery/event/pause plugin adds the ability to pause and 
- * resume events. 
- * 
+ * The jquery/event/pause plugin adds the ability to pause and
+ * resume events.
+ *
  *     $('#todos').bind('show', function(ev){
  *       ev.pause();
- *       
+ *
  *       $(this).load('todos.html', function(){
  *         ev.resume();
  *       });
  *     })
- * 
- * When an event is paused, stops calling other event handlers for the 
- * event (similar to event.stopImmediatePropagation() ).  But when 
+ *
+ * When an event is paused, stops calling other event handlers for the
+ * event (similar to event.stopImmediatePropagation() ).  But when
  * resume is called on the event, it will begin calling events on event handlers
  * after the 'paused' event handler.
- * 
- * 
+ *
+ *
  * Pause-able events complement the [jQuery.event.special.default default]
- * events plugin, providing the ability to easy create widgets with 
- * an asynchronous API.  
- * 
+ * events plugin, providing the ability to easy create widgets with
+ * an asynchronous API.
+ *
  * ## Example
- * 
+ *
  * Consider a basic tabs widget that:
- * 
+ *
  *   - trigger's a __show__ event on panels when they are to be displayed
  *   - shows the panel after the show event.
- *   
+ *
  * The sudo code for this controller might look like:
- * 
+ *
  *     $.Controller('Tabs',{
  *       ".button click" : function( el ){
  *         var panel = this.getPanelFromButton( el );
@@ -61,39 +61,39 @@ var current,
  *         })
  *       }
  *     })
- *     
+ *
  * Someone using this plugin would be able to delay the panel showing until ready:
- * 
+ *
  *     $('#todos').bind('show', function(ev){
  *       ev.pause();
- *       
+ *
  *       $(this).load('todos.html', function(){
  *         ev.resume();
  *       });
  *     })
- * 
+ *
  * Or prevent the panel from showing at all:
- * 
+ *
  *     $('#todos').bind('show', function(ev){
  *       if(! isReady()){
  *         ev.preventDefault();
  *       }
  *     })
- *     
+ *
  * ## Limitations
- * 
- * The element and event handler that the <code>pause</code> is within can not be removed before 
+ *
+ * The element and event handler that the <code>pause</code> is within can not be removed before
  * resume is called.
- * 
+ *
  * ## Big Example
- * 
+ *
  * The following example shows a tabs widget where the user is prompted to save, ignore, or keep editing
  * a tab when a new tab is clicked.
- * 
+ *
  * @demo jquery/event/pause/pause.html
- * 
+ *
  * It's a long, but great example of how to do some pretty complex state management with JavaScriptMVC.
- * 
+ *
  */
 $.Event.prototype.isPaused = returnFalse
 
@@ -106,31 +106,31 @@ $.Event.prototype.pause = function(){
 
 $.Event.prototype.resume = function(){
 	this.isPaused = this.isImmediatePropagationStopped = this.isPropagationStopped = returnFalse;
-	
+
 	var el = this.liveFired || this.currentTarget || this.target,
-		defult = $.event.special['default'], 
+		defult = $.event.special['default'],
 		oldType = this.type;
-	
+
 	// if we were in a 'live' -> run our liveHandler
 	if(this.handleObj.origHandler){
 		var cur = this.currentTarget;
 		this.currentTarget = this.liveFired;
 		this.liveFired = undefined;
-		
+
 		liveHandler.call(el, this, cur );
 		el = cur;
 	}
 	if(this.isImmediatePropagationStopped()){
 		return false;
 	}
-	
+
 	// skip the event the first pass because we've already handled it
 	this.firstPass = true;
-	
+
 	if(!this.isPropagationStopped()){
 		$.event.trigger(this, [this.handleObj], el, false);
 	}
-	
+
 };
 
 

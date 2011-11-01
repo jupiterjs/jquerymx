@@ -92,7 +92,7 @@ steal('jquery/event').then(function() {
 		return selectors;
 	};
 	event.supportTouch = "ontouchend" in document;
-	
+
 	$.fn.respondsTo = function( events ) {
 		if (!this.length ) {
 			return false;
@@ -110,7 +110,7 @@ steal('jquery/event').then(function() {
 	 * Only attaches one event handler for all types ...
 	 * @param {Array} types llist of types that will delegate here
 	 * @param {Object} startingEvent the first event to start listening to
-	 * @param {Object} onFirst a function to call 
+	 * @param {Object} onFirst a function to call
 	 */
 	event.setupHelper = function( types, startingEvent, onFirst ) {
 		if (!onFirst ) {

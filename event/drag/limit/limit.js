@@ -12,7 +12,7 @@ steal('jquery/event/drag', 'jquery/dom/cur_styles').then(function( $ ) {
 	 * @download  http://jmvcsite.heroku.com/pluginify?plugins[]=jquery/event/event/drag/limit/limit.js
 	 * limits the drag to a containing element
 	 * @param {jQuery} container
-	 * @param {Object} [center] can set the limit to the center of the object.  Can be 
+	 * @param {Object} [center] can set the limit to the center of the object.  Can be
 	 *   'x', 'y' or 'both'
 	 * @return {$.Drag}
 	 */

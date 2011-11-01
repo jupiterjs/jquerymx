@@ -5,12 +5,12 @@ steal("jquery/dom/form_params")  //load your app
 $.ajaxSetup({
 	cache : false
 });
-     
+
 module("jquery/dom/form_params")
 test("with a form", function(){
 
 	$("#qunit-test-area").html("//jquery/dom/form_params/test/basics.micro",{})
-	
+
 	var formParams =  $("#qunit-test-area form").formParams() ;
 	ok(formParams.params.one === "1","one is right");
 	ok(formParams.params.two === "2","two is right");
@@ -20,13 +20,13 @@ test("with a form", function(){
 
 	equal(typeof formParams.id , 'string', "Id value is empty");
 
-	
+
 });
 
 
 test("with true false", function(){
 	$("#qunit-test-area").html("//jquery/dom/form_params/test/truthy.micro",{});
-	
+
 	var formParams =  $("#qunit-test-area form").formParams(true);
 	ok(formParams.foo === undefined, "foo is undefined")
 	ok(formParams.bar.abc === true, "form bar is true");

@@ -6,7 +6,7 @@ steal('jquery/model').then(function($){
 @test jquery/model/validations/qunit.html
 @parent jQuery.Model
 
-In many apps, it's important to validate data before sending it to the server. 
+In many apps, it's important to validate data before sending it to the server.
 The jquery/model/validations plugin provides validations on models.
 
 ## Example
@@ -45,11 +45,11 @@ var validate = function(attrNames, options, proc) {
 	}
 	options = options || {};
 	attrNames = $.makeArray(attrNames)
-	
+
 	if(options.testIf && !options.testIf.call(this)){
 		return;
 	}
-	
+
 	var self = this;
 	$.each(attrNames, function(i, attrName) {
 		// Call the validate proc function in the instance context
@@ -61,7 +61,7 @@ var validate = function(attrNames, options, proc) {
 			return res === undefined ? undefined : (options.message || res);
 		})
 	});
-   
+
 };
 
 $.extend($.Model, {
@@ -74,29 +74,29 @@ $.extend($.Model, {
     * @param {Object} options (optional) Options for the validations.  Valid options include 'message' and 'testIf'.
     */
    validate: validate,
-   
+
    /**
     * @attribute jQuery.Model.static.validationMessages
     * @parent jquery.model.validations
     * The default validation error messages that will be returned by the builtin
     * validation methods. These can be overwritten by assigning new messages
     * to $.Model.validationMessages.&lt;message> in your application setup.
-    * 
+    *
     * The following messages (with defaults) are available:
-    * 
+    *
     *  * format - "is invalid"
     *  * inclusion - "is not a valid option (perhaps out of range)"
     *  * lengthShort - "is too short"
     *  * lengthLong - "is too long"
     *  * presence - "can't be empty"
     *  * range - "is out of range"
-    * 
-    * It is important to ensure that you steal jquery/model/validations 
+    *
+    * It is important to ensure that you steal jquery/model/validations
     * before overwriting the messages, otherwise the changes will
     * be lost once steal loads it later.
-    * 
+    *
     * ## Example
-    * 
+    *
     *     $.Model.validationMessages.format = "is invalid dummy!"
     */
    validationMessages : {
@@ -136,7 +136,7 @@ $.extend($.Model, {
     * @param {Array|String} attrNames Attribute name(s) to to validate
     * @param {Array} inArray Array of options to test for inclusion
     * @param {Object} options (optional) Options for the validations.  Valid options include 'message' and 'testIf'.
-    * 
+    *
     */
    validateInclusionOf: function(attrNames, inArray, options) {
       validate.call(this, attrNames, options, function(value) {

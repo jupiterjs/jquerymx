@@ -4,7 +4,7 @@ steal("jquery/class")  //load your app
 module("jquery/class");
 
 test("Creating", function(){
-        
+
     jQuery.Class.extend("Animal",
     {
         count: 0,
@@ -40,7 +40,7 @@ test("Creating", function(){
             this._super();
             this.hairs = hairs;
             this.setEyes();
-            
+
         },
         setEyes: function() {
             this.eyes = true;
@@ -50,7 +50,7 @@ test("Creating", function(){
     new Animal();
     new Animal();
     var ajax = new Ajax(1000);
-        
+
     equals(2, Animal.count, "right number of animals");
     equals(1, Dog.count, "right number of animals")
     ok(Dog.match, "right number of animals")
@@ -75,7 +75,7 @@ test("namespaces",function(){
 	ok(Foo.Bar === fb, "returns class")
 	equals(fb.shortName, "Bar", "short name is right");
 	equals(fb.fullName, "Foo.Bar","fullName is right")
-	
+
 })
 
 test("setups", function(){
@@ -109,23 +109,23 @@ test("setups", function(){
 			}
 		}
 	$.Class.extend("Car",staticProps,protoProps);
-	
+
 	var geo = new Car("geo");
 	equals(staticSetup, 1);
 	equals(staticInit, 2);
 	equals(protoSetup, 3);
 	equals(protoInit, 4);
-	
+
 	same($.makeArray(staticInitArgs), ["something"] )
 	same($.makeArray(protoInitArgs),["Ford: geo"] )
-	
+
 	same($.makeArray(staticSetupArgs),[$.Class, "Car",staticProps, protoProps] ,"static construct");
-	
-	
+
+
 	//now see if staticSetup gets called again ...
 	Car.extend("Truck");
 	equals(staticSetup, 5, "Static setup is called if overwriting");
-	
+
 });
 
 test("callback", function(){
@@ -136,13 +136,13 @@ test("callback", function(){
 		}
 	},{
 		show: function( value ) {
-			
+
 		}
 	})
 	var cb = Car.callback('show');
 	curVal = 1;
 	cb(1)
-	
+
 	curVal = 2;
 	var cb2 = Car.callback('show',2)
 	cb2();
@@ -155,7 +155,7 @@ test("callback error", 1,function(){
 		}
 	},{
 		show: function( value ) {
-			
+
 		}
 	})
 	try{
@@ -173,7 +173,7 @@ test("Creating without extend", function(){
 		}
 	});
 	new Bar().ok();
-	
+
 	Bar("Foo",{
 		dude : function(){
 			ok(true, "dude called")
@@ -187,7 +187,7 @@ test("Creating without extend", function(){
 test("Super in derived when parent doesn't have init", function(){
 	$.Class("Parent",{
 	});
-	
+
 	Parent("Derived",{
 		init : function(){
 			this._super();

@@ -2,4 +2,4 @@
 steal('jquery/controller/view','jquery/view/micro')  //load your app
  .then('funcunit/qunit')  //load qunit
  .then("./controller_view_test.js")
- 
+

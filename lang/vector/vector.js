@@ -9,7 +9,7 @@ steal('jquery').then(function($){
  * @codestart
  * new jQuery.Vector(1,2)
  * @codeend
- * 
+ *
  */
 	$.Vector = function() {
 		this.update($.makeArray(arguments));
@@ -62,7 +62,7 @@ steal('jquery').then(function($){
 			return vec.update(arr);
 		},
 		/**
-		 * Returns the current vector if it is equal to the vector passed in.  
+		 * Returns the current vector if it is equal to the vector passed in.
 		 * False if otherwise.
 		 * @return {jQuery.Vector}
 		 */

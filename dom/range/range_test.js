@@ -1,5 +1,5 @@
 steal("funcunit/qunit", "jquery/dom/range", "jquery/dom/selection").then(function(){
-  	
+
 module("jquery/dom/range");
 
 test("basic range", function(){
@@ -13,13 +13,13 @@ test("basic range", function(){
 
 
 test('jQuery helper', function(){
-	
+
 	$("#qunit-test-area").html("<div id='selectMe'>thisTextIsSelected</div>")
-	
+
 	var range = $('#selectMe').range();
-	
+
 	equals(range.toString(), "thisTextIsSelected")
-	
+
 });
 
 test("constructor with undefined", function(){
@@ -31,13 +31,13 @@ test("constructor with undefined", function(){
 });
 
 test("constructor with element", function(){
-	
+
 	$("#qunit-test-area").html("<div id='selectMe'>thisTextIsSelected</div>")
-	
+
 	var range = $.Range($('#selectMe')[0]);
-	
+
 	equals(range.toString(), "thisTextIsSelected")
-	
+
 });
 
 test('selecting text nodes and parent', function(){
@@ -52,9 +52,9 @@ test('selecting text nodes and parent', function(){
 test('parent', function(){
 	$("#qunit-test-area").html("<div id='selectMe'>thisTextIsSelected</div>")
 	var txt = $('#selectMe')[0].childNodes[0]
-	
+
 	var range = $.Range(txt);
-	
+
 	equals(range.parent(), txt)
 });
 
@@ -66,7 +66,7 @@ test("constructor with point", function(){
 		top: "0px",
 		border: "solid 1px black"
 	})
-	
+
 	$("#qunit-test-area").html("");
 	floater.appendTo(document.body);
 
@@ -79,13 +79,13 @@ test("constructor with point", function(){
 test('current', function(){
 	$("#qunit-test-area").html("<div id='selectMe'>thisTextIsSelected</div>");
 	$('#selectMe').range().select();
-	
+
 	var range = $.Range.current();
 	equals(range.toString(), "thisTextIsSelected" )
 })
 
 test('rangeFromPoint', function(){
-	
+
 });
 
 test('overlaps', function(){});
@@ -131,7 +131,7 @@ test("nested range", function(){
 		equals(range.start().container.data, "012", "start is 012")
 		equals(range.end().container.data, "4", "last char is 4")
 	});
-	
+
 	test("rect", function(){
 		$("#qunit-test-area")
 			.html("<p id='1'>0123456789</p>");
@@ -143,7 +143,7 @@ test("nested range", function(){
 		ok(rect.left, "left non-zero")
 		ok(rect.top, "top non-zero")
 	});
-	
+
 	test("collapsed rect", function(){
 		$("#qunit-test-area")
 			.html("<p id='1'>0123456789</p>");
@@ -177,7 +177,7 @@ test("nested range", function(){
 		$('#1').selection(3,56);
 		var range = $.Range.current(),
 			rects = range.rects();
-		equals(rects.length, 2, "2 rects found")	
+		equals(rects.length, 2, "2 rects found")
 		ok(rects[1].width, "rect has width")
 	});
 

@@ -5,7 +5,7 @@ steal('funcunit/qunit','./store.js',
 
 module("store", {
 	setup : function(){
-		
+
 	}
 });
 
@@ -13,16 +13,16 @@ module("store", {
 
 /*
 test("smart findAll", function(){
-	
+
 	$.Model('Item');
-		
-	
-	
+
+
+
 	ok( this.store.has({parentId: 7})  , "store has everything with parentId 7");
-	
-	
+
+
 	var items = this.store.findAll({parentId: 7});
-	equals( items.length, 2 , "got the wrong number of items"); 
+	equals( items.length, 2 , "got the wrong number of items");
 	$.each(items, function(i, item){
 		if(item.parentId != 7){
 			ok(false,"got a bad parentId")
@@ -31,60 +31,60 @@ test("smart findAll", function(){
 })*/
 
 test("store findAll", 5, function(){
-	
+
 	$.fixture.make('item',40, function(i){
 		return {
 			name: "Name "+i,
 			parentId: i%4+1
 		}
 	})
-	
+
 	$.Model('Item',{},{});
 	$.Model.List('Item.List');
 	$.Model.Store('Item.Store');
-	
-	
+
+
 	var list = Item.Store.findAll({});
 	stop(3000);
 	list.bind("add", function(ev, items){
 		console.log("here ...")
 		start();
-		
+
 		ok(items, "add called with items");
-		
+
 		equal( items.length,40, "add called with items");
-		
+
 		var list2 = Item.Store.findAll({parentId: 2});
-		
+
 		equal( list2.length , 10, "immediately loaded");
-		
-		
+
+
 		list.unbind('add',arguments.callee);
-		
+
 		list.bind('add', function(){
 			ok(true, "big list added to")
 		})
-		
+
 		list2.bind('add', function(){
 			ok(true, "small list added too")
 		})
-		
+
 		Item.Store.add([new Item({id: 100, parentId: 2})]);
-		
+
 	})
-	
+
 })
 
 test("Store Compare", function(){
-	
-	
+
+
 	$.fixture.make('item',40, function(i){
 		return {
 			name: "Name "+i,
 			parentId: i%4+1
 		}
 	})
-	
+
 	$.Model('Item',{},{});
 	$.Model.List('Item.List');
 	$.Model.Store('Item.Store',{
@@ -92,8 +92,8 @@ test("Store Compare", function(){
 			count : null
 		}
 	},{});
-	
-	
+
+
 	var list = Item.Store.findAll({count: 2});
 	stop(3000);
 	list.bind("add", function(ev, items){
@@ -113,7 +113,7 @@ test("Store Remove", function(){
 			parentId: i%4+1
 		}
 	})
-	
+
 	$.Model('Item',{},{});
 	$.Model.List('Item.List');
 	$.Model.Store('Item.Store',{
@@ -121,7 +121,7 @@ test("Store Remove", function(){
 			count : null
 		}
 	},{});
-	
+
 	var list = Item.Store.findAll({parentId: 1}),
 		len = 0,
 		first;
@@ -148,7 +148,7 @@ test("Store Update", function(){
 			parentId: i%4+1
 		}
 	})
-	
+
 	$.Model('Item',{},{});
 	$.Model.List('Item.List');
 	$.Model.Store('Item.Store',{
@@ -156,18 +156,18 @@ test("Store Update", function(){
 			count : null
 		}
 	},{});
-	
+
 	var list1 = Item.Store.findAll({parentId: 1}),
 		list2 = Item.Store.findAll({parentId: 2}),
 		len = 0,
 		first;
-		
+
 	stop(2000);
 	var def1 = $.Deferred(),
 		def2 = $.Deferred(),
 		first,
 		updating;
-		
+
 	list1.bind("add", function(ev, items){
 		console.log("1 added")
 		def1.resolve(true)
@@ -186,13 +186,13 @@ test("Store Update", function(){
 			start();
 		}
 	});
-	
+
 	$.when(def1, def2).then(function(){
 		console.log('both ready')
 		updating = true;
 		first.updated({parentId: 2})
 	});
-	
+
 });
 
 

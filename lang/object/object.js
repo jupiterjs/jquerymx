@@ -1,5 +1,5 @@
 steal('jquery',function($){
-	
+
 var isArray = $.isArray,
 	// essentially returns an object that has all the must have comparisons ...
 	// must haves, do not return true when provided undefined
@@ -22,32 +22,32 @@ var isArray = $.isArray,
 /**
  * @class jQuery.Object
  * @parent jquerymx.lang
- * 
- * Object contains several helper methods that 
+ *
+ * Object contains several helper methods that
  * help compare objects.
- * 
+ *
  * ## same
- * 
+ *
  * Returns true if two objects are similar.
- * 
+ *
  *     $.Object.same({foo: "bar"} , {bar: "foo"}) //-> false
- *   
+ *
  * ## subset
- * 
+ *
  * Returns true if an object is a set of another set.
- * 
+ *
  *     $.Object.subset({}, {foo: "bar"} ) //-> true
- * 
+ *
  * ## subsets
- * 
+ *
  * Returns the subsets of an object
- * 
+ *
  *     $.Object.subsets({userId: 20},
  *                      [
  *                       {userId: 20, limit: 30},
  *                       {userId: 5},
  *                       {}
- *                      ]) 
+ *                      ])
  *              //->    [{userId: 20, limit: 30}]
  */
 $.Object = {};
@@ -56,34 +56,34 @@ $.Object = {};
  * @function same
  * Returns if two objects are the same.  It takes an optional compares object that
  * can be used to make comparisons.
- * 
+ *
  * This function does not work with objects that create circular references.
- * 
+ *
  * ## Examples
- * 
+ *
  *     $.Object.same({name: "Justin"},
  *                   {name: "JUSTIN"}) //-> false
- *     
+ *
  *     // ignore the name property
  *     $.Object.same({name: "Brian"},
  *                   {name: "JUSTIN"},
  *                   {name: null})      //-> true
- *     
+ *
  *     // ignore case
  *     $.Object.same({name: "Justin"},
  *                   {name: "JUSTIN"},
  *                   {name: "i"})      //-> true
- *     
+ *
  *     // deep rule
  *     $.Object.same({ person : { name: "Justin" } },
  *                   { person : { name: "JUSTIN" } },
  *                   { person : { name: "i"      } }) //-> true
- *                   
+ *
  *     // supplied compare function
  *     $.Object.same({age: "Thirty"},
  *                   {age: 30},
  *                   {age: function( a, b ){
- *                           if( a == "Thirty" ) { 
+ *                           if( a == "Thirty" ) {
  *                             a = 30
  *                           }
  *                           if( b == "Thirty" ) {
@@ -91,20 +91,20 @@ $.Object = {};
  *                           }
  *                           return a === b;
  *                         }})      //-> true
- * 
+ *
  * @param {Object} a an object to compare
  * @param {Object} b an object to compare
- * @param {Object} [compares] an object that indicates how to 
- * compare specific properties. 
+ * @param {Object} [compares] an object that indicates how to
+ * compare specific properties.
  * Typically this is a name / value pair
- * 
+ *
  *     $.Object.same({name: "Justin"},{name: "JUSTIN"},{name: "i"})
- *     
+ *
  * There are two compare functions that you can specify with a string:
- * 
+ *
  *   - 'i' - ignores case
  *   - null - ignores this property
- * 
+ *
  * @param {Object} [deep] used internally
  */
 var same = $.Object.same = function(a, b, compares, aParent, bParent, deep){
@@ -112,16 +112,16 @@ var same = $.Object.same = function(a, b, compares, aParent, bParent, deep){
 		aArray = isArray(a),
 		comparesType = typeof compares,
 		compare;
-	
+
 	if(comparesType == 'string' || compares === null ){
 		compares = compareMethods[compares];
 		comparesType = 'function'
 	}
 	if(comparesType == 'function'){
 		return compares(a, b, aParent, bParent)
-	} 
+	}
 	compares = compares || {};
-	
+
 	if(deep === -1){
 		return aType === 'object' || a === b;
 	}
@@ -153,13 +153,13 @@ var same = $.Object.same = function(a, b, compares, aParent, bParent, deep){
 		}
 		// go through bCopy props ... if there is no compare .. return false
 		for(prop in bCopy){
-			if( compares[prop] === undefined || 
+			if( compares[prop] === undefined ||
 			    ! same( undefined, b[prop], compares[prop] , a, b, deep === false ? -1 : undefined )){
 				return false;
 			}
 		}
 		return true;
-	} 
+	}
 	return false;
 };
 
@@ -174,7 +174,7 @@ $.Object.subsets = function(checkSet, sets, compares){
 		subsets = [],
 		checkPropCount = propCount(checkSet),
 		setLength;
-		
+
 	for(var i =0; i < len; i++){
 		//check this subset
 		var set = sets[i];
@@ -198,15 +198,15 @@ $.Object.subset = function(subset, set, compares){
 	// then make sure that set has fewer properties
 	// make sure we are only checking 'important' properties
 	// in subset (ones that have to have a value)
-	
+
 	var setPropCount =0,
 		compares = compares || {};
-			
+
 	for(var prop in set){
 
 		if(! same(subset[prop], set[prop], compares[prop], subset, set )  ){
 			return false;
-		} 
+		}
 	}
 	return true;
 }
@@ -220,6 +220,6 @@ var compareMethods = {
 		return (""+a).toLowerCase() == (""+b).toLowerCase()
 	}
 }
-	
-	
+
+
 });

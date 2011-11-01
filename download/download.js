@@ -3,13 +3,13 @@
 		dependencies: [],
 		pluginData: null,
 		ready: function(){
-			$.getJSON('../dist/standalone/dependencies.json', 
+			$.getJSON('../dist/standalone/dependencies.json',
 				function(data){
 					$.Downloader.pluginData = data;
 				});
-			$('#pluginForm').delegate("input[type=checkbox]", "change", 
+			$('#pluginForm').delegate("input[type=checkbox]", "change",
 				$.proxy($.Downloader.changeHandler, $.Downloader));
-				
+
 			// append css if necessary
 			if(location.search && /csspath/.test(location.search)){
 				var path = location.search.split("=")[1];
@@ -21,7 +21,7 @@
 				cssNode.media = 'screen';
 				headID.appendChild(cssNode);
 			}
-			
+
 			$.Downloader.setupWordbreaks();
 		},
 		// inject <wbr> characters in labels
@@ -55,7 +55,7 @@
 			}
 		 },
 		 /**
-		  * Push a list of plugins to the current list.  If there's a duplicate, 
+		  * Push a list of plugins to the current list.  If there's a duplicate,
 		  * delete the other one first.
 		  * @param {Object} dependencies an array of plugins to add to the list
 		  */
@@ -72,14 +72,14 @@
 		 /**
 		  * Recursively gets the array of dependencies for each plugin
 		  * @param {String} name the name of the plugin
-		  * @param {Boolean} includeSelf whether it should return with its own 
+		  * @param {Boolean} includeSelf whether it should return with its own
 		  * plugin name included
 		  */
 		 _getDependencies: function(name){
 		 	var dependencies = this.pluginData[name],
 				totalDependencies = [],
 				lowerDependencies, i, j;
-			if(!dependencies.length || 
+			if(!dependencies.length ||
 				(dependencies.length == 1 && dependencies[0] == "jquery/jquery.js")) {
 				return [name];
 			}

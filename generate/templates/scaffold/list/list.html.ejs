@@ -11,14 +11,14 @@
 	    <h1><%= baseName %>.List Demo</h1>
 		<ul id='<%= plural %>'></ul>
 		<a href='javascript://' id='create'>Create <%= className %></a>
-		<script type='text/javascript' 
+		<script type='text/javascript'
                 src='../../../steal/steal.js'>
         </script>
 		<script type='text/javascript'>
 			steal('<%= appPath %>/<%= underscore %>/list','<%= appPath %>/fixtures',function(){
-				
+
 				$('#<%= plural %>').<%= appPath %>_<%= underscore %>_list();
-				
+
 				$('#create').click(function(){
 					new <%= name %>({
 						name: "Grilled Cheese",

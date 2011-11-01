@@ -23,7 +23,7 @@ test("deparam", function(){
 		page : "jQuery.Controller",
 		where: "there"
 	});
-    
+
     $.route.routes = {};
     $.route(":page/:index",{
         page: "index",
@@ -45,8 +45,8 @@ test("deparam of invalid url", function(){
         var2: 'default2',
         var3: 'default3'
     });
-    
-    // This path does not match the above route, and since the hash is not 
+
+    // This path does not match the above route, and since the hash is not
     // a &key=value list there should not be data.
     obj = $.route.deparam("pages//");
 	same(obj, {});
@@ -86,7 +86,7 @@ test("param", function(){
 	equals(res, "")
 
     $.route.routes = {};
-    
+
     res = $.route.param({page: "foo", bar: "baz", where: "there"});
 	equals(res, "&page=foo&bar=baz&where=there")
 
@@ -96,11 +96,11 @@ test("param", function(){
 
 test("symmetry", function(){
 	$.route.routes = {};
-	
+
 	var obj = {page: "=&[]", nestedArray : ["a"], nested : {a :"b"}  }
-	
+
 	var res = $.route.param(obj)
-	
+
 	var o2 = $.route.deparam(res)
 	same(o2, obj)
 })
@@ -129,7 +129,7 @@ test("light param", function(){
 
 test('param doesnt add defaults to params', function(){
 	$.route.routes = {};
-	
+
 	$.route("pages/:p1",{
         p2: "foo"
 	})
@@ -138,7 +138,7 @@ test('param doesnt add defaults to params', function(){
 })
 
 test("param-deparam", function(){
-    
+
 	$.route(":page/:type",{
 		page: "index",
         type: "foo"
@@ -160,7 +160,7 @@ test("param-deparam", function(){
 	same(data, obj)
 
     $.route.routes = {};
-    
+
     data = {page: "foo", bar: "baz", where: "there"};
     res = $.route.param(data);
     obj = $.route.deparam(res);

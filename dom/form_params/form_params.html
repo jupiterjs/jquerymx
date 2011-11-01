@@ -5,7 +5,7 @@
 		<title>Form Params</title>
         <style type='text/css'>
             body {font-family: verdana}
-            
+
         </style>
 	</head>
 	<body>
@@ -27,20 +27,20 @@
   <input type='radio' name='talk[timeLeft]' value='10'/> 10 min<br/>
 </form>
 </div>
-		<script type='text/javascript' 
-                src='../../../steal/steal.js'>   
+		<script type='text/javascript'
+                src='../../../steal/steal.js'>
         </script>
 <script type='text/javascript' id="demo-source">
 steal('jquery/dom/form_params','jquery/lang/json').then(function(){
 // updates the JSON text
 var update = function(){
-  
-  // get form data 
+
+  // get form data
   var json = $('#fp').formParams(),
-  
+
       //convert it to JSON
       jsonString = $.toJSON( json );
-  
+
   // show JSON
   $("#result").text( jsonString )
 }
@@ -49,7 +49,7 @@ var update = function(){
 $('#fp').change(update);
 
 // show json right away
-update(); 
+update();
 })
 </script>
 	</body>

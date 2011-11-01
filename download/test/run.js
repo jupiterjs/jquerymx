@@ -6,7 +6,7 @@ load('steal/rhino/rhino.js')
 steal('steal/test', function( s ) {
 	STEALPRINT = false;
 	s.test.module("jquery/download")
-	
+
 	s.test.test("controller", function(){
 		load('steal/rhino/rhino.js')
 		s.test.open('jquery/download/test/controllerpage.html')

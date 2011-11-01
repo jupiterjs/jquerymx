@@ -1,9 +1,9 @@
 steal('jquery/model').then(function(){
-	
-	
+
+
 	    /**
 		 * @hide
-		 * Guesses the type of an object.  This is what sets the type if not provided in 
+		 * Guesses the type of an object.  This is what sets the type if not provided in
 		 * [jQuery.Model.static.attributes].
 		 * @param {Object} object the object you want to test.
 		 * @return {String} one of string, object, date, array, boolean, number, function
@@ -33,5 +33,5 @@ steal('jquery/model').then(function(){
 			}
 			return typeof object;
 		};
-	
+
 });

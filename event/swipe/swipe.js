@@ -19,17 +19,17 @@ var supportTouch = "ontouchend" in document,
  * @class jQuery.event.swipe
  * @parent specialevents
  * @plugin jquery/event/swipe
- * 
+ *
  * Swipe provides cross browser swipe events.  On mobile devices, swipe uses touch events.  On desktop browsers,
  * swipe uses mouseevents.
  *
- * A swipe happens when a touch or drag moves 
+ * A swipe happens when a touch or drag moves
  */
 var swipe = $.event.swipe = {
 	/**
 	 * @attribute delay
 	 * Delay is the upper limit of time the swipe motion can take in milliseconds.  This defaults to 1000.
-	 * 
+	 *
 	 * A user must perform the swipe motion in this much time.
 	 */
 	delay : 500,
@@ -56,7 +56,7 @@ $.event.setupHelper( [
 		delegate = ev.liveFired || ev.currentTarget,
 		selector = ev.handleObj.selector,
 		entered = this;
-	
+
 	function moveHandler(event){
 		if ( !start ) {
 			return;
@@ -77,7 +77,7 @@ $.event.setupHelper( [
 					distance = Math.sqrt(deltaX*deltaX+deltaY*deltaY);
 
 				if ( stop.time - start.time < swipe.delay && distance >= swipe.min ) {
-					
+
 					var events = ['swipe']
 					if( deltaX >= swipe.min &&  deltaY < swipe.min) {
 						events.push( start.coords[0] > stop.coords[0] ? "swipeleft" : "swiperight" );
@@ -85,13 +85,13 @@ $.event.setupHelper( [
 						events.push( start.coords[1] < stop.coords[1] ? "swipedown" : "swipeup" );
 					}
 
-					
-					
+
+
 					//trigger swipe events on this guy
 					$.each($.event.find(delegate, events, selector), function(){
 						this.call(entered, ev, {start : start, end: stop})
 					})
-				
+
 				}
 			}
 			start = stop = undefined;

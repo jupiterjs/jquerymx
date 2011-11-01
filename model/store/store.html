@@ -18,13 +18,13 @@
 	<body>
 	    <h1>store Demo</h1>
         <ul id='accounts'>
-        	
+
         </ul>
 		<ul id='grid'>
-			
+
 		</ul>
-		<script type='text/javascript' 
-                src='../../../steal/steal.js'>   
+		<script type='text/javascript'
+                src='../../../steal/steal.js'>
         </script>
 		<script type='text/ejs' id='accountsEJS'>
 			<% for(var i =0; i < this.length; i++){ %>
@@ -53,7 +53,7 @@
 					function(){
 				// lets create a grid widget ...
 				$.route("file/:file",{});
-				
+
 				$.Model('Item',{},{
 					has : function(id){
 						return new RegExp("(^|\\/)"+id+"(\\/|$)").test(this.path)
@@ -61,7 +61,7 @@
 				});
 				$.Model.List('Item.List');
 				$.Model.Store('Item.Store');
-				
+
 				var folderIds = [],
 					rand = $.fixture.rand,
 					getPath = function(items, parentId){
@@ -78,9 +78,9 @@
 							accountId: path.length ? path[0]  : null
 						}
 					};
-				
-				
-				
+
+
+
 				$.fixture.make('item',500, function(i, items){
 					var parentId = i < 5 ? null : rand(folderIds, 1)[0],
 						type = i < 5 ? 'folder' : rand(['file','folder'],1)[0];
@@ -96,7 +96,7 @@
 						accountId: data.accountId
 					}
 				})
-				
+
 				$.Controller('Grid',{
 					init : function(){
 						//check the list, render if it's there
@@ -106,7 +106,7 @@
 						var file = $.route.data.attr('file');
 						if(file){
 							Item.Store.findOne(file, this.callback('fill'))
-						}	
+						}
 					},
 					fill : function(item){
 						if(item.type === "folder"){
@@ -131,7 +131,7 @@
 						}, true);
 						this._super(el, options)
 					},
-					
+
 					init : function(){
 						this.fillIn();
 					},
@@ -143,7 +143,7 @@
 						var file = $.route.attr('file');
 						if(file){
 							Item.Store.findOne(file, this.callback('fill'))
-						}						
+						}
 					},
 					// path 34/4/23/1123/
 					fill : function(item){
@@ -163,24 +163,24 @@
 						// if it's not, hide ourselves?
 					}
 				})
-				
+
 				// Immediately get accounts ....
 				$.Controller('Accounts',{
 					setup : function(element){
-						
+
 						this._super(element, {
 							accounts : Item.Store.findAll({parentId: null})
 						})
-						
+
 					},
 					"{accounts} add" : function(accounts, ev, accounts){
 						// add something for each account
 						this.element.html("accountsEJS", accounts)
 					}
 				})
-				
+
 				$('#accounts').accounts();
-				
+
 				$.route.ready();
 			})
 		</script>

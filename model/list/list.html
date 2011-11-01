@@ -20,18 +20,18 @@
 <div id='contacts'></div>
 <a href='javascript://' id='destroyAll'>DESTROY ALL</a>
 </div>
-		
-		
-<script type='text/javascript' 
-        src='../../../steal/steal.js'>   
+
+
+<script type='text/javascript'
+        src='../../../steal/steal.js'>
 </script>
-<script type='text/javascript' id="demo-source">   
+<script type='text/javascript' id="demo-source">
 steal('jquery/model',
 		'jquery/dom/fixture',
-		'jquery/model/list', 
+		'jquery/model/list',
 		function(){
 
-// =============== SETUP FIXTURES =============== 
+// =============== SETUP FIXTURES ===============
 
 $.fixture("GET /contacts", function(){
 	return [[{'id': 1,'name' : 'Justin Meyer','birthday': 403938000000},
@@ -42,18 +42,18 @@ $.fixture("GET /contacts", function(){
 $.fixture("POST /contacts/destroy", function(){
 	return true;
 });
-	
 
-// =============== Contact Model =============== 
+
+// =============== Contact Model ===============
 
 $.Model("Contact",{
-	attributes : { 
+	attributes : {
 		birthday : 'date'
 	},
 	findAll : "/contacts"
 },{
 	ageThisYear : function(){
-		return new Date().getFullYear() - 
+		return new Date().getFullYear() -
 		      this.birthday.getFullYear()
 	},
 	getBirthday : function(){
@@ -64,14 +64,14 @@ $.Model("Contact",{
 
 });
 
-// =============== Contact List =============== 
+// =============== Contact List ===============
 
 $.Model.List("Contact.List",{
 	destroy: "POST /contacts/destroy"
 },{});
 
 
-// =============== Get and List Contacts =============== 
+// =============== Get and List Contacts ===============
 
 Contact.findAll({},function(contacts){
   var contactsEl = $('#contacts');
@@ -82,7 +82,7 @@ Contact.findAll({},function(contacts){
 			  		contact.name+" "+
 					contact.ageThisYear() )
               .appendTo(contactsEl);
-	
+
   });
   contacts.bind("remove", function(ev, removed){
   	removed.elements(contactsEl).remove()

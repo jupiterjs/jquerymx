@@ -17,33 +17,33 @@ steal('jquery/lang/json',function() {
 	 *  / Get the value of a cookie with the given name.
 	 *  </p>
 	 *  <h3>Quick Examples</h3>
-	 * 
+	 *
 	 *  Set the value of a cookie.
-	 *  
+	 *
 	 *     $.cookie('the_cookie', 'the_value');
-	 * 
+	 *
 	 *  Create a cookie with all available options.
 	 *  @codestart
 	 *  $.cookie('the_cookie', 'the_value',
 	 *  { expires: 7, path: '/', domain: 'jquery.com', secure: true });
 	 *  @codeend
-	 * 
+	 *
 	 *  Create a session cookie.
 	 *  @codestart
 	 *  $.cookie('the_cookie', 'the_value');
 	 *  @codeend
-	 * 
+	 *
 	 *  Delete a cookie by passing null as value. Keep in mind that you have to use the same path and domain
 	 *  used when the cookie was set.
 	 *  @codestart
 	 *  $.cookie('the_cookie', null);
 	 *  @codeend
-	 * 
+	 *
 	 *  Get the value of a cookie.
 	 *  @codestart
 	 *  $.cookie('the_cookie');
 	 *  @codeend
-	 * 
+	 *
      *
      * @param {String} [name] The name of the cookie.
      * @param {String} [value] The value of the cookie.
