@@ -455,7 +455,7 @@ steal("jquery","jquery/lang/string",function( $ ) {
 					
 					// pass the result to the next function (if there is a next function)
 					if ( f < length - 1 ) {
-						cur = !isArray(cur) || cur._use_call ? [cur] : cur
+						cur = [cur];
 					}
 				}
 				return cur;
