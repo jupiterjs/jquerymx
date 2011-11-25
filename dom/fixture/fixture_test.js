@@ -23,6 +23,37 @@ test("static fixtures", function(){
 	},'json');
 })
 
+test("static model fixtures where findAll and create have the same URL", function(){
+    $.Model('Fixture.Test.Model', {
+        findAll : "/fixture/test/model",
+        create  : "/fixture/test/model",
+        // Since these methods usually specify the id and thus differ the error does not occur:
+        findOne : "/fixture/test/model/id/{id}", 
+        update  : "/fixture/test/model/id/{id}",
+        destroy : "/fixture/test/model/id/{id}"
+    }, 
+    {});
+
+	$.fixture("/fixture/test/model", "//jquery/dom/fixture/fixtures/test.json");
+
+	stop();
+    Fixture.Test.Model.findAll({}, function(models) {
+        ok(models.length);
+        equals(models[0].sweet,"ness","findAll works");
+        start();
+    });
+
+    var testModel = new Fixture.Test.Model();
+    testModel.sweet = "ness";
+    stop();
+    testModel.save(function(savedModel) {
+        ok(savedModel,"A model instance was returned")
+        ok(savedModel.id,"Model id was assigned")
+        equals(savedModel.sweet,"ness","Model attributed saved.")
+        start();
+    });
+})
+
 test("dynamic fixtures",function(){
 	stop();
 	$.fixture.delay = 10;
