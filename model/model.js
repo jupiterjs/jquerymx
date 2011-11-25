@@ -1337,7 +1337,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 					};
 
 				// if we have a setter
-				if ( this[setName] &&
+				if ( !this._init && this[setName] &&
 				// call the setter, if returned value is undefined,
 				// this means the setter is async so we 
 				// do not call update property and return right away
