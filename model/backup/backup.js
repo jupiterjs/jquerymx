@@ -105,6 +105,8 @@ See this in action:
 	    * @parent jquerymx.model.backup
 	    * Returns if the instance needs to be saved.  This will go
 	    * through associations too.
+	    * @param {Boolean} [checkAssociations] Whether attributes which are nested models or 
+	    * objects are also checked.
 	    * @return {Boolean} true if there are changes, false if otherwise
 	    */
 	   isDirty: function(checkAssociations) {
@@ -119,6 +121,8 @@ See this in action:
 		 * @function jQuery.Model.prototype.restore
 		 * @parent jquery.model.backup
 		 * restores this instance to its backup data.
+		 * @param {Boolean} [restoreAssociations] Whether attributes which are nested models or 
+		 * objects are also restored.
 		 * @return {model} the instance (for chaining)
 		 */
 		restore: function(restoreAssociations) {
