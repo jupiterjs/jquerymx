@@ -271,7 +271,7 @@ test("replacing and removing a fixture", function(){
 				equals(json.weird,"ness","fixture set right");
 
 				start();
-			});
+			},'json');
 			
 			
 		},'json')
