@@ -541,7 +541,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * @param {Function} error a function to callback if something goes wrong.  
 			 */
 			return function( attrs, success, error ) {
-				return ajax(str || this._shortName, attrs, success, error, fixture(this, "Create", "-restCreate"))
+				return ajax( (str || this.uri || this._shortName), attrs, success, error, fixture(this, "Create", "-restCreate"))
 			};
 		},
 		update: function( str ) {
@@ -616,7 +616,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * @param {Function} error a function to callback if something goes wrong.  
 			 */
 			return function( id, attrs, success, error ) {
-				return ajax( str || this._shortName+"/{"+this.id+"}", addId(this, attrs, id), success, error, fixture(this, "Update", "-restUpdate"), "put")
+				return ajax( str || (this.uri || this._shortName) + "/{"+this.id+"}", addId(this, attrs, id), success, error, fixture(this, "Update", "-restUpdate"), "put")
 			}
 		},
 		destroy: function( str ) {
@@ -650,7 +650,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			return function( id, success, error ) {
 				var attrs = {};
 				attrs[this.id] = id;
-				return ajax( str || this._shortName+"/{"+this.id+"}", attrs, success, error, fixture(this, "Destroy", "-restDestroy"), "delete")
+				return ajax( str || (this.uri || this._shortName) + "/{"+this.id+"}", attrs, success, error, fixture(this, "Destroy", "-restDestroy"), "delete")
 			}
 		},
 
@@ -690,7 +690,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * @param {Function} error
 			 */
 			return function( params, success, error ) {
-				return ajax( str ||  this._shortName, params, success, error, fixture(this, "s"), "get", "json " + this._shortName + ".models");
+				return ajax( str || this.uri || this._shortName, params, success, error, fixture(this, "s"), "get", "json " + this._shortName + ".models");
 			};
 		},
 		findOne: function( str ) {
@@ -726,7 +726,7 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * @param {Function} error
 			 */
 			return function( params, success, error ) {
-				return ajax(str || this._shortName+"/{"+this.id+"}", params, success, error, fixture(this), "get", "json " + this._shortName + ".model");
+				return ajax(str || (this.uri || this._shortName) + "/{"+this.id+"}", params, success, error, fixture(this), "get", "json " + this._shortName + ".model");
 			};
 		}
 	};
