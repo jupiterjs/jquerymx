@@ -212,6 +212,14 @@ steal('jquery/class', 'jquery/lang/string', function() {
 	 *       destroy: 'DELETE /todos/{id}.json' 
 	 *     },{});
 	 * 
+	 * You can also initialize the model by passing a resource URI.
+	 * 
+	 * 		$.Model('Todo', {
+	 * 			uri : '/todos'
+	 * 		}, {});
+	 * 
+	 * Which will talk to /todos and /todos/{id}.
+	 * 
 	 * This lets you create, retrieve, update, and delete
 	 * todos programatically:
 	 * 
