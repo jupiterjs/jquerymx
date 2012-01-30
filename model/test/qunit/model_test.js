@@ -318,7 +318,7 @@ test("isNew", function(){
 test("findAll string", function(){
 	$.fixture.on = false;
 	$.Model("Test.Thing",{
-		findAll : steal.root.join("jquery/model/test/qunit/findAll.json")
+		findAll : steal.root.join("jquery/model/test/qunit/findAll.json")+''
 	},{});
 	stop();
 	Test.Thing.findAll({},function(things){
@@ -501,8 +501,8 @@ test("hookup and elements", function(){
 	
 	var res  = esc.elements(ul);
 	
-	equals(res.length,1)
-	equals(res[0], li[0])
+	equals(res.length,1, "1 item")
+	ok(res[0] === li[0], "items are equal")
 })
 
 test('aborting create update and destroy', function(){

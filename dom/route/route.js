@@ -212,6 +212,7 @@ function( $ ) {
 		var names = [],
 			test = url.replace(matcher, function( whole, name ) {
 				names.push(name)
+				// TODO: I think this should have a +
 				return "([^\\/\\&]*)"  // The '\\' is for string-escaping giving single '\' for regEx escaping
 			});
 
@@ -220,7 +221,7 @@ function( $ ) {
             // A regular expression that will match the route when variable values 
             // are present; i.e. for :page/:type the regEx is /([\w\.]*)/([\w\.]*)/ which
             // will match for any value of :page and :type (word chars or period).
-			test: new RegExp("^" + test),
+			test: new RegExp("^" + test+"($|&)"),
             // The original URL, same as the index for this entry in routes.
 			route: url,
             // An array of all the variable names in this route
@@ -246,17 +247,27 @@ function( $ ) {
 		param: function( data ) {
 			// Check if the provided data keys match the names in any routes;
 			// get the one with the most matches.
-			delete data.route;
 			var route,
-				matches = -1,
-				matchCount;
-			each($.route.routes, function(name, temp){
-				matchCount = matchesData(temp, data);
-				if ( matchCount > matches ) {
-					route = temp;
-					matches = matchCount
-				}
-			});
+				// need it to be at least 1 match
+				matches = 0,
+				matchCount,
+				routeName = data.route;
+			
+			delete data.route;
+			// if we have a route name in our $.route data, use it
+			if(routeName && (route = $.route.routes[routeName])){
+				
+			} else {
+				// otherwise find route
+				each($.route.routes, function(name, temp){
+					matchCount = matchesData(temp, data);
+					if ( matchCount > matches ) {
+						route = temp;
+						matches = matchCount
+					}
+				});
+			}
+			// if this is match
 			
 			if ( route ) {
 				var cpy = extend({}, data),
@@ -306,7 +317,7 @@ function( $ ) {
                     // start will contain the full matched string; parts contain the variable values.
 					start = parts.shift(),
                     // The remainder will be the &amp;key=value list at the end of the URL.
-					remainder = url.substr(start.length),
+					remainder = url.substr(start.length - (parts[parts.length-1] === "&" ? 1 : 0) ),
                     // If there is a remainder and it contains a &amp;key=value list deparam it.
                     obj = (remainder && paramsMatcher.test(remainder)) ? $.String.deparam( remainder.slice(1) ) : {};
 
@@ -314,7 +325,7 @@ function( $ ) {
 				obj = extend(true, {}, route.defaults, obj);
                 // Overwrite each of the default values in obj with those in parts if that part is not empty.
 				each(parts,function(i, part){
-					if ( part ) {
+					if ( part && part !== '&') {
 						obj[route.names[i]] = decode( part );
 					}
 				});
@@ -356,8 +367,15 @@ function( $ ) {
 		/**
 		 * Indicates that all routes have been added and sets $.route.data
 		 * based upon the routes and the current hash.
+		 * 
+		 * By default, ready is fired on jQuery's ready event.  Sometimes
+		 * you might want it to happen sooner or earlier.  To do this call
+		 * 
+		 *     $.route.ready(false); //prevents firing by the ready event
+		 *     $.route.ready(true); // fire the first route change
+		 * 
 		 * @param {Boolean} [start]
-		 * @return 
+		 * @return $.route
 		 */
 		ready: function(val) {
 			if( val === false ) {
@@ -421,8 +439,12 @@ function( $ ) {
         throttle = function( func ) {
             var timer;
             return function() {
+				var args = arguments,
+					self = this;
                 clearTimeout(timer);
-                timer = setTimeout(func, 1);
+                timer = setTimeout(function(){
+					func.apply(self, args)
+				}, 1);
             }
         },
         // Intermediate storage for $.route.data.
