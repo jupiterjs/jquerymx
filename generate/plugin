@@ -4,7 +4,6 @@ if (!_args[0]) {
 	print("Usage: steal/js steal/generate/plugin path");
 	quit();
 }
-load('steal/rhino/rhino.js');
 
 steal('steal/generate',function(steal){
 	var	data = steal.extend({

@@ -6,11 +6,7 @@ if (_args.length < 1) {
 	quit();
 }
 
-load('steal/rhino/rhino.js');
-
-steal(	'steal/generate',
-		'steal/generate/system.js',	
-function(steal){
+steal('steal/generate', function(steal){
 	var upper = function(parts){
 		for(var i =0; i < parts.length; i++){
 			parts[i] = parts[i].charAt(0).toUpperCase()+parts[i].substr(1)

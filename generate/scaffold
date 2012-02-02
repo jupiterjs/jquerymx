@@ -7,10 +7,7 @@ if (_args.length < 1) {
 	quit();
 }
 
-load('steal/rhino/rhino.js');
-
 steal(	'steal/generate',
-		'steal/generate/system.js',	
 		'jquery/generate/templates/model.js',
 function(steal){
 	//check capitalization

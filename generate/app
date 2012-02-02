@@ -5,9 +5,7 @@ if (!_args[0]) {
 	quit();
 }
 
-load('steal/rhino/rhino.js');
-
-steal('steal/generate','steal/generate/system.js',function(steal){
+steal('steal/generate',function(steal){
 	var classed =  steal.generate.toClass(_args[0]),
 		md = steal.generate.convert(classed),
 		data = steal.extend({
