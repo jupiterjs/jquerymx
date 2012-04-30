@@ -4,7 +4,7 @@ module('jquery/lang/observe')
 
 test("Basic Observe",9,function(){
 	
-	var state = new $.Observe({
+	var state = new $.O({
 		category : 5,
 		productType : 4,
 		properties : {
@@ -150,7 +150,7 @@ test("remove attr", function(){
 	equals(undefined,  state.attr("properties") );
 });
 
-test("attr", function(){
+test("attrs", function(){
 	var state = new $.Observe({
 		properties : {
 		  foo: "bar",
@@ -163,14 +163,14 @@ test("attr", function(){
 		equals(newVal, "bad")
 	})
 	
-	state.attr({
+	state.attrs({
 		properties : {
 		  foo: "bar",
 		  brand: []
 		}
 	})
 	
-	state.attr({
+	state.attrs({
 		properties : {
 		  foo: "bad",
 		  brand: []
@@ -185,7 +185,7 @@ test("attr", function(){
 		same(newVal, ["bad"])
 	});
 	
-	state.attr({
+	state.attrs({
 		properties : {
 		  foo: "bad",
 		  brand: ["bad"]
@@ -200,7 +200,7 @@ test("empty get", function(){
 	equals(state.attr('foo.bar'), undefined)
 });
 
-test("attr deep array ", function(){
+test("attrs deep array ", function(){
 	var state = new $.Observe({});
 	var arr = [{
 			foo: "bar"
@@ -209,7 +209,7 @@ test("attr deep array ", function(){
 			arr: arr
 		};
 	
-	state.attr({
+	state.attrs({
 		thing: thing
 	}, true);
 	
@@ -223,7 +223,7 @@ test('attrs semi-serialize', function(){
 		]
 	},
 	compare = $.extend(true, {}, first);
-	var res = new $.Observe(first).attr();
+	var res = new $.Observe(first).attrs();
 	same(res,compare, "test")
 })
 	
@@ -233,17 +233,17 @@ test("attrs sends events after it is done", function(){
 		equals(state.attr('foo'), -1, "foo set");
 		equals(state.attr('bar'), -2, "bar set")
 	})
-	state.attr({foo: -1, bar: -2});
+	state.attrs({foo: -1, bar: -2});
 })
 
 test("direct property access", function(){
-	var state = new $.Observe({foo: 1, attr: 2});
+	var state = new $.Observe({foo: 1, attrs: 2});
 	equals(state.foo,1);
-	equals(typeof state.attr, 'function')
+	equals(typeof state.attrs, 'function')
 })
 
 test("pop unbinds", function(){
-	var l = new $.Observe.List([{foo: 'bar'}]);
+	var l = new $.O([{foo: 'bar'}]);
 	var o = l.attr(0),
 		count = 0;
 	l.bind('change', function(ev, attr, how, newVal, oldVal){

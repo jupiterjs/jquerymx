@@ -1,7 +1,19 @@
 
 module("jquery/view");
 
-
+test("Ajax transport", function(){
+	var order = 0;
+	$.ajax({
+		url: "//jquery/view/test/qunit/template.ejs",
+		dataType : "view",
+		async : false
+	}).done(function(view){
+		equals(++order,1, "called synchronously");
+		equals(view({message: "hi"}).indexOf("<h3>hi</h3>"), 0, "renders stuff!")
+	});
+	
+	equals(++order,2, "called synchronously");
+})
 
 
 test("multiple template types work", function(){
@@ -15,8 +27,17 @@ test("multiple template types work", function(){
 		ok( /helloworld\s*/.test( $("#qunit-test-area").text()), this+": hello world present for ")
 	})
 })
-
-
+test("plugin in ejs", function(){
+	$("#qunit-test-area").html("");
+	$("#qunit-test-area").html("//jquery/view/test/qunit/plugin.ejs",{})
+	ok(/something/.test( $("#something").text()),"something has something");
+	$("#qunit-test-area").html("");
+})
+test("nested plugins", function(){
+	$("#qunit-test-area").html("");
+	$("#qunit-test-area").html("//jquery/view/test/qunit/nested_plugin.ejs",{})
+	ok(/something/.test( $("#something").text()),"something has something");
+})
 
 test("async templates, and caching work", function(){
 	$("#qunit-test-area").html("");
@@ -81,7 +102,7 @@ test("object of deferreds", function(){
 		foo : foo.promise(),
 		bar : bar
 	}).then(function(result){
-		ok(result, "FOO and BAR");
+		equals(result, "FOO and BAR");
 		start();
 	});
 	setTimeout(function(){
@@ -95,7 +116,7 @@ test("deferred", function(){
 	var foo = $.Deferred();
 	stop();
 	$.View("//jquery/view/test/qunit/deferred.ejs",foo).then(function(result){
-		ok(result, "FOO");
+		equals(result, "FOO");
 		start();
 	});
 	setTimeout(function(){

@@ -14,7 +14,7 @@ test("Creating", function(){
     },
     {
         init: function() {
-            this.constructor.count++;
+            this.Class.count++;
             this.eyes = false;
         }
     }
@@ -139,12 +139,12 @@ test("callback", function(){
 			
 		}
 	})
-	var cb = Car.proxy('show');
+	var cb = Car.callback('show');
 	curVal = 1;
 	cb(1)
 	
 	curVal = 2;
-	var cb2 = Car.proxy('show',2)
+	var cb2 = Car.callback('show',2)
 	cb2();
 });
 
@@ -159,7 +159,7 @@ test("callback error", 1,function(){
 		}
 	})
 	try{
-		Car.proxy('huh');
+		Car.callback('huh');
 		ok(false, "I should have errored")
 	}catch(e){
 		ok(true, "Error was thrown")

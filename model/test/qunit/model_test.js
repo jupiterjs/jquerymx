@@ -2,20 +2,20 @@ module("jquery/model", {
 	setup: function() {
         var ids = 0;
 	    $.Model("Person",{
-			findAll: function( params) {
-				return $.Deferred().resolve([{name: "foo"}])
+			findAll: function( params, success, error ) {
+				success("findAll");
 			},
 			findOne: function( params, success, error ) {
-				return $.Deferred().resolve({name: "foo"});
+				success("findOne");
 			},
-			create: function( params) {
-				return $.Deferred( ).resolve({zoo: "zed", id: (++ids)} );
+			create: function( params, success, error ) {
+				success({zoo: "zed", id: (++ids)},"create");
 			},
 			destroy: function( id, success, error ) {
-				return $.Deferred().resolve();
+				success("destroy");
 			},
 			update: function( id, attrs, success, error ) {
-				return $.Deferred().resolve({zoo: "monkeys"});
+				success({zoo: "monkeys"},"update");
 			}
 		},{
 			prettyName: function() {
@@ -29,19 +29,20 @@ module("jquery/model", {
 test("CRUD", function(){
    
 	Person.findAll({}, function(response){
-		equals("foo", response[0].name)
+		equals("findAll", response)
 	})
 	Person.findOne({}, function(response){
-		equals("foo", response.name)
+		equals("findOne", response)
 	})
     var person;
-	new Person({foo: "bar"}).save(function(inst, attrs){
+	new Person({foo: "bar"}).save(function(inst, attrs, create){
+		equals(create, "create")
 		equals("bar", inst.foo)
 		equals("zed", inst.zoo)
 		ok(inst.save, "has save function");
 		person = inst;
 	});
-    person.attr({zoo: "monkey"}).save(function(inst, attrs, update){
+    person.update({zoo: "monkey"},function(inst, attrs, update){
 		equals(inst, person, "we get back the same instance");
 		equals(person.zoo, "monkeys", "updated to monkeys zoo!  This tests that you callback with the attrs")
 	})
@@ -53,7 +54,7 @@ test("findAll deferred", function(){
 			return $.ajax({
 				url : "/people",
 				data : params,
-				dataType : "json",
+				dataType : "json person.models",
 				fixture: "//jquery/model/test/people.json"
 			})
 		}
@@ -74,7 +75,7 @@ test("findOne deferred", function(){
 			return $.ajax({
 				url : "/people/5",
 				data : params,
-				dataType : "json",
+				dataType : "json person.model",
 				fixture: "//jquery/model/test/person.json"
 			})
 		}
@@ -264,7 +265,7 @@ test("error binding", 1, function(){
 	   }
 	})
 	var school = new School();
-	school.bind("error.name", function(ev, attr, error){
+	school.bind("error.name", function(ev, error){
 		equals(error, "no name", "error message provided")
 	})
 	school.attr("name","");
@@ -291,11 +292,11 @@ test("auto methods",function(){
 			equals(school.constructor.shortName,"School","a single school");
 			
 			
-			new School({name: "Highland"}).save(function(school){
-				equals(school.name,"Highland","create gets the right name")
-				school.attr({name: "LHS"}).save(function(school){
+			new School({name: "Highland"}).save(function(){
+				equals(this.name,"Highland","create gets the right name")
+				this.update({name: "LHS"}, function(){
 					start();
-					equals(school.name,"LHS","create gets the right name")
+					equals(this.name,"LHS","create gets the right name")
 					
 					$.fixture.on = true;
 				})
@@ -326,19 +327,32 @@ test("findAll string", function(){
 		start();
 		$.fixture.on = true;
 	})
+})
+test("Empty uses fixtures", function(){
+	$.Model("Test.Things");
+	$.fixture.make("thing", 10, function(i){
+		return {
+			id: i
+		}
+	});
+	stop();
+	Test.Thing.findAll({}, function(things){
+		start();
+		equals(things.length, 10,"got 10 things")
+	})
 });
 
 test("Model events" , function(){
 	var order = 0;
 	$.Model("Test.Event",{
-		create : function(attrs){
-			return $.Deferred().resolve({id: 1})
+		create : function(attrs, success){
+			success({id: 1})
 		},
 		update : function(id, attrs, success){
-			return $.Deferred().resolve(attrs)
+			success(attrs)
 		},
 		destroy : function(id, success){
-			return $.Deferred().resolve()
+			success()
 		}
 	},{});
 	
@@ -348,7 +362,7 @@ test("Model events" , function(){
 		ok(this === Test.Event, "got model")
 		ok(passedItem === item, "got instance")
 		equals(++order, 1, "order");
-		passedItem.attr({}).save();
+		passedItem.update({});
 		
 	}).bind('updated', function(ev, passedItem){
 		equals(++order, 2, "order");
@@ -437,7 +451,7 @@ test("removeAttr test", function(){
 	person.removeAttr('foo')
 	
 	equals(person.foo, undefined, "property removed");
-	var attrs = person.attr()
+	var attrs = person.attrs()
 	equals(attrs.foo, undefined, "attrs removed");
 });
 

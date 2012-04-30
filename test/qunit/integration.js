@@ -2,7 +2,7 @@ steal('funcunit/qunit',
 	'jquery/model',
 	'jquery/controller',
 	'jquery/view/ejs',
-	'can/util/fixture')
+	'jquery/dom/fixture')
 	.then(function(){
 	
 module('integration',{
@@ -19,9 +19,6 @@ test("controller can listen to model instances and model classes", function(){
 	
 	
 	$.Controller("Test.BinderThing",{
-		init : function(){
-			this.element.html("HELLO")
-		},
 		"{model} created" : function(){
 			ok(true,"model called");
 			start();
@@ -32,14 +29,10 @@ test("controller can listen to model instances and model classes", function(){
 	});
 	
 	$.Model("Test.ModelThing",{
-		create : function(attrs){
-			var deferred = $.Deferred()
-			setTimeout(function(){
-				deferred.resolve({id: 1})
-			},2)
-			return deferred;
+		create : function(attrs, success){
+			success({id: 1})
 		}
-	},{});
+	});
 	
 	
 	var inst = new Test.ModelThing();
@@ -49,9 +42,8 @@ test("controller can listen to model instances and model classes", function(){
 			model : Test.ModelThing,
 			instance: inst
 		});
-	
+		
 	inst.save();
-	
 	stop();
 })
 
@@ -69,7 +61,7 @@ test("Model and Views", function(){
 		Test.Thing.findOne());
 		
 	res.done(function(resolved){
-		ok(resolved,"works")
+		equals(resolved,"foo","works")
 		start()
 	})
 })

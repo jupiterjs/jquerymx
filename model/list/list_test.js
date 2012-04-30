@@ -1,4 +1,4 @@
-steal("jquery/model/list",'funcunit/qunit', 'can/util/fixture', function(){
+steal("jquery/model/list",'funcunit/qunit', 'jquery/dom/fixture', function(){
 	 
 module("jquery/model/list", {
 	setup: function() {
@@ -29,7 +29,7 @@ test("hookup with list", function(){
 		div.append(child)
 	}
 	var models = div.children().models();
-	ok(models.constructor === Person.List, "correct type");
+	ok(models.Class === Person.List, "correct type");
 	equals(models.length, 20,  "Got 20 people")
 
 
@@ -80,8 +80,8 @@ test("destroy a list", function(){
 	
 	people.destroy(function(deleted){
 		ok(true, "destroy callback called");
-		equals(people.length, 0, "objects removed");
-		equals(deleted.length, 2, "got back deleted items")
+		ok(people.length, 0, "objects removed");
+		ok(deleted.length, 2, "got back deleted items")
 		start()
 		// make sure the list is empty
 		
@@ -133,7 +133,7 @@ test("update a list", function(){
 	people.update(updateWith,function(updated){
 		ok(true, "updated callback called");
 		ok(updated.length, 2, "got back deleted items");
-		same(updated[0].attr(),$.extend({id : 1},newProps, updateWith ));
+		same(updated[0].attrs(),$.extend({id : 1},newProps, updateWith ));
 		start();
 	});
 })
@@ -175,7 +175,7 @@ test("events - add", 4, function(){
 	
 	ok( $(person).data("events"), "person has events" );
 	
-	list.pop()
+	list.unbind("add");
 	
 	ok( !$(person).data("events"), "person has no events" );
 	
