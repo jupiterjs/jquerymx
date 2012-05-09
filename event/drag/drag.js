@@ -13,6 +13,7 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 				window.getSelection().removeAllRanges()
 			} : function(){},
 		supportTouch = typeof window.Touch === 'object',
+    touchDown = "ontouchdown" in document,
 		mouseEvents = {
 			touchstart: 'mousedown',
 			touchmove:  'mousemove',
@@ -48,7 +49,6 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 		moveEvent = "mousemove";
 		stopEvent = "mouseup";
 	}
-	// var handle = event.handle; //unused
 	/**
 	 * @class jQuery.Drag
 	 * @parent specialevents
