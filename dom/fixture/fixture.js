@@ -312,7 +312,7 @@ steal('jquery/dom',
 	 *     })
 	 *
 	 * Notice that data found in templated urls (ex: <code>{id}</code>) is added to the original
-	 * data object only if it is not undefined (in other words original data object has id only if setting.data is not undefined).
+	 * data object.
 	 *
 	 * Templated urls can also be used with templated static fixtures.
 	 *

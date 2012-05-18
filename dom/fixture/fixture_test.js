@@ -38,6 +38,21 @@ test("templated static fixtures", function(){
 	}, "json");
 });
 
+test("id is set to original data object", function(){
+	stop();
+
+	$.fixture({
+		type : "GET",
+		url : "/templated-url/{id}",
+	}, function(original){
+		equal(original.data.id, "1");
+	});
+
+	$.get("/templated-url/1", function(data) {
+		start();
+	}, "json");
+});
+
 test("dynamic fixtures",function(){
 	stop();
 	$.fixture.delay = 10;
