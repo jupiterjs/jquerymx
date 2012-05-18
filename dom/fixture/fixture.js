@@ -63,7 +63,8 @@ steal('jquery/dom',
 			settings.dataTypes.splice(0,0,"fixture");
 
 			if(data){
-				$.extend(originalOptions.data, data)
+				originalOptions.data = originalOptions.data || {};
+				$.extend(originalOptions.data, data);
 			}
 			// add to settings data from fixture ...
 
