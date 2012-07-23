@@ -248,8 +248,8 @@ test("param with route defined", function(){
 	$.route.routes = {};
 	$.route("holler")
 	$.route("foo");
-	
-	var res = $.route.param({foo: "abc",route: "foo"});
+	var data = {foo: "abc",route: "foo"}
+	var res = $.route.param(data);
 	
 	equal(res, "foo&foo=abc")
 })
