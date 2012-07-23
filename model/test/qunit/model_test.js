@@ -97,13 +97,14 @@ test("save deferred", function(){
 				data : attrs,
 				type : 'post',
 				dataType : "json",
-				fixture: function(){
-					return [{id: 5}]
-				},
 				success : success
 			})
 		}
 	},{});
+
+	$.fixture('POST /people', function() {
+		return {id: 5};
+	});
 	
 	var person = new Person({name: "Justin"}),
 		personD = person.save();
@@ -126,13 +127,14 @@ test("update deferred", function(){
 				data : attrs,
 				type : 'post',
 				dataType : "json",
-				fixture: function(){
-					return [{thing: "er"}]
-				},
 				success : success
 			})
 		}
 	},{});
+
+	$.fixture('POST /people/5', function() {
+		return { thing: "er" };
+	});
 	
 	var person = new Person({name: "Justin", id:5}),
 		personD = person.save();
@@ -154,9 +156,6 @@ test("destroy deferred", function(){
 				url : "/people/"+id,
 				type : 'post',
 				dataType : "json",
-				fixture: function(){
-					return [{thing: "er"}]
-				},
 				success : success
 			})
 		}
@@ -457,8 +456,8 @@ test("save error args", function(){
 	})
 	var st = '{type: "unauthorized"}';
 	
-	$.fixture("/testinmodelsfoos.json", function(){
-		return [401,st]
+	$.fixture("/testinmodelsfoos.json", function(originalOptions, respond){
+		respond(401, st);
 	});
 	stop();
 	var inst = new Foo({}).save(function(){
