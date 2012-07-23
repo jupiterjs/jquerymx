@@ -4,7 +4,4 @@ steal('jquery/class','can/control/plugin',function( $ ) {
 	$.fn.controller = $.fn.control;
 	$.fn.controllers = $.fn.controllers;
 
-	$.Controller.prototype.find = function(selector) {
-		return this.element.find(selector);
-	}
 });
