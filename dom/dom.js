@@ -79,4 +79,6 @@ Hash routes mapped to an [jQuery.Observe $.Observe].
     $.route.attr('type','images');
 
 */
-steal('jquery');
+steal('jquery', function() {
+  return jQuery;
+});
