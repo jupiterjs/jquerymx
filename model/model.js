@@ -138,9 +138,10 @@ steal('jquery/class', 'jquery/lang/string', function() {
 				jqXHR,
 				promise = deferred.promise();
 
-			// destroy does not need data
-			if ( type == 'destroy' ) {
-				args.shift();
+			// pass the old data to delete
+			if (type !== 'delete') {
+				//Put the attrs at the end
+				args.push(args.shift());
 			}
 
 			// update and destroy need the id
@@ -643,10 +644,12 @@ steal('jquery/class', 'jquery/lang/string', function() {
 			 * that has the id of the new instance and any other attributes the service needs to add.
 			 * @param {Function} error a function to callback if something goes wrong.  
 			 */
-			return function( id, success, error ) {
-				var attrs = {};
+			return function( id, success, error, origAttrs ) {
+				var attrs = {}, ajaxOb = {};
 				attrs[this.id] = id;
-				return ajax( str || this._shortName+"/{"+this.id+"}", attrs, success, error, fixture(this, "Destroy", "-restDestroy"), "delete")
+				ajaxOb.url = str || this._shortName+"/{"+this.id+"}";
+				ajaxOb.url = $.String.sub(ajaxOb.url, origAttrs, true);
+				return ajax(ajaxOb, attrs, success, error, fixture(this, "Destroy", "-restDestroy"), "delete");
 			}
 		},
 
