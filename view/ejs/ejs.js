@@ -528,7 +528,7 @@ steal('jquery/view', 'jquery/lang/string/rsplit').then(function( $ ) {
 					out: 'try { with(_VIEW) { with (_CONTEXT) {' + template + " "+finishTxt+"}}}catch(e){e.lineNumber=null;throw e;}"
 				};
 			//use eval instead of creating a function, b/c it is easier to debug
-			myEval.call(out, 'this.fn = (function(_CONTEXT,_VIEW){' + out.out + '});\r\n//@ sourceURL=' + name + ".js");
+			myEval.call(out, 'this.fn = (function(_CONTEXT,_VIEW){' + out.out + '});\r\n//@ sourceURL="' + name + '.js"');
 
 			return out;
 		};
