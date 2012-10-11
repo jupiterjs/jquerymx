@@ -35,7 +35,10 @@ steal('jquery/dom',
 			var url = settings.fixture;
 			
 			if (/^\/\//.test(url) ) {
-				url = steal.root.mapJoin(settings.fixture.substr(2))+'';
+				var sub = settings.fixture.substr(2) + '';
+				url = typeof steal === "undefined" ? 
+					url = "/" + sub : 
+					steal.root.mapJoin(sub) +'';
 			}
 			//!steal-remove-start
 			steal.dev.log("looking for fixture in " + url);
