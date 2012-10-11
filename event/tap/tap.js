@@ -32,7 +32,7 @@ $.event.setupHelper( ["tap"], touchStartEvent, function(ev){
 	
 	function upHandler(event){
 		stop = data(event);
-		if ((Math.abs( start.coords[0] - stop.coords[0] ) < 10) ||
+		if ((Math.abs( start.coords[0] - stop.coords[0] ) < 10) &&
 		    ( Math.abs( start.coords[1] - stop.coords[1] ) < 10) ){
 			$.each($.event.find(delegate, ["tap"], selector), function(){
 				this.call(entered, ev, {start : start, end: stop})
