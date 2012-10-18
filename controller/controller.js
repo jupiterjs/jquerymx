@@ -798,7 +798,7 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 				bindings.push(function( el ) {
 					$(el).unbind("destroyed", destroyCB);
 				});
-				return bindings.length;
+				return bindings.length-1;
 			}
 			if ( typeof el == 'string' ) {
 				func = eventName;
