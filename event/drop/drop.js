@@ -377,6 +377,13 @@ steal('jquery/event/drag','jquery/dom/within','jquery/dom/compare',function($){
 					la.callHandlers(this.endName, null, event, moveable);
 				}
 			}
+			
+			if ( this.dragging && this.dragging._perpetuated ) {
+				//drag perpetuated, still using
+				return;
+			}
+			
+			
 			// call dropend
 			for(var r =0; r<this._elements.length; r++){
 				dropData = $.data(this._elements[r],"_dropData");
