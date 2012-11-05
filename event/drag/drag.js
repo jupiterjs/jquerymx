@@ -192,8 +192,9 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 		
 		mouseup: function( docEl, event ) {
 			//if there is a current, we should call its dragstop
-			if ( this.moved ) {
-				this.end(event);
+			if ( this.moved  && this.end(event) ) {
+				//drag was perpetuated, still using
+				return;
 			}
 			this.destroy();
 		},
@@ -388,6 +389,12 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 
 			this.callEvents('end', this.element, event);
 
+			if ( this._perpetuated ) {
+				//drag was perpetuated, still using
+				this._perpetuated = false;
+				return true;
+			}
+
 			if ( this._revert ) {
 				var self = this;
 				this.movingElement.animate({
@@ -401,6 +408,12 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 				this.cleanup();
 			}
 			this.event = null;
+		},
+		/**
+		 * Perpetuates the drag after a drop.
+		 */
+		perpetuate: function() {
+			this._perpetuated = true;
 		},
 		/**
 		 * Cleans up drag element after drag drop.

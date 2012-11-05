@@ -798,7 +798,7 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 				bindings.push(function( el ) {
 					$(el).unbind("destroyed", destroyCB);
 				});
-				return bindings.length;
+				return bindings.length-1;
 			}
 			if ( typeof el == 'string' ) {
 				func = eventName;
@@ -812,7 +812,7 @@ steal('jquery/class', 'jquery/lang/string', 'jquery/event/destroyed', function( 
 				func = shifter(this,func);
 			}
 			this._bindings.push(binder(el, eventName, func, selector));
-			return this._bindings.length;
+			return this._bindings.length-1;
 		},
 		_unbind : function(){
 			var el = this.element[0];
