@@ -57,7 +57,7 @@ var validate = function(attrNames, options, proc) {
 			self.validations[attrName] = [];
 		}
 		self.validations[attrName].push(function(){
-			var res = proc.call(this, this[attrName]);
+      var res = proc.call(this, this[attrName], attrName);
 			return res === undefined ? undefined : (options.message || res);
 		})
 	});
