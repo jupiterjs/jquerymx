@@ -394,6 +394,9 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 					top: this.startPosition.top() + "px",
 					left: this.startPosition.left() + "px"
 				}, function() {
+					if ( typeof self._revert == "function" ) {
+						self._revert();
+					}
 					self.cleanup.apply(self, arguments);
 				});
 			}
@@ -482,7 +485,7 @@ steal('jquery/event', 'jquery/lang/vector', 'jquery/event/livehack',function( $ 
 		 *    drag.revert()
 		 * }
 		 * @codeend
-		 * @param {Boolean} [val] optional, set to false if you don't want to revert.
+		 * @param {Boolean} [val] optional, set to false if you don't want to revert, or a callback function which occurs when revertion is complete.
 		 */
 		revert: function( val ) {
 			this._revert = val === undefined ? true : val;
