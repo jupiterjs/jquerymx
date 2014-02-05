@@ -99,6 +99,11 @@ steal('jquery/dom',
 					if(typeof response[0] != 'number'){
 						response.unshift(200,"success")
 					}
+
+					//If an error occur, force datatype to text as json will not work
+					if(response[0] >= 400 && response[0] <= 599){
+						next = 'text';
+					}
 					
 					// make sure we provide a response type that matches the first datatype (typically json)
 					if(!response[2] || !response[2][next]){
