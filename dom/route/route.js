@@ -421,10 +421,6 @@ function( $ ) {
 			return location.hash == "#!" + $.route.param(options)
 		}
 	});
-	// onready
-	$(function() {
-		$.route.ready();
-	});
 	
     // The functions in the following list applied to $.route (e.g. $.route.attr('...')) will
     // instead act on the $.route.data Observe.
@@ -458,6 +454,11 @@ function( $ ) {
 			curParams = $.route.deparam( hash );
 			$.route.attrs(curParams, true);
 		};
+
+	// onready
+	$(function() {
+		$.route.ready();
+	});
 
 	// If the hash changes, update the $.route.data
 	$(window).bind('hashchange', setState);
