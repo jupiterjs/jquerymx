@@ -307,6 +307,20 @@ test("auto methods",function(){
 	})
 })
 
+test("auto uri", function() {
+	//turn off fixtures
+	$.fixture.on = false;
+	var School = $.Model.extend("Jquery.Model.Models.School",{
+	   uri : steal.root.join("jquery/model/test") + "/schools.json"
+	},{})
+	stop();
+	School.findAll({type:"schools"}, function(schools){
+		ok(schools,"findAll Got some data back");
+		equals(schools[0].constructor.shortName,"School","there are schools");
+		start();
+	})
+});
+
 test("isNew", function(){
 	var p = new Person();
 	ok(p.isNew(), "nothing provided is new");
